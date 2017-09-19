@@ -1,0 +1,33 @@
+********************************************************************************
+Geocatching
+********************************************************************************
+- Website: https://www.geocaching.com/
+- Data available : geocaches (point of interest)
+- API: no, it exists but it's no more available for new users
+-> see : https://www.geocaching.com/mobile/apidevelopers/
+- Scrapping : seems easy enough (but not legal), it's a REST like website
+example : https://www.geocaching.com/play/search/@33.7763,-84.398?origin=ipcoords
+
+********************************************************************************
+Singletracks
+********************************************************************************
+- Website: https://www.singletracks.com
+- Data available : trails and instructions
+- API: https://market.mashape.com/trailapi/trailapi
+- Scrapping : seems hard
+
+********************************************************************************
+Utagawavtt
+********************************************************************************
+- Website: https://www.utagawavtt.com
+- Data available : bike tracks (about 10k) in France with GPS data
+- API: no (https://www.utagawavtt.com/api)
+- Scrapping : seems easy enough
+
+********************************************************************************
+Google maps
+********************************************************************************
+- Website: https://developers.google.com/maps/
+- Data available : /
+- API: https://developers.google.com/maps/
+- Scrapping : /
