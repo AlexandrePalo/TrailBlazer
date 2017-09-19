@@ -31,3 +31,11 @@ Google maps
 - Data available : /
 - API: https://developers.google.com/maps/
 - Scrapping : /
+
+********************************************************************************
+What3words
+********************************************************************************
+- Website: https://what3words.com/
+- Data available : /
+- API: https://what3words.com/developers/
+- Scrapping : /
