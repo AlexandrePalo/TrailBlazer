@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import './App.css'
-import { MapContainer, SearchBar } from './components/presentationals'
+import { MapContainer, PaperForm } from './components/presentationals'
 
 class App extends Component {
   render() {
     return (
-      <div className="app">
-        <div className="formContainer">
-          <SearchBar />
+      <MuiThemeProvider>
+        <div className="app">
+          <div className="formContainer">
+            <PaperForm />
+          </div>
+          <MapContainer />
         </div>
-        <MapContainer />
-      </div>
+      </MuiThemeProvider>
     )
   }
 }
