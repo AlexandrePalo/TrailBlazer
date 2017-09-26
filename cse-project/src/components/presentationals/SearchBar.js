@@ -6,14 +6,25 @@ import './basics.css'
 class SearchBar extends Component {
   render() {
     return (
-      <div style={styles.container}>
-        <FontIcon className="material-icons" style={styles.icon}>
-          search
-        </FontIcon>
-        <input style={styles.input} type="text" placeholder="Enter an adress" />
-        <FontIcon className="material-icons" style={styles.icon}>
-          more_vert
-        </FontIcon>
+      <div>
+        <div style={styles.container}>
+          <FontIcon className="material-icons" style={styles.icon}>
+            search
+          </FontIcon>
+          <input
+            style={styles.input}
+            type="text"
+            placeholder="Enter an adress"
+          />
+          <FontIcon className="material-icons" style={styles.icon}>
+            more_vert
+          </FontIcon>
+        </div>
+        <div>
+          <div style={styles.autocompleteResult}>Result 1</div>
+          <div style={styles.autocompleteResult}>Result 1</div>
+          <div style={styles.autocompleteResult}>Result 1</div>
+        </div>
       </div>
     )
   }
@@ -35,6 +46,11 @@ const styles = {
     width: '100%'
   },
   icon: {
+    color: 'black',
+    opacity: 0.54
+  },
+  autocompleteResult: {
+    marginTop: 5,
     color: 'black',
     opacity: 0.54
   }
