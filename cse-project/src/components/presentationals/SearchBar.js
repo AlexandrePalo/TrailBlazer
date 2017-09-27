@@ -4,6 +4,19 @@ import FontIcon from 'material-ui/FontIcon'
 import './basics.css'
 
 class SearchBar extends Component {
+  state = {
+    results: [
+      { name: 'result 1' },
+      { name: 'result 2' },
+      { name: 'result 3' },
+      { name: 'result 4' }
+    ]
+  }
+
+  handleTextChange(e) {
+    this.setState({ results: [{ name: e.target.value }] })
+  }
+
   render() {
     return (
       <div>
@@ -12,6 +25,7 @@ class SearchBar extends Component {
             search
           </FontIcon>
           <input
+            onChange={this.handleTextChange}
             style={styles.input}
             type="text"
             placeholder="Enter an adress"
@@ -21,9 +35,9 @@ class SearchBar extends Component {
           </FontIcon>
         </div>
         <div>
-          <div style={styles.autocompleteResult}>Result 1</div>
-          <div style={styles.autocompleteResult}>Result 1</div>
-          <div style={styles.autocompleteResult}>Result 1</div>
+          {this.state.results.map(result => (
+            <div style={styles.autocompleteResult}>{result.name}</div>
+          ))}
         </div>
       </div>
     )
