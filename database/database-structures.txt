@@ -1,0 +1,36 @@
+MONGO DB DOCUMENT STRUCTURES
+
+_path_
+{
+  name: TXT,
+  length: FLOAT,
+  difficulty: TXT,
+  points: [...],
+  poi: [...],
+  start: TXT,
+  end: TXT
+}
+
+_point_
+{
+  lat: TXT,
+  lon: TXT,
+  elevation: FLOAT,
+  difficulty: TXT,
+  terrain: TXT,
+  poi: [...],
+  connected_points: [...]
+}
+
+_point of interest_
+{
+  lat: TXT,
+  lon: TXT,
+  elevation: FLOAT,
+  name: TXT,
+  owner: TXT,
+}
+
+NOTES:
+- possibly include edge data
+- convert to geojson
