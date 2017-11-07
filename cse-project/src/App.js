@@ -4,7 +4,7 @@ import './App.css'
 import {
   MapContainer,
   PaperForm,
-  SearchBar
+  PathSelector
 } from './components/presentationals'
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
         <div className="app">
           <div className="formContainer">
             <PaperForm>
-              <SearchBar />
+              <PathSelector />
             </PaperForm>
           </div>
           <MapContainer />

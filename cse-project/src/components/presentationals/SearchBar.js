@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
 import './basics.css'
 
