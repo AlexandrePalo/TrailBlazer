@@ -6,7 +6,7 @@ class PaperForm extends Component {
   render() {
     return (
       <Paper zdepth={3} style={styles.paper}>
-        <SearchBar />
+        {this.props.children}
       </Paper>
     )
   }
