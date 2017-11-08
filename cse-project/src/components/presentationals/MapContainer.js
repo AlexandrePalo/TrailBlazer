@@ -16,6 +16,79 @@ class MapContainer extends Component {
     )
   }
 
+  handlePolylineMouseOut = e => {
+    this.props.setCurrentTrack(undefined)
+  }
+
+  renderPolyline(p) {
+    if (this.props.currentTrackId) {
+      if (this.props.currentTrackId === p.id) {
+        if (this.props.closestCurrentPointIndexInCurrentTrack) {
+          console.log(this.props.closestCurrentPointIndexInCurrentTrack)
+          return (
+            <div>
+              <Polyline
+                onMouseOver={e =>
+                  this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+                onMouseOut={e => this.handlePolylineMouseOut()}
+                color={p.color}
+                opacity={1}
+                positions={p.points.slice(
+                  0,
+                  this.props.closestCurrentPointIndexInCurrentTrack + 1
+                )}
+              />
+              <Polyline
+                onMouseOver={e =>
+                  this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+                onMouseOut={e => this.handlePolylineMouseOut()}
+                color={p.color}
+                opacity={0.5}
+                positions={p.points.slice(
+                  this.props.closestCurrentPointIndexInCurrentTrack,
+                  p.points.length
+                )}
+              />
+            </div>
+          )
+        } else {
+          return (
+            <Polyline
+              onMouseOut={e => this.handlePolylineMouseOut()}
+              onMouseOver={e =>
+                this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+              color={p.color}
+              opacity={1}
+              positions={p.points}
+            />
+          )
+        }
+      } else {
+        return (
+          <Polyline
+            onMouseOut={e => this.handlePolylineMouseOut()}
+            onMouseOver={e =>
+              this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+            color={p.color}
+            opacity={0.4}
+            positions={p.points}
+          />
+        )
+      }
+    } else {
+      return (
+        <Polyline
+          onMouseOut={e => this.handlePolylineMouseOut()}
+          onMouseOver={e =>
+            this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+          color={p.color}
+          opacity={1}
+          positions={p.points}
+        />
+      )
+    }
+  }
+
   render() {
     const position = [51.505, -0.09]
 
@@ -55,12 +128,7 @@ class MapContainer extends Component {
                     </Popup>
                   </Marker>
                 ))}
-                <Polyline
-                  onMouseOver={e =>
-                    this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
-                  color={p.color}
-                  positions={p.points}
-                />
+                {this.renderPolyline.bind(this)(p)}
               </div>
             )
           }

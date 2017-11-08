@@ -7,7 +7,9 @@ import {
 
 const mapStateToProps = state => ({
   tracks: state.tracks.all,
-  currentTrackId: state.tracks.currentTrackId
+  currentTrackId: state.tracks.currentTrackId,
+  closestCurrentPointIndexInCurrentTrack:
+    state.tracks.closestCurrentPointIndexInCurrentTrack
 })
 const mapDispatchToProps = dispatch => ({
   setCurrentTrack: id => dispatch(setCurrentTrack(id)),
