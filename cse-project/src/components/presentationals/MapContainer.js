@@ -15,7 +15,7 @@ class MapContainer extends Component {
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
-        {this.props.paths.map((p, i) => {
+        {this.props.tracks.map((p, i) => {
           if (p.selected) {
             return (
               <div key={i}>
