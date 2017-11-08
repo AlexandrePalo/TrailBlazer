@@ -3,14 +3,26 @@ import Paper from 'material-ui/Paper'
 
 class PaperForm extends Component {
   render() {
-    // zdepth=3 ?
-    return <Paper style={styles.paper}>{this.props.children}</Paper>
+    return (
+      <div style={styles.container}>
+        <Paper style={styles.paper}>{this.props.children}</Paper>
+      </div>
+    )
   }
 }
 
 const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: '10px'
+  },
   paper: {
-    padding: '10px'
+    marginLeft: '10px',
+    marginRight: '10px',
+    padding: '10px',
+    zIndex: 3
   }
 }
 
