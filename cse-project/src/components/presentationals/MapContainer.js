@@ -16,7 +16,7 @@ class MapContainer extends Component {
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
         {this.props.tracks.map((p, i) => {
-          if (p.selected) {
+          if (p.displayed) {
             return (
               <div key={i}>
                 <Marker position={p.points[0]}>

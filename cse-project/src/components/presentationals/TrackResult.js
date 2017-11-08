@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import FontIcon from 'material-ui/FontIcon'
 
-class PathResult extends Component {
+class TrackResult extends Component {
   render() {
     return (
       <div style={styles.container} onClick={() => this.props.onClick()}>
         <FontIcon className="material-icons" style={styles.icon}>
-          {this.props.selected ? 'done' : 'clear'}
+          {this.props.displayed ? 'done' : 'clear'}
         </FontIcon>
         <span
           style={
-            this.props.selected ? styles.selectedLabel : styles.unSelectedLabel
+            this.props.displayed ? styles.selectedLabel : styles.unSelectedLabel
           }
         >
           {this.props.name}
@@ -44,4 +44,4 @@ const styles = {
   }
 }
 
-export { PathResult }
+export { TrackResult }
