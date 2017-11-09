@@ -65,10 +65,10 @@ class ElevationGraph extends Component {
         .data(data)
         .enter()
         .append('circle')
-        .attr('r', 5)
+        .attr('r', 2)
         .attr('cx', selectScaledX)
         .attr('cy', selectScaledY)
-        .attr('fill', 'red')
+        .attr('fill', track.color)
         .on('mouseover', (d, i) => {
           this.props.setCurrentClosestPointIndexInCurrentTrack(i)
         })
@@ -79,14 +79,14 @@ class ElevationGraph extends Component {
       if (this.props.currentIndex) {
         circles.attr(
           'fill-opacity',
-          (d, i) => (i <= this.props.currentIndex ? 1 : 0.5)
+          (d, i) => (i <= this.props.currentIndex ? 1 : 0.2)
         )
         d3Select(node)
           .append('text')
           .text(
             Math.ceil(data[this.props.currentIndex][0]) +
               ', ' +
-              data[this.props.currentIndex][1]
+              Math.ceil(data[this.props.currentIndex][1])
           )
           .attr('class', 'graphLabel87')
           .attr('dx', selectScaledX(data[this.props.currentIndex]) + 10)

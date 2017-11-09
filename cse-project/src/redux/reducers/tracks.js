@@ -3,6 +3,7 @@ import { generateRandomPath, closestPointIndexInList } from '../../utils'
 const INITIAL_TRACKS = {
   currentTrackId: undefined,
   closestCurrentPointIndexInCurrentTrack: undefined,
+  loading: false,
   all: [
     {
       id: 1,
@@ -157,6 +158,17 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
         }
       } else {
         return state
+      }
+    case 'FETCH_TRACK':
+      return { ...state, loading: true }
+    case 'RECEIVE_TRACK':
+      return {
+        ...state,
+        loading: false,
+        all: [
+          ...state.all,
+          { ...action.payload, id: 3, displayed: false, color: 'green' }
+        ]
       }
     default:
       return state

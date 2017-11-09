@@ -1,8 +1,23 @@
 import React, { Component } from 'react'
+import Spinner from 'react-spinner-material'
 import { TrackResult } from './'
 
 class TrackSelector extends Component {
+  componentDidMount() {
+    this.props.readJSONFileTrack()
+  }
+
   render() {
+    if (this.props.loading) {
+      return (
+        <Spinner
+          size={40}
+          spinnerColor={'#333'}
+          spinnerWidth={2}
+          visible={true}
+        />
+      )
+    }
     return (
       <div>
         {this.props.tracks.map(p => (

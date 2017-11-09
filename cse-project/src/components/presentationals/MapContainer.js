@@ -90,7 +90,7 @@ class MapContainer extends Component {
   }
 
   render() {
-    const position = [51.505, -0.09]
+    const position = [45.175847, 5.539675]
 
     return (
       <Map center={position} zoom={this.state.zoom} ref="map">
@@ -117,9 +117,7 @@ class MapContainer extends Component {
                   >
                     <Popup>
                       <span>
-                        <span style={styles.POIPopupTitle}>
-                          {poi.name}
-                        </span>{' '}
+                        <span style={styles.POIPopupTitle}>{poi.name}</span>
                         <br />
                         <span style={styles.POIPopupDescription}>
                           {poi.description}
