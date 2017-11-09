@@ -24,6 +24,7 @@ class TrackSelector extends Component {
           <TrackResult
             key={p.id}
             name={p.name}
+            color={p.color}
             displayed={p.displayed}
             onClick={() => {
               if (p.displayed) {
@@ -32,6 +33,7 @@ class TrackSelector extends Component {
                 this.props.show(p.id)
               }
             }}
+            onSetLocation={() => this.props.setLocation(p.points[0])}
           />
         ))}
       </div>

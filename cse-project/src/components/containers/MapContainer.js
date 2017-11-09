@@ -9,7 +9,8 @@ const mapStateToProps = state => ({
   tracks: state.tracks.all,
   currentTrackId: state.tracks.currentTrackId,
   closestCurrentPointIndexInCurrentTrack:
-    state.tracks.closestCurrentPointIndexInCurrentTrack
+    state.tracks.closestCurrentPointIndexInCurrentTrack,
+  location: state.location.location
 })
 const mapDispatchToProps = dispatch => ({
   setCurrentTrack: id => dispatch(setCurrentTrack(id)),

@@ -90,10 +90,8 @@ class MapContainer extends Component {
   }
 
   render() {
-    const position = [45.175847, 5.539675]
-
     return (
-      <Map center={position} zoom={this.state.zoom} ref="map">
+      <Map center={this.props.location} zoom={this.state.zoom} ref="map">
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
