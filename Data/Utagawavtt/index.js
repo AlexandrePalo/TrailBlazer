@@ -1,55 +1,104 @@
-import { getRecommendationList, getLoggedSession } from './func.js'
+import { getBodyPromise, logIn, getFormData, getJSONResult } from './func.js'
+import request from 'request-promise-native'
+import jsonSize from 'json-size'
+import fs from 'fs'
 
 let url = 'https://www.utagawavtt.com/forum_v3/ucp.php?mode=login'
 let username = 'sport_test'
 let password = 'sport_test'
+let results_per_page = 50
+let coord = '[5.10424,44.99536,6.81536,46.16410]'
 
-import request from 'request'
-import cheerio from 'cheerio'
-
-// cookieJar is a variable that contains session cookies
-let cookieJar = request.jar()
+// cookie_jar is a variable that contains session cookies
+let cookie_jar = request.jar()
 
 // first connexion using request to login, with a POST method and a formData header
 // header data were retrieve thanks to the chromium network inspector
-request.post(
+getFormData(
   {
     url: url,
-    jar: cookieJar
+    jar: cookie_jar
   },
-  (error, response, body) => {
-    let $ = cheerio.load(body)
-    console.log($('[name=sid]').attr('value'))
-    let formData = {
-      username: username,
-      password: password,
-      sid: $('[name=sid]').attr('value'),
-      login: 'Connexion',
-      redirect: '../forum_v3/'
-    }
+  username,
+  password
+).then(formData => {
+  logIn({
+    url: url,
+    formData: formData,
+    jar: cookie_jar
+  }).then(() => {
+    getJSONResult({
+      url:
+        'http://www.utagawavtt.com/search?city=&w=' +
+        coord +
+        '&q=[1,2,3,4]&k=0&l=all&u=1&aa=' +
+        results_per_page,
+      jar: cookie_jar
+    }).then(json_result => {
+      // The field topoCount contains the number or results
+      let topo_count = json_result['resultsMeta']['topoCount']
+      // Calculate the number of result pages
+      let page_nb = Math.trunc(topo_count / results_per_page) + 1
+      console.log('Number of traces:', topo_count)
+      console.log('Number of results per page:', results_per_page)
+      console.log('Number of result pages:', page_nb)
 
-    request.post(
-      {
-        url: url,
-        formData: formData,
-        jar: cookieJar
-      },
-      (error, response, body) => {
-        request(
-          {
+      // The field results contains data we want to scrap
+      let scrapped_data = json_result['results']
+
+      let result_promises = []
+      // for each i, create a promise with a request
+      for (let i = 2; i <= page_nb; i++) {
+        result_promises.push(
+          getJSONResult({
             url:
-              'https://www.utagawavtt.com/search?city=&w=[5.10424,44.99536,6.81536,46.16410]&q=[1,2,3,4]&k=0&l=all&u=1&aa=50',
-            jar: cookieJar
-          },
-          (error, response, body) => {
-            console.log('error:', error) // Print the error if one occurred
-            console.log('statusCode:', response && response.statusCode) // Print the response status code if a response was received
-            let $ = cheerio.load(body)
-            let json = JSON.parse($('#toposSearchAppData-init').html())
-            console.log(json['results'])
-          }
+              'http://www.utagawavtt.com/search?city=&w=' +
+              coord +
+              '&q=[1,2,3,4]&k=0&l=all&u=' +
+              i +
+              '&aa=' +
+              results_per_page,
+            jar: cookie_jar
+          })
         )
       }
-    )
-  }
-)
+
+      // Wait for all promises
+      Promise.all(result_promises).then(results => {
+        for (let result of results) {
+          for (let trace of result['results']) {
+            scrapped_data.push(trace)
+          }
+        }
+
+        const loop = i => {
+          if (i < scrapped_data.length) {
+            getBodyPromise({
+              url:
+                'http://www.utagawavtt.com/download.php?ref=' +
+                scrapped_data[i].tid,
+              jar: cookie_jar
+            })
+              .then(body => {
+                scrapped_data[i].xml_gpx = body.toString()
+              })
+              .then(loop.bind(null, i + 1))
+          } else {
+            fs.writeFile(
+              'scrapped_data.json',
+              JSON.stringify(scrapped_data, null, 2),
+              err => {
+                if (err) throw err
+                console.log('scrapped_data.json has been saved!')
+              }
+            )
+            console.log('Number of traces in the JSON', scrapped_data.length)
+            console.log('Size of the JSON (bytes):', jsonSize(scrapped_data))
+          }
+        }
+
+        loop(0)
+      })
+    })
+  })
+})

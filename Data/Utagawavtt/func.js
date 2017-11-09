@@ -1,42 +1,56 @@
-import fetch from 'node-fetch'
+import request from 'request-promise-native'
 import cheerio from 'cheerio'
 
-const getRecommendationList = app_id => {
-  const main_domain = 'https://play.google.com'
-  const catalog_url = '/store/apps/details?id='
-
-  return fetch(main_domain + catalog_url + app_id)
-    .then(response => response.text())
-    .then(text => {
-      let $ = cheerio.load(text)
-      let recommendation_url = $('div.recommendation')
-        .find('a')
-        .eq(0)
-        .attr('href')
-
-      return fetch(main_domain + recommendation_url)
-        .then(response => response.text())
-        .then(text => {
-          let $ = cheerio.load(text)
-          let recommendation_id_list = []
-          $('a [data-docid]').each((index, element) => {
-            recommendation_id_list.push($(element).attr('data-docid'))
-          })
-          return recommendation_id_list
-        })
+const getBodyPromise = options => {
+  options.resolveWithFullResponse = true
+  options.simple = false
+  return request(options)
+    .then(response => {
+      console.log('Request url:', options.url)
+      console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+      return response.body
+    })
+    .catch(error => {
+      console.log('error:', error) // Print the error if one occurred
     })
 }
 
-// sport_test
-const getLoggedSession = (url, username, password) => {
-  return fetch(url, {
-    method: 'POST',
-    body: 'username=' + username + '&password=' + password
+const logIn = options => {
+  options.method = 'POST'
+  options.resolveWithFullResponse = true
+  options.simple = false // to avoid status 302 (redirection) throwing an error
+  return request(options)
+    .then(response => {
+      console.log('Request url:', options.url)
+      console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+    })
+    .catch(error => {
+      console.log('error:', error) // Print the error if one occurred
+    })
+}
+
+const getFormData = (options, username, password) => {
+  return getBodyPromise(options).then(body => {
+    let $ = cheerio.load(body)
+    console.log($('[name=sid]').attr('value'))
+    let formData = {
+      username: username,
+      password: password,
+      sid: $('[name=sid]').attr('value'),
+      login: 'Connexion',
+      redirect: '../forum_v3/'
+    }
+    return formData
   })
-    .then(response => response.text())
-    .then(text => {
-      return text
-    })
 }
 
-export { getRecommendationList, getLoggedSession }
+const getJSONResult = options => {
+  return getBodyPromise(options).then(body => {
+    let $ = cheerio.load(body)
+    // UtagawaVTT uses an API to get results. These results are saved as
+    //  JSON in the toposSearchAppData-init script tag.
+    return JSON.parse($('#toposSearchAppData-init').html())
+  })
+}
+
+export { getBodyPromise, logIn, getFormData, getJSONResult }
