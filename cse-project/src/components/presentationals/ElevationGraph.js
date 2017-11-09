@@ -9,6 +9,7 @@ import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis'
 import { select as d3Select, mouse as d3Mouse } from 'd3-selection'
 import { distanceHeversine } from '../../utils/closest'
 import './Graph.css'
+import { PaperForm } from './'
 
 class ElevationGraph extends Component {
   componentDidMount() {
@@ -123,12 +124,14 @@ class ElevationGraph extends Component {
     if (this.props.track) {
       const { height, width } = this.props
       return (
-        <svg
-          style={styles.container}
-          height={height}
-          width={width}
-          ref={node => (this.node = node)}
-        />
+        <PaperForm>
+          <svg
+            style={styles.container}
+            height={height}
+            width={width}
+            ref={node => (this.node = node)}
+          />
+        </PaperForm>
       )
     }
     return null

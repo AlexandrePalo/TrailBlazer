@@ -57,10 +57,11 @@ const styles = {
   label: {
     marginTop: 5,
     color: 'black',
-    webkitUserSelect: 'none',
-    mozUserSelect: 'none',
+    WebkitUserSelect: 'none',
+    MozUserSelect: 'none',
     khtmlUserSelect: 'none',
-    msUserSelect: 'none'
+    msUserSelect: 'none',
+    fontWeight: 500
   }
 }
 

@@ -7,23 +7,21 @@ import { PaperForm } from './components/presentationals'
 import MapContainer from './components/containers/MapContainer'
 import TrackSelector from './components/containers/TrackSelector'
 import ElevationGraph from './components/containers/ElevationGraph'
+import GlobalTrackInfo from './components/containers/GlobalTrackInfo'
 
 class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
         <Provider store={store}>
-          <div style={styles.papersContainer}>
-            <PaperForm>
+          <div>
+            <div style={styles.papersContainer1}>
               <TrackSelector />
-            </PaperForm>
-            <PaperForm
-              ref={node => {
-                this.graph = node
-              }}
-            >
               <ElevationGraph width={800} height={200} padding={40} />
-            </PaperForm>
+            </div>
+            <div style={styles.papersContainer2}>
+              <GlobalTrackInfo />
+            </div>
             <MapContainer />
           </div>
         </Provider>
@@ -33,10 +31,16 @@ class App extends Component {
 }
 
 const styles = {
-  papersContainer: {
+  papersContainer1: {
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
+    marginLeft: '50px'
+  },
+  papersContainer2: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
     marginLeft: '50px'
   }
 }

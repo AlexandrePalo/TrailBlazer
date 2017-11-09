@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Spinner from 'react-spinner-material'
-import { TrackResult } from './'
+import { TrackResult, PaperForm } from './'
 
 class TrackSelector extends Component {
   componentDidMount() {
@@ -19,7 +19,7 @@ class TrackSelector extends Component {
       )
     }
     return (
-      <div>
+      <PaperForm>
         {this.props.tracks.map(p => (
           <TrackResult
             key={p.id}
@@ -36,7 +36,7 @@ class TrackSelector extends Component {
             onSetLocation={() => this.props.setLocation(p.points[0])}
           />
         ))}
-      </div>
+      </PaperForm>
     )
   }
 }
