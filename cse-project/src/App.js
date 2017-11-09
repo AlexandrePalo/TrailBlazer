@@ -13,16 +13,26 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <Provider store={store}>
-          <div>
+          <div style={styles.papersContainer}>
             <PaperForm>
               <TrackSelector />
-              <ElevationGraph width={800} height={400} padding={40} />
+            </PaperForm>
+            <PaperForm>
+              <ElevationGraph width={800} height={200} padding={40} />
             </PaperForm>
             <MapContainer />
           </div>
         </Provider>
       </MuiThemeProvider>
     )
+  }
+}
+
+const styles = {
+  papersContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 }
 
