@@ -6,6 +6,7 @@ import './App.css'
 import { PaperForm } from './components/presentationals'
 import MapContainer from './components/containers/MapContainer'
 import TrackSelector from './components/containers/TrackSelector'
+import ElevationGraph from './components/containers/ElevationGraph'
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <div>
             <PaperForm>
               <TrackSelector />
+              <ElevationGraph width={800} height={400} padding={40} />
             </PaperForm>
             <MapContainer />
           </div>

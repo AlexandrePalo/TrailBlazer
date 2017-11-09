@@ -17,14 +17,14 @@ class MapContainer extends Component {
   }
 
   handlePolylineMouseOut = e => {
-    this.props.setCurrentTrack(undefined)
+    // TODO: keep that one ?
+    //this.props.setCurrentTrack(undefined)
   }
 
   renderPolyline(p) {
     if (this.props.currentTrackId) {
       if (this.props.currentTrackId === p.id) {
         if (this.props.closestCurrentPointIndexInCurrentTrack) {
-          console.log(this.props.closestCurrentPointIndexInCurrentTrack)
           return (
             <div>
               <Polyline

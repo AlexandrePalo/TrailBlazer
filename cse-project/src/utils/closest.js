@@ -4,6 +4,19 @@ const distance2D = (point1, point2) => {
   )
 }
 
+const distanceHeversine = (pt1, pt2) => {
+  let R = 6371e3 // metres
+  let p1 = pt1[0] * Math.PI / 180
+  let p2 = pt2[0] * Math.PI / 180
+  let Dp = (pt2[0] - pt1[0]) * Math.PI / 180
+  let Dl = (pt2[1] - pt1[1]) * Math.PI / 180
+  let a =
+    Math.sin(Dp / 2) * Math.sin(Dp / 2) +
+    Math.cos(p1) * Math.cos(p2) * Math.sin(Dl / 2) * Math.sin(Dl / 2)
+  let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c
+}
+
 const closestPointInList = (point, list) => {
   let distMin = Number.MAX_VALUE
   let closest = []
@@ -30,4 +43,4 @@ const closestPointIndexInList = (point, list) => {
   return closestIndex
 }
 
-export { closestPointInList, closestPointIndexInList }
+export { closestPointInList, closestPointIndexInList, distanceHeversine }
