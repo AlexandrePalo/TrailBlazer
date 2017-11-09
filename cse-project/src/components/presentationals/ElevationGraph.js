@@ -6,13 +6,26 @@ import {
 } from 'd3-scale'
 import { line as d3Line } from 'd3-shape'
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis'
-import { select as d3Select } from 'd3-selection'
+import { select as d3Select, mouse as d3Mouse } from 'd3-selection'
 import { distanceHeversine } from '../../utils/closest'
-import '../../App.css'
+import './Graph.css'
 
 class ElevationGraph extends Component {
-  render() {
+  componentDidMount() {
+    this.createChart.bind(this)()
+  }
+
+  componentDidUpdate() {
+    this.createChart.bind(this)()
+  }
+
+  createChart() {
     const { height, width, padding, track, currentIndex } = this.props
+    // Clear previous graph
+    d3Select(this.node)
+      .selectAll('*')
+      .remove()
+
     if (track) {
       let data = track.points
       const dataXtemp = track.points.map((d, i) => {
@@ -46,13 +59,37 @@ class ElevationGraph extends Component {
       const selectScaledY = d => yScale(selectY(d))
 
       const node = this.node
+      /*
       let valueline = d3Line()
         .x(selectScaledX)
         .y(selectScaledY)
-      d3Select(node)
-        .append('path')
-        .attr('class', 'line')
-        .attr('d', valueline(data))
+        */
+
+      if (this.props.currentIndex) {
+        d3Select(node)
+          .selectAll('circle')
+          .data(data)
+          .enter()
+          .append('circle')
+          .attr('r', 4)
+          .attr('cx', selectScaledX)
+          .attr('cy', selectScaledY)
+          .attr('fill', 'red')
+          .attr(
+            'fill-opacity',
+            (d, i) => (i <= this.props.currentIndex ? 1 : 0.5)
+          )
+      } else {
+        d3Select(node)
+          .selectAll('circle')
+          .data(data)
+          .enter()
+          .append('circle')
+          .attr('r', 2)
+          .attr('cx', selectScaledX)
+          .attr('cy', selectScaledY)
+          .attr('fill', 'red')
+      }
       d3Select(node)
         .append('g')
         .attr('class', 'axis')
@@ -63,6 +100,12 @@ class ElevationGraph extends Component {
         .attr('class', 'axis')
         .attr('transform', 'translate(0,' + (height - padding) + ')')
         .call(d3AxisBottom().scale(xScale))
+    }
+  }
+
+  render() {
+    if (this.props.track) {
+      const { height, width } = this.props
       return (
         <svg
           style={styles.container}
