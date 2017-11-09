@@ -24,7 +24,7 @@ class TrackSelector extends Component {
       )
     }
     return (
-      <PaperForm>
+      <PaperForm title="Track selector">
         {this.props.tracks.map(p => (
           <TrackResult
             key={p.id}
@@ -38,7 +38,11 @@ class TrackSelector extends Component {
                 this.props.show(p.id)
               }
             }}
-            onSetLocation={() => this.props.setLocation(p.points[0])}
+            onSetLocation={() =>
+              this.props.setLocation([
+                p.points[0][0] + 0.025, // shift to bottom
+                p.points[0][1] + 0.1 // shift to left
+              ])}
           />
         ))}
       </PaperForm>

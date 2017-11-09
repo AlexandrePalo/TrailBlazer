@@ -4,7 +4,7 @@ import { closestPointIndexInList } from '../../utils'
 
 class MapContainer extends Component {
   state = {
-    zoom: 16
+    zoom: 12
   }
 
   handlePolylineMouseOver = (track, lat, lng) => {

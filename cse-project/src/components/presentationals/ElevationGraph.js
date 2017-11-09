@@ -124,7 +124,7 @@ class ElevationGraph extends Component {
     if (this.props.track) {
       const { height, width } = this.props
       return (
-        <PaperForm>
+        <PaperForm title="Graphs">
           <svg
             style={styles.container}
             height={height}

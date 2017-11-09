@@ -7,7 +7,7 @@ class GlobalTrackInfo extends Component {
     console.log(this.props.track)
     if (this.props.track) {
       return (
-        <PaperForm>
+        <PaperForm title="Toolbox">
           <div style={styles.container}>
             <RaisedButton
               label="Download GPX"

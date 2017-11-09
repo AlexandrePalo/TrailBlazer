@@ -6,7 +6,10 @@ class PaperForm extends Component {
     return (
       <div style={styles.container}>
         <Paper style={styles.paper} zDepth={3}>
-          {this.props.children}
+          <div style={styles.header}>
+            <span style={styles.title}>{this.props.title}</span>
+          </div>
+          <div style={styles.body}>{this.props.children}</div>
         </Paper>
       </div>
     )
@@ -23,8 +26,19 @@ const styles = {
   paper: {
     marginLeft: '10px',
     marginRight: '10px',
-    padding: '10px',
     zIndex: 3
+  },
+  header: {
+    backgroundColor: 'rgb(232, 232, 232)',
+    padding: '15px'
+  },
+  body: {
+    padding: '10px'
+  },
+  title: {
+    color: 'black',
+    opacity: 0.4,
+    fontSize: '14pt'
   }
 }
 
