@@ -2,12 +2,14 @@ import { getBodyPromise, logIn, getFormData, getJSONResult } from './func.js'
 import request from 'request-promise-native'
 import jsonSize from 'json-size'
 import fs from 'fs'
+import xml2js from 'xml2js-es6-promise'
 
 let url = 'https://www.utagawavtt.com/forum_v3/ucp.php?mode=login'
 let username = 'sport_test'
 let password = 'sport_test'
 let results_per_page = 50
 let coord = '[5.10424,44.99536,6.81536,46.16410]'
+let nb_of_records = 2 // 0 for max
 
 // cookie_jar is a variable that contains session cookies
 let cookie_jar = request.jar()
@@ -36,10 +38,20 @@ getFormData(
       jar: cookie_jar
     }).then(json_result => {
       // The field topoCount contains the number or results
-      let topo_count = json_result['resultsMeta']['topoCount']
+      let topo_count = 0
+      if (nb_of_records != 0) {
+        topo_count = Math.min(
+          json_result['resultsMeta']['topoCount'],
+          Math.abs(nb_of_records)
+        )
+      } else {
+        topo_count = json_result['resultsMeta']['topoCount']
+      }
+
       // Calculate the number of result pages
       let page_nb = Math.trunc(topo_count / results_per_page) + 1
-      console.log('Number of traces:', topo_count)
+      console.log('Number of records wanted:', nb_of_records)
+      console.log('Number of traces available:', topo_count)
       console.log('Number of results per page:', results_per_page)
       console.log('Number of result pages:', page_nb)
 
@@ -71,6 +83,10 @@ getFormData(
           }
         }
 
+        if (nb_of_records != 0 && scrapped_data.length > nb_of_records) {
+          scrapped_data = scrapped_data.slice(0, nb_of_records + 1)
+        }
+
         const loop = i => {
           if (i < scrapped_data.length) {
             getBodyPromise({
@@ -80,8 +96,11 @@ getFormData(
               jar: cookie_jar
             })
               .then(body => {
-                scrapped_data[i].xml_gpx = body.toString()
+                xml2js(body).then(xml => {
+                  scrapped_data[i].xml_gpx = xml
+                })
               })
+
               .then(loop.bind(null, i + 1))
           } else {
             fs.writeFile(

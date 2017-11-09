@@ -17,6 +17,8 @@
     "node-fetch": "^1.7.3",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
-    "sqlite": "^2.8.0"
+    "sqlite": "^2.8.0",
+    "xml2js": "^0.4.19",
+    "xml2js-es6-promise": "^1.1.1"
   }
 }
