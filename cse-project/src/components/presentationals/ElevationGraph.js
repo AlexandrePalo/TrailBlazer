@@ -85,7 +85,7 @@ class ElevationGraph extends Component {
           .data(data)
           .enter()
           .append('circle')
-          .attr('r', 2)
+          .attr('r', 4)
           .attr('cx', selectScaledX)
           .attr('cy', selectScaledY)
           .attr('fill', 'red')

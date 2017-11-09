@@ -128,7 +128,9 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
         ...state,
         all: state.all.map(
           t => (t.id === action.payload ? { ...t, displayed: true } : t)
-        )
+        ),
+        currentTrackId: action.payload,
+        closestCurrentPointIndexInCurrentTrack: undefined
       }
     case 'HIDE':
       return {
