@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   show: id => dispatch(show(id)),
   hide: id => dispatch(hide(id)),
-  readJSONFileTrack: () => dispatch(readJSONFileTrack()),
+  readJSONFileTrack: JSONFile => dispatch(readJSONFileTrack(JSONFile)),
   setLocation: location => dispatch(setLocation(location))
 })
 

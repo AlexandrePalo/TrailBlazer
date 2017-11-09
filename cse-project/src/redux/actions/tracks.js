@@ -1,5 +1,4 @@
 //import { json as d3Json } from 'd3-request'
-import sample1 from '../../example/sample1.json'
 
 const show = id => ({ type: 'SHOW', payload: id })
 
@@ -17,7 +16,7 @@ const fetchTrack = () => ({
 })
 const receiveTrack = track => ({ type: 'RECEIVE_TRACK', payload: track })
 
-const readJSONFileTrack = () => {
+const readJSONFileTrack = JSONFile => {
   return dispatch => {
     // Fetch something
     dispatch(fetchTrack())
@@ -25,9 +24,9 @@ const readJSONFileTrack = () => {
     // Current fetch
     // no real fetch here because Webpack directly reads json ...
     const track = {
-      name: sample1.titre,
+      name: JSONFile.titre,
       pois: [],
-      points: sample1.xml_gpx.gpx.trk[0].trkseg[0].trkpt.map(trkpt => {
+      points: JSONFile.xml_gpx.gpx.trk[0].trkseg[0].trkpt.map(trkpt => {
         return [+trkpt.$.lat, +trkpt.$.lon, +trkpt.ele[0]]
       })
     }

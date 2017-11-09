@@ -80,7 +80,7 @@ class ElevationGraph extends Component {
       if (this.props.currentIndex) {
         circles.attr(
           'fill-opacity',
-          (d, i) => (i <= this.props.currentIndex ? 1 : 0.2)
+          (d, i) => (i <= this.props.currentIndex ? 1 : 0.1)
         )
         d3Select(node)
           .append('text')

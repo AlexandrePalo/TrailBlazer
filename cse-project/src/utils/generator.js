@@ -9,4 +9,8 @@ const generateRandomPath = (position, nbPoints) => {
   return path
 }
 
-export { generateRandomPath }
+const generateRandomColor = () => {
+  return '#' + (((1 << 24) * Math.random()) | 0).toString(16)
+}
+
+export { generateRandomPath, generateRandomColor }
