@@ -82,7 +82,11 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
         ...state,
         all: state.all.map(
           t => (t.id === action.payload ? { ...t, displayed: false } : t)
-        )
+        ),
+        currentTrackId:
+          state.currentTrackId === action.payload
+            ? undefined
+            : state.currentTrackId
       }
     case 'SET_CURRENT_TRACK':
       return {
