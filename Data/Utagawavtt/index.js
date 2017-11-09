@@ -8,8 +8,9 @@ let url = 'https://www.utagawavtt.com/forum_v3/ucp.php?mode=login'
 let username = 'sport_test'
 let password = 'sport_test'
 let results_per_page = 50
-let coord = '[5.10424,44.99536,6.81536,46.16410]'
-let nb_of_records = 2 // 0 for max
+let coord = '[-436.46484,-89.93412,439.62891,89.93412]'
+let nb_of_records = 0 // 0 for max
+let parallel_requests = 50
 
 // cookie_jar is a variable that contains session cookies
 let cookie_jar = request.jar()
@@ -51,73 +52,118 @@ getFormData(
       // Calculate the number of result pages
       let page_nb = Math.trunc(topo_count / results_per_page) + 1
       console.log('Number of records wanted:', nb_of_records)
-      console.log('Number of traces available:', topo_count)
+      console.log(
+        'Number of traces available:',
+        json_result['resultsMeta']['topoCount']
+      )
       console.log('Number of results per page:', results_per_page)
       console.log('Number of result pages:', page_nb)
 
       // The field results contains data we want to scrap
       let scrapped_data = json_result['results']
 
-      let result_promises = []
-      // for each i, create a promise with a request
-      for (let i = 2; i <= page_nb; i++) {
-        result_promises.push(
-          getJSONResult({
-            url:
-              'http://www.utagawavtt.com/search?city=&w=' +
-              coord +
-              '&q=[1,2,3,4]&k=0&l=all&u=' +
-              i +
-              '&aa=' +
-              results_per_page,
-            jar: cookie_jar
-          })
-        )
+      const loop = (index, max, incr) => {
+        if (index < max) {
+          let result_promises = []
+          // for each i, create a promise with a request
+          for (let i = index; i < Math.min(max, index + incr); i++) {
+            result_promises.push(
+              getJSONResult({
+                url:
+                  'http://www.utagawavtt.com/search?city=&w=' +
+                  coord +
+                  '&q=[1,2,3,4]&k=0&l=all&u=' +
+                  i +
+                  '&aa=' +
+                  results_per_page,
+                jar: cookie_jar
+              }).then(response => {
+                let promise = {}
+                promise.index = i
+                promise.json = response
+                return promise
+              })
+            )
+          }
+
+          // Wait for all promises
+          Promise.all(result_promises)
+            .then(results => {
+              let indexes = []
+              for (let result of results) {
+                indexes.push(result.index)
+                for (let trace of result.json.results) {
+                  scrapped_data.push(trace)
+                }
+              }
+              return Math.max(...indexes) + 1
+            })
+            .then(index => {
+              loop(index, max, incr)
+            })
+        } else {
+          if (nb_of_records != 0 && scrapped_data.length > nb_of_records) {
+            scrapped_data = scrapped_data.slice(0, nb_of_records)
+          }
+
+          const loop2 = (index, incr) => {
+            if (index < scrapped_data.length) {
+              let result_promises = []
+              // for each i, create a promise with a request
+              for (
+                let i = index;
+                i < Math.min(scrapped_data.length, index + incr);
+                i++
+              ) {
+                result_promises.push(
+                  getBodyPromise({
+                    url:
+                      'http://www.utagawavtt.com/download.php?ref=' +
+                      scrapped_data[i].tid,
+                    jar: cookie_jar
+                  }).then(body => {
+                    xml2js(body).then(xml => {
+                      scrapped_data[i].xml_gpx = xml
+                      if (i % 50 == 0) {
+                        console.log('Scrapping: %s / %s', i, topo_count)
+                      }
+                    })
+                    return i
+                  })
+                )
+              }
+
+              // Wait for all promises
+              Promise.all(result_promises)
+                .then(results => {
+                  let indexes = []
+                  for (let result of results) {
+                    indexes.push(result)
+                  }
+                  return Math.max(...indexes) + 1
+                })
+                .then(index => {
+                  loop2(index, incr)
+                })
+            } else {
+              fs.writeFile(
+                'scrapped_data.json',
+                JSON.stringify(scrapped_data, null, 2),
+                err => {
+                  if (err) throw err
+                  console.log('scrapped_data.json has been saved!')
+                }
+              )
+              console.log('Number of traces in the JSON', scrapped_data.length)
+              console.log('Size of the JSON (bytes):', jsonSize(scrapped_data))
+            }
+          }
+
+          loop2(0, parallel_requests)
+        }
       }
 
-      // Wait for all promises
-      Promise.all(result_promises).then(results => {
-        for (let result of results) {
-          for (let trace of result['results']) {
-            scrapped_data.push(trace)
-          }
-        }
-
-        if (nb_of_records != 0 && scrapped_data.length > nb_of_records) {
-          scrapped_data = scrapped_data.slice(0, nb_of_records + 1)
-        }
-
-        const loop = i => {
-          if (i < scrapped_data.length) {
-            getBodyPromise({
-              url:
-                'http://www.utagawavtt.com/download.php?ref=' +
-                scrapped_data[i].tid,
-              jar: cookie_jar
-            })
-              .then(body => {
-                xml2js(body).then(xml => {
-                  scrapped_data[i].xml_gpx = xml
-                })
-              })
-
-              .then(loop.bind(null, i + 1))
-          } else {
-            fs.writeFile(
-              'scrapped_data.json',
-              JSON.stringify(scrapped_data, null, 2),
-              err => {
-                if (err) throw err
-                console.log('scrapped_data.json has been saved!')
-              }
-            )
-            console.log('Number of traces in the JSON', scrapped_data.length)
-            console.log('Size of the JSON (bytes):', jsonSize(scrapped_data))
-          }
-        }
-
-        loop(0)
-      })
+      loop(2, page_nb, parallel_requests)
     })
   })
 })

@@ -10,6 +10,7 @@
   "author": "Guillaume Broggi",
   "license": "MIT",
   "dependencies": {
+    "JSONStream": "^1.3.1",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "cheerio": "^1.0.0-rc.2",

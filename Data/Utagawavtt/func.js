@@ -21,8 +21,8 @@ const logIn = options => {
   options.simple = false // to avoid status 302 (redirection) throwing an error
   return request(options)
     .then(response => {
-      console.log('Request url:', options.url)
-      console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+      //console.log('Request url:', options.url)
+      //console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
     })
     .catch(error => {
       console.log('error:', error) // Print the error if one occurred
