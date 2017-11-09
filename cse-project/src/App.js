@@ -36,7 +36,8 @@ const styles = {
   papersContainer: {
     display: 'flex',
     alignItems: 'flex-start',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginLeft: '50px'
   }
 }
 

@@ -7,4 +7,12 @@
 .axis text {
   font-family: sans-serif;
   font-size: 11px;
+  opacity: 0.54;
+}
+
+text.graphLabel54 {
+  opacity: 0.54;
+}
+text.graphLabel87 {
+  opacity: 0.87;
 }

@@ -50,7 +50,7 @@ class ElevationGraph extends Component {
 
       const xScale = d3ScaleLinear()
         .domain(d3ArrayExtent(data, selectX))
-        .range([padding, width - padding])
+        .range([padding, width - 5])
       const yScale = d3ScaleLinear()
         .domain(d3ArrayExtent(data, selectY))
         .range([height - padding, padding])
@@ -59,47 +59,63 @@ class ElevationGraph extends Component {
       const selectScaledY = d => yScale(selectY(d))
 
       const node = this.node
-      /*
-      let valueline = d3Line()
-        .x(selectScaledX)
-        .y(selectScaledY)
-        */
+
+      let circles = d3Select(node)
+        .selectAll('circle')
+        .data(data)
+        .enter()
+        .append('circle')
+        .attr('r', 5)
+        .attr('cx', selectScaledX)
+        .attr('cy', selectScaledY)
+        .attr('fill', 'red')
+        .on('mouseover', (d, i) => {
+          this.props.setCurrentClosestPointIndexInCurrentTrack(i)
+        })
+        .on('mouseout', (d, i) => {
+          this.props.setCurrentClosestPointIndexInCurrentTrack(undefined)
+        })
 
       if (this.props.currentIndex) {
+        circles.attr(
+          'fill-opacity',
+          (d, i) => (i <= this.props.currentIndex ? 1 : 0.5)
+        )
         d3Select(node)
-          .selectAll('circle')
-          .data(data)
-          .enter()
-          .append('circle')
-          .attr('r', 4)
-          .attr('cx', selectScaledX)
-          .attr('cy', selectScaledY)
-          .attr('fill', 'red')
-          .attr(
-            'fill-opacity',
-            (d, i) => (i <= this.props.currentIndex ? 1 : 0.5)
+          .append('text')
+          .text(
+            Math.ceil(data[this.props.currentIndex][0]) +
+              ', ' +
+              data[this.props.currentIndex][1]
           )
-      } else {
-        d3Select(node)
-          .selectAll('circle')
-          .data(data)
-          .enter()
-          .append('circle')
-          .attr('r', 4)
-          .attr('cx', selectScaledX)
-          .attr('cy', selectScaledY)
-          .attr('fill', 'red')
+          .attr('class', 'graphLabel87')
+          .attr('dx', selectScaledX(data[this.props.currentIndex]) + 10)
+          .attr('dy', selectScaledY(data[this.props.currentIndex]) + 5)
       }
+
       d3Select(node)
         .append('g')
         .attr('class', 'axis')
         .attr('transform', 'translate(' + padding + ', 0)')
         .call(d3AxisLeft().scale(yScale))
       d3Select(node)
+        .append('text')
+        .text('Elevation (m)')
+        .attr('dx', 0)
+        .attr('dy', padding / 2)
+        .attr('class', 'graphLabel54')
+      d3Select(node)
         .append('g')
         .attr('class', 'axis')
         .attr('transform', 'translate(0,' + (height - padding) + ')')
         .call(d3AxisBottom().scale(xScale))
+      d3Select(node)
+        .append('text')
+        .text('Distance from origin (m)')
+        .attr('dx', width)
+        .attr('text-anchor', 'end')
+        .attr('dy', height - 3)
+        .attr('class', 'graphLabel54')
     }
   }
 

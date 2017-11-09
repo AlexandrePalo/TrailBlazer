@@ -1,5 +1,6 @@
 import { ElevationGraph } from '../presentationals'
 import { connect } from 'react-redux'
+import { setCurrentClosestPointIndexInCurrentTrack } from '../../redux/actions'
 
 const mapStateToProps = state => {
   if (state.tracks.currentTrackId) {
@@ -15,6 +16,9 @@ const mapStateToProps = state => {
   return {}
 }
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+  setCurrentClosestPointIndexInCurrentTrack: index =>
+    dispatch(setCurrentClosestPointIndexInCurrentTrack(index))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ElevationGraph)
