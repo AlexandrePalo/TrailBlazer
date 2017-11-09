@@ -17,7 +17,11 @@ class App extends Component {
             <PaperForm>
               <TrackSelector />
             </PaperForm>
-            <PaperForm>
+            <PaperForm
+              ref={node => {
+                this.graph = node
+              }}
+            >
               <ElevationGraph width={800} height={200} padding={40} />
             </PaperForm>
             <MapContainer />
@@ -31,7 +35,7 @@ class App extends Component {
 const styles = {
   papersContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    alignItems: 'flex-start',
     justifyContent: 'space-between'
   }
 }

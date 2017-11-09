@@ -14,7 +14,7 @@ class PaperForm extends Component {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     marginTop: '10px'
   },
