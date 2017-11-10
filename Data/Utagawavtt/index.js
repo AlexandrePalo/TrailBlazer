@@ -3,6 +3,7 @@ import request from 'request-promise-native'
 import jsonSize from 'json-size'
 import fs from 'fs'
 import xml2js from 'xml2js-es6-promise'
+import JSONStream from 'JSONStream'
 
 let url = 'https://www.utagawavtt.com/forum_v3/ucp.php?mode=login'
 let username = 'sport_test'
@@ -10,7 +11,7 @@ let password = 'sport_test'
 let results_per_page = 50
 let coord = '[-436.46484,-89.93412,439.62891,89.93412]'
 let nb_of_records = 0 // 0 for max
-let parallel_requests = 50
+let parallel_requests = 20
 
 // cookie_jar is a variable that contains session cookies
 let cookie_jar = request.jar()
@@ -146,16 +147,21 @@ getFormData(
                   loop2(index, incr)
                 })
             } else {
-              fs.writeFile(
-                'scrapped_data.json',
-                JSON.stringify(scrapped_data, null, 2),
-                err => {
-                  if (err) throw err
-                  console.log('scrapped_data.json has been saved!')
-                }
-              )
+              // https://www.bennadel.com/blog/3232-parsing-and-serializing-large-objects-using-jsonstream-in-node-js.htm
+              // https://github.com/dominictarr/JSONStream#jsonstreamstringifyopen-sep-close
+              let stream = fs.createWriteStream('./utagawavtt.json')
+              let json_stream = JSONStream.stringify()
+              json_stream.pipe(stream)
+
+              scrapped_data.forEach(json_stream.write)
+
+              json_stream.end()
+
+              stream.on('finish', function handleFinish() {
+                console.log('JSONStream serialization complete!')
+                console.log('- - - - - - - - - - - - - - - - - - - - - - -')
+              })
               console.log('Number of traces in the JSON', scrapped_data.length)
-              console.log('Size of the JSON (bytes):', jsonSize(scrapped_data))
             }
           }
 
