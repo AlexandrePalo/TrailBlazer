@@ -4,33 +4,7 @@ const INITIAL_TRACKS = {
   currentTrackId: undefined,
   closestCurrentPointIndexInCurrentTrack: undefined,
   loading: false,
-  all: [
-    {
-      id: 1,
-      name: 'Sample path 1',
-      color: 'red',
-      displayed: false,
-      pois: [
-        {
-          id: 100,
-          coords: [51.50548824773089, -0.09191163250956211],
-          name: 'POI 1',
-          description: 'Description of the POI 1'
-        },
-        {
-          id: 101,
-          coords: [51.50563168737412, -0.09176676396782125],
-          name: 'POI 2',
-          description: 'Description of the POI 2'
-        }
-      ],
-      points: [
-        [51.50547859696556, -0.09075390223400344, 100],
-        [51.50564167229916, -0.09091340024327664, 102],
-        [51.50578905008157, -0.09120707206745804, 110]
-      ]
-    }
-  ]
+  all: []
 }
 
 const getTrackIndexById = (state, id) => {
@@ -88,7 +62,10 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
           ...state.all,
           {
             ...action.payload,
-            id: Math.max.apply(Math, state.all.map(t => t.id)) + 1,
+            id:
+              state.all.length === 0
+                ? 1
+                : Math.max.apply(Math, state.all.map(t => t.id)) + 1,
             displayed: false,
             color: generateRandomColor()
           }
