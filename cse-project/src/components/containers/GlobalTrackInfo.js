@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import { GlobalTrackInfo } from '../presentationals'
 
 const mapStateToProps = state => {
-  console.log(state)
   if (state.tracks.currentTrackId) {
     let track = {}
     state.tracks.all.forEach(t => {

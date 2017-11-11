@@ -4,12 +4,7 @@ import './basics.css'
 
 class SearchBar extends Component {
   state = {
-    results: [
-      { name: 'result 1' },
-      { name: 'result 2' },
-      { name: 'result 3' },
-      { name: 'result 4' }
-    ]
+    results: []
   }
 
   handleTextChange(e) {
@@ -29,9 +24,6 @@ class SearchBar extends Component {
             type="text"
             placeholder="Enter an adress"
           />
-          <FontIcon className="material-icons" style={styles.icon}>
-            more_vert
-          </FontIcon>
         </div>
         <div>
           {this.state.results.map(result => (
@@ -48,7 +40,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 400
+    width: 300
   },
   input: {
     border: 'none',

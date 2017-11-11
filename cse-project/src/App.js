@@ -3,11 +3,12 @@ import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import store from './redux/store'
 import './App.css'
-import { PaperForm } from './components/presentationals'
+import { PaperForm, SearchBar } from './components/presentationals'
 import MapContainer from './components/containers/MapContainer'
 import TrackSelector from './components/containers/TrackSelector'
 import ElevationGraph from './components/containers/ElevationGraph'
 import GlobalTrackInfo from './components/containers/GlobalTrackInfo'
+import Form from './components/containers/Form'
 
 class App extends Component {
   render() {
@@ -15,6 +16,9 @@ class App extends Component {
       <MuiThemeProvider>
         <Provider store={store}>
           <div>
+            <div style={styles.papersContainer1}>
+              <Form />
+            </div>
             <div style={styles.papersContainer1}>
               <TrackSelector />
               <ElevationGraph width={800} height={200} padding={40} />
