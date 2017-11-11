@@ -18,9 +18,7 @@ class Form extends Component {
     poiTypes: [],
     trackTypes: [],
     pois: { min: 0, max: 10 },
-    tracks: { min: 0, max: 10 },
-    beginLocation: [],
-    endLocation: []
+    tracks: { min: 0, max: 10 }
   }
 
   menuItemsPOI(values) {
@@ -55,16 +53,28 @@ class Form extends Component {
               <AutoComplete
                 hintText="Begin location"
                 fullWidth
-                dataSource={this.state.beginLocation}
-                onUpdateInput={v => this.setState({ beginLocation: [v, v, v] })}
+                dataSource={this.props.beginLocation.predictions.map(
+                  d => d.description
+                )}
+                onUpdateInput={v => this.props.getBeginPredictions(v)}
+                onNewRequest={(k, i) =>
+                  this.props.getBeginPlaceDetails(
+                    this.props.beginLocation.predictions[i].place_id
+                  )}
               />
             </div>
             <div style={{ flex: 1, marginLeft: '30px' }}>
               <AutoComplete
                 hintText="End location"
                 fullWidth
-                dataSource={this.state.endLocation}
-                onUpdateInput={v => this.setState({ endLocation: [v, v, v] })}
+                dataSource={this.props.endLocation.predictions.map(
+                  d => d.description
+                )}
+                onUpdateInput={v => this.props.getEndPredictions(v)}
+                onNewRequest={(k, i) =>
+                  this.props.getEndPlaceDetails(
+                    this.props.endLocation.predictions[i].place_id
+                  )}
               />
             </div>
           </div>
