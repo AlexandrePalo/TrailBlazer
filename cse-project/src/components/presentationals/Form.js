@@ -6,9 +6,11 @@ import MenuItem from 'material-ui/MenuItem'
 import TextField from 'material-ui/TextField'
 import AutoComplete from 'material-ui/AutoComplete'
 import RaisedButton from 'material-ui/RaisedButton'
+import FontIcon from 'material-ui/FontIcon'
+import CircularProgress from 'material-ui/CircularProgress'
 import InputRange from 'react-input-range'
 import './inputRange.css'
-import { SearchBar, PaperForm } from './'
+import { SearchBar, PaperForm, AutocompleteLocation } from './'
 
 const poiTypes = ['Geocaching', 'Google Maps']
 const trackTypes = ['Utagawa', 'Other']
@@ -49,10 +51,9 @@ class Form extends Component {
       <div style={{ width: '80%' }}>
         <PaperForm title="Settings">
           <div style={styles.inputContainer}>
-            <div style={{ flex: 1, marginRight: '30px' }}>
-              <AutoComplete
+            <div style={{ marginRight: '30px', display: 'flex', flex: 1 }}>
+              <AutocompleteLocation
                 hintText="Begin location"
-                fullWidth
                 dataSource={this.props.beginLocation.predictions.map(
                   d => d.description
                 )}
@@ -61,12 +62,13 @@ class Form extends Component {
                   this.props.getBeginPlaceDetails(
                     this.props.beginLocation.predictions[i].place_id
                   )}
+                loading={this.props.beginLocation.loading}
+                done={this.props.beginLocation.coords.length !== 0}
               />
             </div>
-            <div style={{ flex: 1, marginLeft: '30px' }}>
-              <AutoComplete
-                hintText="End location"
-                fullWidth
+            <div style={{ marginLeft: '30px', display: 'flex', flex: 1 }}>
+              <AutocompleteLocation
+                hintText="End location (optional)"
                 dataSource={this.props.endLocation.predictions.map(
                   d => d.description
                 )}
@@ -75,6 +77,8 @@ class Form extends Component {
                   this.props.getEndPlaceDetails(
                     this.props.endLocation.predictions[i].place_id
                   )}
+                loading={this.props.endLocation.loading}
+                done={this.props.endLocation.coords.length !== 0}
               />
             </div>
           </div>
@@ -160,11 +164,9 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
-  inputLabel: {
-    marginRight: '5px',
-    marginTop: '3px',
-    color: 'black',
-    opacity: 0.54
+  iconDone: {
+    color: 'rgb(0, 188, 212)',
+    opacity: 1
   }
 }
 
