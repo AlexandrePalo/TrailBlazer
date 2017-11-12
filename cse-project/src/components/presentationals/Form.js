@@ -12,19 +12,9 @@ import InputRange from 'react-input-range'
 import './inputRange.css'
 import { SearchBar, PaperForm, AutocompleteLocation } from './'
 
-const poiTypes = ['Geocaching', 'Google Maps']
-const trackTypes = ['Utagawa', 'Other']
-
 class Form extends Component {
-  state = {
-    poiTypes: [],
-    trackTypes: [],
-    pois: { min: 0, max: 10 },
-    tracks: { min: 0, max: 10 }
-  }
-
   menuItemsPOI(values) {
-    return poiTypes.map(name => (
+    return this.props.pois.choices.map(name => (
       <MenuItem
         key={name}
         insetChildren={true}
@@ -35,7 +25,7 @@ class Form extends Component {
     ))
   }
   menuItemsTrack(values) {
-    return trackTypes.map(name => (
+    return this.props.tracks.choices.map(name => (
       <MenuItem
         key={name}
         insetChildren={true}
@@ -88,23 +78,24 @@ class Form extends Component {
                 fullWidth
                 multiple={true}
                 floatingLabelText="Types of POIs"
-                value={this.state.poiTypes}
-                onChange={(e, i, values) => this.setState({ poiTypes: values })}
+                value={this.props.pois.types}
+                onChange={(e, i, values) => this.props.setPoisTypes(values)}
               >
-                {this.menuItemsPOI(this.state.poiTypes)}
+                {this.menuItemsPOI.bind(this)(this.props.pois.types)}
               </SelectField>
             </div>
-            <div style={{ flex: 3, marginRight: '10px', marginLeft: '30px' }}>
-              <InputRange
-                draggableTrack
-                maxValue={20}
-                minValue={0}
-                onChange={value => this.setState({ pois: value })}
-                onChangeComplete={value => console.log(value)}
-                value={this.state.pois}
-                formatLabel={value =>
-                  value > 1 ? `${value} POIs` : `${value} POI`}
-              />
+            <div style={{ flex: 3, marginRight: '20px', marginLeft: '30px' }}>
+              {this.props.pois.types.length !== 0 && (
+                <InputRange
+                  draggableTrack
+                  maxValue={this.props.pois.max}
+                  minValue={this.props.pois.min}
+                  onChange={value => this.props.setPoisRange(value)}
+                  value={this.props.pois.selection}
+                  formatLabel={value =>
+                    value > 1 ? `${value} POIs` : `${value} POI`}
+                />
+              )}
             </div>
           </div>
           <div style={styles.inputContainer}>
@@ -113,24 +104,24 @@ class Form extends Component {
                 fullWidth
                 multiple={true}
                 floatingLabelText="Types of tracks"
-                value={this.state.trackTypes}
-                onChange={(e, i, values) =>
-                  this.setState({ trackTypes: values })}
+                value={this.props.tracks.types}
+                onChange={(e, i, values) => this.props.setTracksTypes(values)}
               >
-                {this.menuItemsTrack(this.state.trackTypes)}
+                {this.menuItemsTrack.bind(this)(this.props.tracks.types)}
               </SelectField>
             </div>
-            <div style={{ flex: 3, marginRight: '10px', marginLeft: '30px' }}>
-              <InputRange
-                draggableTrack
-                maxValue={100}
-                minValue={0}
-                onChange={value => this.setState({ tracks: value })}
-                onChangeComplete={value => console.log(value)}
-                value={this.state.tracks}
-                formatLabel={value =>
-                  value > 1 ? `${value} tracks` : `${value} track`}
-              />
+            <div style={{ flex: 3, marginRight: '20px', marginLeft: '30px' }}>
+              {this.props.tracks.types.length !== 0 && (
+                <InputRange
+                  draggableTrack
+                  maxValue={this.props.tracks.max}
+                  minValue={this.props.tracks.min}
+                  onChange={value => this.props.setTracksRange(value)}
+                  value={this.props.tracks.selection}
+                  formatLabel={value =>
+                    value > 1 ? `${value} tracks` : `${value} track`}
+                />
+              )}
             </div>
           </div>
           <div style={styles.buttonContainer}>

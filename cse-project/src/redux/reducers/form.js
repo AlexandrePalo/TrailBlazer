@@ -5,7 +5,21 @@ const INITIAL_FORM = {
     coords: [],
     loading: false
   },
-  endLocation: { text: undefined, predictions: [], coords: [], loading: false }
+  endLocation: { text: undefined, predictions: [], coords: [], loading: false },
+  pois: {
+    choices: ['Geocaching', 'Google Maps'],
+    types: [],
+    min: 0,
+    max: 10,
+    selection: { min: 0, max: 10 }
+  },
+  tracks: {
+    choices: ['Utagawa', 'Other'],
+    types: [],
+    min: 0,
+    max: 100,
+    selection: { min: 0, max: 10 }
+  }
 }
 
 const formReducer = (state = INITIAL_FORM, action) => {
@@ -62,6 +76,33 @@ const formReducer = (state = INITIAL_FORM, action) => {
           loading: false,
           coords: action.payload
         }
+      }
+
+    case 'SET_TRACKS_TYPES':
+      return {
+        ...state,
+        tracks: {
+          ...state.tracks,
+          types: action.payload
+        }
+      }
+    case 'SET_TRACKS_RANGE':
+      return {
+        ...state,
+        tracks: { ...state.tracks, selection: action.payload }
+      }
+    case 'SET_POIS_TYPES':
+      return {
+        ...state,
+        pois: {
+          ...state.pois,
+          types: action.payload
+        }
+      }
+    case 'SET_POIS_RANGE':
+      return {
+        ...state,
+        pois: { ...state.pois, selection: action.payload }
       }
     default:
       return state

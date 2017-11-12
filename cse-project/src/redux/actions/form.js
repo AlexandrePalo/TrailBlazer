@@ -84,9 +84,18 @@ const getEndPlaceDetails = placeId => {
   }
 }
 
+const setPoisTypes = types => ({ type: 'SET_POIS_TYPES', payload: types })
+const setPoisRange = range => ({ type: 'SET_POIS_RANGE', payload: range })
+const setTracksTypes = types => ({ type: 'SET_TRACKS_TYPES', payload: types })
+const setTracksRange = range => ({ type: 'SET_TRACKS_RANGE', payload: range })
+
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
   getEndPredictions,
-  getEndPlaceDetails
+  getEndPlaceDetails,
+  setPoisTypes,
+  setPoisRange,
+  setTracksTypes,
+  setTracksRange
 }
