@@ -25,7 +25,7 @@ class AutocompleteLocation extends Component {
 
   render() {
     const {
-      hintText,
+      floatingLabelText,
       dataSource,
       onUpdateInput,
       onNewRequest,
@@ -38,20 +38,22 @@ class AutocompleteLocation extends Component {
           display: 'flex',
           flex: 1,
           flexDirection: 'row',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'space-between'
         }}
       >
         <div style={{ flex: 1 }}>
           <AutoComplete
-            hintText={hintText}
+            floatingLabelText={floatingLabelText}
             fullWidth
             dataSource={dataSource}
             onUpdateInput={v => onUpdateInput(v)}
             onNewRequest={(k, i) => onNewRequest(k, i)}
           />
         </div>
-        {this.renderIcon(loading, done)}
+        <div style={{ marginBottom: '3px', marginLeft: '5px' }}>
+          {this.renderIcon(loading, done)}
+        </div>
       </div>
     )
   }

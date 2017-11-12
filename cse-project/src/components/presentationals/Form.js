@@ -50,10 +50,10 @@ class Form extends Component {
     return (
       <div style={{ width: '80%' }}>
         <PaperForm title="Settings">
-          <div style={styles.inputContainer}>
+          <div style={{ ...styles.inputContainer, marginTop: '-10px' }}>
             <div style={{ marginRight: '30px', display: 'flex', flex: 1 }}>
               <AutocompleteLocation
-                hintText="Begin location"
+                floatingLabelText="Begin location"
                 dataSource={this.props.beginLocation.predictions.map(
                   d => d.description
                 )}
@@ -68,7 +68,7 @@ class Form extends Component {
             </div>
             <div style={{ marginLeft: '30px', display: 'flex', flex: 1 }}>
               <AutocompleteLocation
-                hintText="End location (optional)"
+                floatingLabelText="End location (optional)"
                 dataSource={this.props.endLocation.predictions.map(
                   d => d.description
                 )}
@@ -87,7 +87,7 @@ class Form extends Component {
               <SelectField
                 fullWidth
                 multiple={true}
-                hintText="Select types of POIs"
+                floatingLabelText="Types of POIs"
                 value={this.state.poiTypes}
                 onChange={(e, i, values) => this.setState({ poiTypes: values })}
               >
@@ -112,7 +112,7 @@ class Form extends Component {
               <SelectField
                 fullWidth
                 multiple={true}
-                hintText="Select types of tracks"
+                floatingLabelText="Types of tracks"
                 value={this.state.trackTypes}
                 onChange={(e, i, values) =>
                   this.setState({ trackTypes: values })}
@@ -133,11 +133,11 @@ class Form extends Component {
               />
             </div>
           </div>
-          <div style={styles.buttonRightContainer}>
-            <div style={{ marginRight: '30px' }}>
+          <div style={styles.buttonContainer}>
+            <div style={{ marginRight: '15px', marginLeft: '5px' }}>
               <RaisedButton label="Reset" secondary />
             </div>
-            <div style={{ marginLeft: '30px', marginRight: '5px' }}>
+            <div style={{ marginLeft: '15px' }}>
               <RaisedButton label="Submit" primary />
             </div>
           </div>
@@ -158,11 +158,11 @@ const styles = {
     marginRight: '5px',
     marginLeft: '5px'
   },
-  buttonRightContainer: {
+  buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-start'
   },
   iconDone: {
     color: 'rgb(0, 188, 212)',
