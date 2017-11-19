@@ -11,7 +11,8 @@ import {
   setPoisValue,
   setDistanceRange,
   resetForm,
-  setBeginValidity
+  setBeginValidity,
+  sendForm
 } from '../../redux/actions'
 
 const mapStateToProps = state => ({
@@ -32,7 +33,9 @@ const mapDispatchToProps = dispatch => ({
   setPoisValue: value => dispatch(setPoisValue(value)),
   setDistanceRange: range => dispatch(setDistanceRange(range)),
   resetForm: () => dispatch(resetForm()),
-  setBeginValidity: validity => dispatch(setBeginValidity(validity))
+  setBeginValidity: validity => dispatch(setBeginValidity(validity)),
+  sendForm: (beginCoords, distanceRange, poisWeight, tracksWeight) =>
+    dispatch(sendForm(beginCoords, distanceRange, poisWeight, tracksWeight))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form)

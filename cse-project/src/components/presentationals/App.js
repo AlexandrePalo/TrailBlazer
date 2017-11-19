@@ -9,7 +9,7 @@ import TrackSelector from '../containers/TrackSelector'
 import ElevationGraph from '../containers/ElevationGraph'
 import GlobalTrackInfo from '../containers/GlobalTrackInfo'
 import Form from '../containers/Form'
-import { LocationSetter } from './'
+import { LocationSetter, Loading } from './'
 
 class App extends Component {
   renderScene(mode) {
@@ -17,6 +17,14 @@ class App extends Component {
       return (
         <div style={styles.formContainer}>
           <Form />
+        </div>
+      )
+    }
+
+    if (mode === 'loading') {
+      return (
+        <div style={styles.formContainer}>
+          <Loading />
         </div>
       )
     }

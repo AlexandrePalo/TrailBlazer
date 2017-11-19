@@ -1,3 +1,5 @@
+import { setLoadingMode } from './global'
+
 const google = window.google
 const AutoCompleteGoogleService = new google.maps.places.AutocompleteService()
 const PlacesGoogleService = new google.maps.places.PlacesService(
@@ -78,6 +80,13 @@ const setBeginValidity = validity => ({
   payload: validity
 })
 
+const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
+  return dispatch => {
+    // Global Loading
+    dispatch(setLoadingMode())
+  }
+}
+
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
@@ -91,5 +100,6 @@ export {
   setTracksValue,
   setDistanceRange,
   resetForm,
-  setBeginValidity
+  setBeginValidity,
+  sendForm
 }

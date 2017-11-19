@@ -42,9 +42,8 @@ class Form extends Component {
     // Only beginLocation is required to be changed
     if (this.props.beginLocation.coords.length !== 2) {
       this.props.setBeginValidity(false)
-      console.log('unvalid')
     } else {
-      console.log('valid')
+      this.props.sendForm(1, 1, 1, 1, 1)
     }
   }
 
