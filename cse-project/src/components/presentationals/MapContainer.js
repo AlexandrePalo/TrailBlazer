@@ -4,7 +4,7 @@ import { closestPointIndexInList } from '../../utils'
 
 class MapContainer extends Component {
   state = {
-    zoom: 12
+    zoom: 15
   }
 
   handlePolylineMouseOver = (track, lat, lng) => {
@@ -21,6 +21,30 @@ class MapContainer extends Component {
     //this.props.setCurrentTrack(undefined)
   }
 
+  handleClick = e => {
+    if (this.props.beginLocation.setMode) {
+      this.props.setModeCurrent(e.latlng, e.containerPoint)
+    }
+  }
+
+  renderSetModeMarker = () => {
+    if (this.props.beginLocation.setMode) {
+      if (this.props.beginLocation.currentOnMap.position.length !== 0) {
+        return (
+          <Marker position={this.props.beginLocation.currentOnMap.coords} />
+        )
+      } else {
+        if (this.props.beginLocation.coords.length !== 0) {
+          return <Marker position={this.props.beginLocation.coords} />
+        }
+      }
+    } else {
+      if (this.props.beginLocation.coords.length !== 0) {
+        return <Marker position={this.props.beginLocation.coords} />
+      }
+    }
+  }
+
   renderPolyline(p) {
     if (this.props.currentTrackId) {
       if (this.props.currentTrackId === p.id) {
@@ -29,7 +53,8 @@ class MapContainer extends Component {
             <div>
               <Polyline
                 onMouseOver={e =>
-                  this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+                  this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)
+                }
                 onMouseOut={e => this.handlePolylineMouseOut()}
                 color={p.color}
                 opacity={1}
@@ -40,7 +65,8 @@ class MapContainer extends Component {
               />
               <Polyline
                 onMouseOver={e =>
-                  this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+                  this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)
+                }
                 onMouseOut={e => this.handlePolylineMouseOut()}
                 color={p.color}
                 opacity={0.5}
@@ -56,7 +82,8 @@ class MapContainer extends Component {
             <Polyline
               onMouseOut={e => this.handlePolylineMouseOut()}
               onMouseOver={e =>
-                this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+                this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)
+              }
               color={p.color}
               opacity={1}
               positions={p.points}
@@ -68,7 +95,8 @@ class MapContainer extends Component {
           <Polyline
             onMouseOut={e => this.handlePolylineMouseOut()}
             onMouseOver={e =>
-              this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+              this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)
+            }
             color={p.color}
             opacity={0.4}
             positions={p.points}
@@ -80,7 +108,8 @@ class MapContainer extends Component {
         <Polyline
           onMouseOut={e => this.handlePolylineMouseOut()}
           onMouseOver={e =>
-            this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)}
+            this.handlePolylineMouseOver(p, e.latlng.lat, e.latlng.lng)
+          }
           color={p.color}
           opacity={1}
           positions={p.points}
@@ -91,11 +120,17 @@ class MapContainer extends Component {
 
   render() {
     return (
-      <Map center={this.props.location} zoom={this.state.zoom} ref="map">
+      <Map
+        center={this.props.location}
+        zoom={this.state.zoom}
+        ref="map"
+        onClick={e => this.handleClick(e)}
+      >
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
+        {this.renderSetModeMarker()}
         {this.props.tracks.map((p, i) => {
           if (p.displayed) {
             return (

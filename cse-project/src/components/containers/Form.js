@@ -3,6 +3,8 @@ import { Form } from '../presentationals'
 import {
   getBeginPredictions,
   getBeginPlaceDetails,
+  setSetModeOn,
+  setSetModeCancel,
   setTracksTypes,
   setTracksValue,
   setPoisTypes,
@@ -20,6 +22,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getBeginPredictions: input => dispatch(getBeginPredictions(input)),
   getBeginPlaceDetails: placeId => dispatch(getBeginPlaceDetails(placeId)),
+  setSetModeOn: () => dispatch(setSetModeOn()),
+  setSetModeCancel: () => dispatch(setSetModeCancel()),
   setTracksTypes: types => dispatch(setTracksTypes(types)),
   setTracksValue: value => dispatch(setTracksValue(value)),
   setPoisTypes: types => dispatch(setPoisTypes(types)),

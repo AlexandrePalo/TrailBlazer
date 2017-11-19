@@ -4,6 +4,7 @@ const PlacesGoogleService = new google.maps.places.PlacesService(
   document.createElement('div')
 )
 
+const setBeginText = text => ({ type: 'SET_BEGIN_TEXT', payload: text })
 const fetchBeginPredictions = () => ({ type: 'FETCH_BEGIN_PREDICTIONS' })
 const receiveBeginPredictions = places => ({
   type: 'RECEIVE_BEGIN_PREDICTIONS',
@@ -11,6 +12,9 @@ const receiveBeginPredictions = places => ({
 })
 const getBeginPredictions = input => {
   return dispatch => {
+    // Update text
+    dispatch(setBeginText(input))
+
     // Loading state
     dispatch(fetchBeginPredictions())
 
@@ -43,6 +47,19 @@ const getBeginPlaceDetails = placeId => {
     )
   }
 }
+const setSetModeOn = () => ({ type: 'SET_SET_MODE_ON' })
+const setSetModeFinish = coords => ({
+  type: 'SET_SET_MODE_FINISH',
+  payload: coords
+})
+const setSetModeCancel = () => ({ type: 'SET_SET_MODE_CANCEL' })
+const setModeCurrent = (coords, containerPoint) => ({
+  type: 'SET_MODE_CURRENT',
+  payload: {
+    coords,
+    containerPoint
+  }
+})
 
 const setPoisTypes = types => ({ type: 'SET_POIS_TYPES', payload: types })
 const setPoisValue = value => ({ type: 'SET_POIS_VALUE', payload: value })
@@ -57,6 +74,10 @@ const setDistanceRange = range => ({
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
+  setSetModeOn,
+  setSetModeFinish,
+  setSetModeCancel,
+  setModeCurrent,
   setPoisTypes,
   setPoisValue,
   setTracksTypes,
