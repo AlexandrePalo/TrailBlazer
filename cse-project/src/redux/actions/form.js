@@ -71,6 +71,8 @@ const setDistanceRange = range => ({
   payload: range
 })
 
+const resetForm = () => ({ type: 'RESET_FORM' })
+
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
@@ -82,5 +84,6 @@ export {
   setPoisValue,
   setTracksTypes,
   setTracksValue,
-  setDistanceRange
+  setDistanceRange,
+  resetForm
 }

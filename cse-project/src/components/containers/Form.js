@@ -9,7 +9,8 @@ import {
   setTracksValue,
   setPoisTypes,
   setPoisValue,
-  setDistanceRange
+  setDistanceRange,
+  resetForm
 } from '../../redux/actions'
 
 const mapStateToProps = state => ({
@@ -28,7 +29,8 @@ const mapDispatchToProps = dispatch => ({
   setTracksValue: value => dispatch(setTracksValue(value)),
   setPoisTypes: types => dispatch(setPoisTypes(types)),
   setPoisValue: value => dispatch(setPoisValue(value)),
-  setDistanceRange: range => dispatch(setDistanceRange(range))
+  setDistanceRange: range => dispatch(setDistanceRange(range)),
+  resetForm: () => dispatch(resetForm())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form)

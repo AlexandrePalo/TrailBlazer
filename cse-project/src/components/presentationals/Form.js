@@ -37,6 +37,10 @@ class Form extends Component {
     ))
   }
 
+  handleSubmitClick() {
+    console.log('submit')
+  }
+
   render() {
     if (this.props.beginLocation.setMode) {
       return (
@@ -229,10 +233,18 @@ class Form extends Component {
             </div>
             <div style={styles.buttonContainer}>
               <div style={{ marginRight: '15px', marginLeft: '5px' }}>
-                <RaisedButton label="Reset" secondary />
+                <RaisedButton
+                  label="Reset"
+                  secondary
+                  onClick={() => this.props.resetForm()}
+                />
               </div>
               <div style={{ marginLeft: '15px' }}>
-                <RaisedButton label="Submit" primary />
+                <RaisedButton
+                  label="Submit"
+                  primary
+                  onClick={() => this.handleSubmitClick.bind(this)()}
+                />
               </div>
             </div>
           </PaperForm>

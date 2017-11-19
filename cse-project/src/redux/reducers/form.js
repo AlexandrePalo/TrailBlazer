@@ -5,7 +5,8 @@ const INITIAL_FORM = {
     coords: [],
     loading: false,
     setMode: false,
-    currentOnMap: { coords: [], position: [] }
+    currentOnMap: { coords: [], position: [] },
+    valid: false
   },
   distance: {
     min: 0,
@@ -131,6 +132,17 @@ const formReducer = (state = INITIAL_FORM, action) => {
         ...state,
         distance: { ...state.distance, selection: action.payload }
       }
+
+    case 'RESET_FORM':
+      return INITIAL_FORM
+
+    // Form validation
+    case 'SET_BEGIN_VALIDITY':
+      return {
+        ...state,
+        beginLocation: { ...state.beginLocation, valid: action.payload }
+      }
+
     default:
       return state
   }

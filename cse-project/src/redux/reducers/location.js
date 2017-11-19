@@ -15,6 +15,11 @@ const locationReducer = (state = INITIAL_LOCATION, action) => {
         ...state,
         location: action.payload.coords
       }
+    case 'RESET_FORM':
+      return {
+        ...state,
+        location: INITIAL_LOCATION.location
+      }
     default:
       return state
   }
