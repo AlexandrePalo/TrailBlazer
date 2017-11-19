@@ -1,4 +1,8 @@
 import { setLoadingMode } from './global'
+import { encodeDataUrl } from '../../utils'
+
+// Will probably be localhost, on a different port for Django backend
+const baseUrl = 'http://www.alexandrepalo.com' // TODO: define an url
 
 const google = window.google
 const AutoCompleteGoogleService = new google.maps.places.AutocompleteService()
@@ -84,6 +88,20 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
   return dispatch => {
     // Global Loading
     dispatch(setLoadingMode())
+
+    // Fetch a request from server
+    const url =
+      baseUrl +
+      '?' +
+      encodeDataUrl({
+        beginLat: beginCoords[0],
+        beginLng: beginCoords[1],
+        distanceMin: distanceRange.min,
+        distanceMax: distanceRange.max,
+        poisWeight,
+        tracksWeight
+      })
+    console.log(url)
   }
 }
 

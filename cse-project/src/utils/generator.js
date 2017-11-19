@@ -13,4 +13,12 @@ const generateRandomColor = () => {
   return '#' + (((1 << 24) * Math.random()) | 0).toString(16)
 }
 
-export { generateRandomPath, generateRandomColor }
+const encodeDataUrl = data => {
+  return Object.keys(data)
+    .map(function(key) {
+      return [key, data[key]].map(encodeURIComponent).join('=')
+    })
+    .join('&')
+}
+
+export { generateRandomPath, generateRandomColor, encodeDataUrl }

@@ -43,7 +43,12 @@ class Form extends Component {
     if (this.props.beginLocation.coords.length !== 2) {
       this.props.setBeginValidity(false)
     } else {
-      this.props.sendForm(1, 1, 1, 1, 1)
+      this.props.sendForm(
+        this.props.beginLocation.coords,
+        this.props.distance.selection,
+        this.props.pois.types.length !== 0 ? this.props.pois.value : 0,
+        this.props.tracks.types.length !== 0 ? this.props.tracks.value : 0
+      )
     }
   }
 
