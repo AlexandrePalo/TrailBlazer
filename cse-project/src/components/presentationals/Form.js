@@ -8,6 +8,7 @@ import AutoComplete from 'material-ui/AutoComplete'
 import RaisedButton from 'material-ui/RaisedButton'
 import FontIcon from 'material-ui/FontIcon'
 import CircularProgress from 'material-ui/CircularProgress'
+import Slider from 'material-ui/Slider'
 import InputRange from 'react-input-range'
 import './inputRange.css'
 import { SearchBar, PaperForm, AutocompleteLocation } from './'
@@ -60,19 +61,32 @@ class Form extends Component {
             <div
               style={{
                 flex: 1,
+                display: 'flex',
                 marginRight: '20px',
                 marginLeft: '30px',
                 marginTop: '30px'
               }}
             >
-              <InputRange
-                draggableTrack
-                maxValue={this.props.distance.max}
-                minValue={this.props.distance.min}
-                onChange={value => this.props.setDistanceRange(value)}
-                value={this.props.distance.selection}
-                formatLabel={value => `${value} km`}
-              />
+              <span
+                style={{
+                  fontSize: '16px',
+                  color: 'black',
+                  opacity: '0.87',
+                  marginRight: '30px'
+                }}
+              >
+                Distance
+              </span>
+              <div style={{ flex: 3 }}>
+                <InputRange
+                  draggableTrack
+                  maxValue={this.props.distance.max}
+                  minValue={this.props.distance.min}
+                  onChange={value => this.props.setDistanceRange(value)}
+                  value={this.props.distance.selection}
+                  formatLabel={value => `${value} km`}
+                />
+              </div>
             </div>
           </div>
           <div style={styles.inputContainer}>
@@ -90,22 +104,41 @@ class Form extends Component {
             <div
               style={{
                 flex: 1,
-                marginRight: '20px',
-                marginLeft: '30px',
                 marginTop: '30px'
               }}
             >
               {this.props.pois.types.length !== 0 && (
-                <InputRange
-                  draggableTrack
-                  maxValue={this.props.pois.max}
-                  minValue={this.props.pois.min}
-                  onChange={value => this.props.setPoisRange(value)}
-                  value={this.props.pois.selection}
-                  formatLabel={value =>
-                    value > 1 ? `${value} POIs` : `${value} POI`
-                  }
-                />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span style={{ flex: 1 }} className="input-range__label">
+                    Not that important
+                  </span>
+                  <div
+                    style={{
+                      flex: 3,
+                      marginTop: '-24px',
+                      marginBottom: '-48px',
+                      marginLeft: '15px',
+                      marginRight: '15px'
+                    }}
+                  >
+                    <Slider
+                      value={this.props.pois.value}
+                      min={this.props.pois.min}
+                      max={this.props.pois.max}
+                      onChange={(e, v) => this.props.setPoisValue(v)}
+                    />
+                  </div>
+                  <span style={{ flex: 1 }} className="input-range__label">
+                    Very important!
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -124,22 +157,41 @@ class Form extends Component {
             <div
               style={{
                 flex: 1,
-                marginRight: '20px',
-                marginLeft: '30px',
                 marginTop: '30px'
               }}
             >
               {this.props.tracks.types.length !== 0 && (
-                <InputRange
-                  draggableTrack
-                  maxValue={this.props.tracks.max}
-                  minValue={this.props.tracks.min}
-                  onChange={value => this.props.setTracksRange(value)}
-                  value={this.props.tracks.selection}
-                  formatLabel={value =>
-                    value > 1 ? `${value} tracks` : `${value} track`
-                  }
-                />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span style={{ flex: 1 }} className="input-range__label">
+                    Not that important
+                  </span>
+                  <div
+                    style={{
+                      flex: 3,
+                      marginTop: '-24px',
+                      marginBottom: '-48px',
+                      marginLeft: '15px',
+                      marginRight: '15px'
+                    }}
+                  >
+                    <Slider
+                      value={this.props.tracks.value}
+                      min={this.props.tracks.min}
+                      max={this.props.tracks.max}
+                      onChange={(e, v) => this.props.setTracksValue(v)}
+                    />
+                  </div>
+                  <span style={{ flex: 1 }} className="input-range__label">
+                    Very important!
+                  </span>
+                </div>
               )}
             </div>
           </div>

@@ -4,9 +4,9 @@ import {
   getBeginPredictions,
   getBeginPlaceDetails,
   setTracksTypes,
-  setTracksRange,
+  setTracksValue,
   setPoisTypes,
-  setPoisRange,
+  setPoisValue,
   setDistanceRange
 } from '../../redux/actions'
 
@@ -21,9 +21,9 @@ const mapDispatchToProps = dispatch => ({
   getBeginPredictions: input => dispatch(getBeginPredictions(input)),
   getBeginPlaceDetails: placeId => dispatch(getBeginPlaceDetails(placeId)),
   setTracksTypes: types => dispatch(setTracksTypes(types)),
-  setTracksRange: range => dispatch(setTracksRange(range)),
+  setTracksValue: value => dispatch(setTracksValue(value)),
   setPoisTypes: types => dispatch(setPoisTypes(types)),
-  setPoisRange: range => dispatch(setPoisRange(range)),
+  setPoisValue: value => dispatch(setPoisValue(value)),
   setDistanceRange: range => dispatch(setDistanceRange(range))
 })
 

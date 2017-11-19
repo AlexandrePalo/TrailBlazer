@@ -45,9 +45,9 @@ const getBeginPlaceDetails = placeId => {
 }
 
 const setPoisTypes = types => ({ type: 'SET_POIS_TYPES', payload: types })
-const setPoisRange = range => ({ type: 'SET_POIS_RANGE', payload: range })
+const setPoisValue = value => ({ type: 'SET_POIS_VALUE', payload: value })
 const setTracksTypes = types => ({ type: 'SET_TRACKS_TYPES', payload: types })
-const setTracksRange = range => ({ type: 'SET_TRACKS_RANGE', payload: range })
+const setTracksValue = value => ({ type: 'SET_TRACKS_VALUE', payload: value })
 
 const setDistanceRange = range => ({
   type: 'SET_DISTANCE_RANGE',
@@ -58,8 +58,8 @@ export {
   getBeginPredictions,
   getBeginPlaceDetails,
   setPoisTypes,
-  setPoisRange,
+  setPoisValue,
   setTracksTypes,
-  setTracksRange,
+  setTracksValue,
   setDistanceRange
 }

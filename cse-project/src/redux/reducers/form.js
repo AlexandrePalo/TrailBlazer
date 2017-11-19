@@ -15,14 +15,14 @@ const INITIAL_FORM = {
     types: [],
     min: 0,
     max: 100,
-    selection: { min: 0, max: 100 }
+    value: 50
   },
   tracks: {
     choices: ['Utagawa'],
     types: [],
     min: 0,
     max: 100,
-    selection: { min: 0, max: 100 }
+    value: 50
   }
 }
 
@@ -66,10 +66,10 @@ const formReducer = (state = INITIAL_FORM, action) => {
           types: action.payload
         }
       }
-    case 'SET_TRACKS_RANGE':
+    case 'SET_TRACKS_VALUE':
       return {
         ...state,
-        tracks: { ...state.tracks, selection: action.payload }
+        tracks: { ...state.tracks, value: action.payload }
       }
     case 'SET_POIS_TYPES':
       return {
@@ -79,10 +79,10 @@ const formReducer = (state = INITIAL_FORM, action) => {
           types: action.payload
         }
       }
-    case 'SET_POIS_RANGE':
+    case 'SET_POIS_VALUE':
       return {
         ...state,
-        pois: { ...state.pois, selection: action.payload }
+        pois: { ...state.pois, value: action.payload }
       }
     case 'SET_DISTANCE_RANGE':
       return {
