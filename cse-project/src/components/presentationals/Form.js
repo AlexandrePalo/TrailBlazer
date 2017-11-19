@@ -51,26 +51,13 @@ class Form extends Component {
                 onNewRequest={(k, i) =>
                   this.props.getBeginPlaceDetails(
                     this.props.beginLocation.predictions[i].place_id
-                  )}
+                  )
+                }
                 loading={this.props.beginLocation.loading}
                 done={this.props.beginLocation.coords.length !== 0}
               />
             </div>
-            <div style={{ marginLeft: '30px', display: 'flex', flex: 1 }}>
-              <AutocompleteLocation
-                floatingLabelText="End location (optional)"
-                dataSource={this.props.endLocation.predictions.map(
-                  d => d.description
-                )}
-                onUpdateInput={v => this.props.getEndPredictions(v)}
-                onNewRequest={(k, i) =>
-                  this.props.getEndPlaceDetails(
-                    this.props.endLocation.predictions[i].place_id
-                  )}
-                loading={this.props.endLocation.loading}
-                done={this.props.endLocation.coords.length !== 0}
-              />
-            </div>
+            <div style={{ marginLeft: '30px', display: 'flex', flex: 1 }} />
           </div>
           <div style={styles.inputContainer}>
             <div style={{ flex: 2, marginRight: '30px' }}>
@@ -93,7 +80,8 @@ class Form extends Component {
                   onChange={value => this.props.setPoisRange(value)}
                   value={this.props.pois.selection}
                   formatLabel={value =>
-                    value > 1 ? `${value} POIs` : `${value} POI`}
+                    value > 1 ? `${value} POIs` : `${value} POI`
+                  }
                 />
               )}
             </div>
@@ -119,7 +107,8 @@ class Form extends Component {
                   onChange={value => this.props.setTracksRange(value)}
                   value={this.props.tracks.selection}
                   formatLabel={value =>
-                    value > 1 ? `${value} tracks` : `${value} track`}
+                    value > 1 ? `${value} tracks` : `${value} track`
+                  }
                 />
               )}
             </div>

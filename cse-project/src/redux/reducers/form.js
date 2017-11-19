@@ -5,7 +5,11 @@ const INITIAL_FORM = {
     coords: [],
     loading: false
   },
-  endLocation: { text: undefined, predictions: [], coords: [], loading: false },
+  distance: {
+    min: 0,
+    max: 10,
+    selection: { min: 0, max: 10 }
+  },
   pois: {
     choices: ['Geocaching', 'Google Maps'],
     types: [],
@@ -48,30 +52,6 @@ const formReducer = (state = INITIAL_FORM, action) => {
       return {
         ...state,
         beginLocation: {
-          ...state.beginLocation,
-          loading: false,
-          coords: action.payload
-        }
-      }
-    case 'FETCH_END_DETAILS':
-    case 'FETCH_END_PREDICTIONS':
-      return {
-        ...state,
-        endLocation: { ...state.endLocation, loading: true }
-      }
-    case 'RECEIVE_END_PREDICTIONS':
-      return {
-        ...state,
-        endLocation: {
-          ...state.endLocation,
-          loading: false,
-          predictions: action.payload
-        }
-      }
-    case 'RECEIVE_END_DETAILS':
-      return {
-        ...state,
-        endLocation: {
           ...state.beginLocation,
           loading: false,
           coords: action.payload
