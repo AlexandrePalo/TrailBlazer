@@ -38,7 +38,14 @@ class Form extends Component {
   }
 
   handleSubmitClick() {
-    console.log('submit')
+    // Check validation
+    // Only beginLocation is required to be changed
+    if (this.props.beginLocation.coords.length !== 2) {
+      this.props.setBeginValidity(false)
+      console.log('unvalid')
+    } else {
+      console.log('valid')
+    }
   }
 
   render() {
@@ -92,6 +99,11 @@ class Form extends Component {
                   onLocationClick={() => this.props.setSetModeOn()}
                   setMode={this.props.beginLocation.setMode}
                   searchText={this.props.beginLocation.text}
+                  errorText={
+                    !this.props.beginLocation.validity
+                      ? 'Valid begin location is required'
+                      : ''
+                  }
                 />
               </div>
               <div

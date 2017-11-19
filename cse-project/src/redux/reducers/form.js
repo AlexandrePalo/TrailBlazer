@@ -6,7 +6,7 @@ const INITIAL_FORM = {
     loading: false,
     setMode: false,
     currentOnMap: { coords: [], position: [] },
-    valid: false
+    validity: true // inclusive, false => false, true => we don't know
   },
   distance: {
     min: 0,
@@ -34,7 +34,12 @@ const formReducer = (state = INITIAL_FORM, action) => {
     case 'SET_BEGIN_TEXT':
       return {
         ...state,
-        beginLocation: { ...state.beginLocation, text: action.payload }
+        beginLocation: {
+          ...state.beginLocation,
+          text: action.payload,
+          validity: true,
+          coords: []
+        }
       }
     case 'FETCH_BEGIN_DETAILS':
     case 'FETCH_BEGIN_PREDICTIONS':
@@ -140,7 +145,7 @@ const formReducer = (state = INITIAL_FORM, action) => {
     case 'SET_BEGIN_VALIDITY':
       return {
         ...state,
-        beginLocation: { ...state.beginLocation, valid: action.payload }
+        beginLocation: { ...state.beginLocation, validity: action.payload }
       }
 
     default:

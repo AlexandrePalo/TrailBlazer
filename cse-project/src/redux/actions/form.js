@@ -73,6 +73,11 @@ const setDistanceRange = range => ({
 
 const resetForm = () => ({ type: 'RESET_FORM' })
 
+const setBeginValidity = validity => ({
+  type: 'SET_BEGIN_VALIDITY',
+  payload: validity
+})
+
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
@@ -85,5 +90,6 @@ export {
   setTracksTypes,
   setTracksValue,
   setDistanceRange,
-  resetForm
+  resetForm,
+  setBeginValidity
 }

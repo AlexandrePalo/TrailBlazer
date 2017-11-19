@@ -35,7 +35,8 @@ class AutocompleteLocation extends Component {
       onNewRequest,
       loading,
       done,
-      searchText
+      searchText,
+      errorText
     } = this.props
     return (
       <div
@@ -55,6 +56,7 @@ class AutocompleteLocation extends Component {
             dataSource={dataSource}
             onUpdateInput={v => onUpdateInput(v)}
             onNewRequest={(k, i) => onNewRequest(k, i)}
+            errorText={errorText}
           />
         </div>
         <div style={{ marginBottom: '3px', marginLeft: '5px' }}>
