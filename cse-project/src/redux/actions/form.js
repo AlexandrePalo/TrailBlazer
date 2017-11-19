@@ -49,11 +49,17 @@ const setPoisRange = range => ({ type: 'SET_POIS_RANGE', payload: range })
 const setTracksTypes = types => ({ type: 'SET_TRACKS_TYPES', payload: types })
 const setTracksRange = range => ({ type: 'SET_TRACKS_RANGE', payload: range })
 
+const setDistanceRange = range => ({
+  type: 'SET_DISTANCE_RANGE',
+  payload: range
+})
+
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
   setPoisTypes,
   setPoisRange,
   setTracksTypes,
-  setTracksRange
+  setTracksRange,
+  setDistanceRange
 }

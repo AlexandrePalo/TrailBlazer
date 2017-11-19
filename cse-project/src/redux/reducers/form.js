@@ -7,22 +7,22 @@ const INITIAL_FORM = {
   },
   distance: {
     min: 0,
-    max: 10,
+    max: 100,
     selection: { min: 0, max: 10 }
   },
   pois: {
-    choices: ['Geocaching', 'Google Maps'],
-    types: [],
-    min: 0,
-    max: 10,
-    selection: { min: 0, max: 10 }
-  },
-  tracks: {
-    choices: ['Utagawa', 'Other'],
+    choices: ['Geocaching'],
     types: [],
     min: 0,
     max: 100,
-    selection: { min: 0, max: 10 }
+    selection: { min: 0, max: 100 }
+  },
+  tracks: {
+    choices: ['Utagawa'],
+    types: [],
+    min: 0,
+    max: 100,
+    selection: { min: 0, max: 100 }
   }
 }
 
@@ -83,6 +83,11 @@ const formReducer = (state = INITIAL_FORM, action) => {
       return {
         ...state,
         pois: { ...state.pois, selection: action.payload }
+      }
+    case 'SET_DISTANCE_RANGE':
+      return {
+        ...state,
+        distance: { ...state.distance, selection: action.payload }
       }
     default:
       return state

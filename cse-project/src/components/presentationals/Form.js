@@ -57,10 +57,26 @@ class Form extends Component {
                 done={this.props.beginLocation.coords.length !== 0}
               />
             </div>
-            <div style={{ marginLeft: '30px', display: 'flex', flex: 1 }} />
+            <div
+              style={{
+                flex: 1,
+                marginRight: '20px',
+                marginLeft: '30px',
+                marginTop: '30px'
+              }}
+            >
+              <InputRange
+                draggableTrack
+                maxValue={this.props.distance.max}
+                minValue={this.props.distance.min}
+                onChange={value => this.props.setDistanceRange(value)}
+                value={this.props.distance.selection}
+                formatLabel={value => `${value} km`}
+              />
+            </div>
           </div>
           <div style={styles.inputContainer}>
-            <div style={{ flex: 2, marginRight: '30px' }}>
+            <div style={{ flex: 1, marginRight: '30px' }}>
               <SelectField
                 fullWidth
                 multiple={true}
@@ -71,7 +87,14 @@ class Form extends Component {
                 {this.menuItemsPOI.bind(this)(this.props.pois.types)}
               </SelectField>
             </div>
-            <div style={{ flex: 3, marginRight: '20px', marginLeft: '30px' }}>
+            <div
+              style={{
+                flex: 1,
+                marginRight: '20px',
+                marginLeft: '30px',
+                marginTop: '30px'
+              }}
+            >
               {this.props.pois.types.length !== 0 && (
                 <InputRange
                   draggableTrack
@@ -87,7 +110,7 @@ class Form extends Component {
             </div>
           </div>
           <div style={styles.inputContainer}>
-            <div style={{ flex: 2, marginRight: '30px' }}>
+            <div style={{ flex: 1, marginRight: '30px' }}>
               <SelectField
                 fullWidth
                 multiple={true}
@@ -98,7 +121,14 @@ class Form extends Component {
                 {this.menuItemsTrack.bind(this)(this.props.tracks.types)}
               </SelectField>
             </div>
-            <div style={{ flex: 3, marginRight: '20px', marginLeft: '30px' }}>
+            <div
+              style={{
+                flex: 1,
+                marginRight: '20px',
+                marginLeft: '30px',
+                marginTop: '30px'
+              }}
+            >
               {this.props.tracks.types.length !== 0 && (
                 <InputRange
                   draggableTrack
