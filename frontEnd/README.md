@@ -2,11 +2,7 @@
 
 ## Installation
 
-Be sure to be in the branch "static_boilerplate"
-
-`cd cse-project`
-
-`yarn i` or `npm install`
+`yarn install` or `npm install`
 
 `yarn start` or `npm start`
 
