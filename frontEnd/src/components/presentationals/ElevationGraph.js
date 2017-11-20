@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import { extent as d3ArrayExtent } from 'd3-array'
-import {
-  scaleLinear as d3ScaleLinear,
-  scaleTime as d3ScaleTime
-} from 'd3-scale'
-import { line as d3Line } from 'd3-shape'
+import { scaleLinear as d3ScaleLinear } from 'd3-scale'
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis'
-import { select as d3Select, mouse as d3Mouse } from 'd3-selection'
+import { select as d3Select } from 'd3-selection'
 import { distanceHeversine } from '../../utils/closest'
 import './Graph.css'
 import { PaperForm } from './'
@@ -21,7 +17,7 @@ class ElevationGraph extends Component {
   }
 
   createChart() {
-    const { height, width, padding, track, currentIndex } = this.props
+    const { height, width, padding, track } = this.props
     // Clear previous graph
     d3Select(this.node)
       .selectAll('*')

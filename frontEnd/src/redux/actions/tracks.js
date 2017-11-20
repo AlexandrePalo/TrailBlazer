@@ -1,5 +1,4 @@
 //import { json as d3Json } from 'd3-request'
-import delay from 'delay'
 import fileDownload from 'js-file-download'
 import { setLocation } from './'
 import { gpxGen } from '../../utils'

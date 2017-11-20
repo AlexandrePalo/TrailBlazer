@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
-import CircularProgress from 'material-ui/CircularProgress'
-import fileDownload from 'js-file-download'
-import { gpxGen } from '../../utils'
 import { PaperForm } from './'
 
 class GlobalTrackInfo extends Component {

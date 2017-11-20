@@ -1,10 +1,6 @@
 import { connect } from 'react-redux'
 import { App } from '../presentationals'
-import {
-  setSetModeOn,
-  setSetModeCancel,
-  setSetModeFinish
-} from '../../redux/actions'
+import { setSetModeCancel, setSetModeFinish } from '../../redux/actions'
 
 const mapStateToProps = state => ({
   mode: state.global.mode,

@@ -1,4 +1,4 @@
-import { generateRandomColor, closestPointIndexInList } from '../../utils'
+import { generateRandomColor } from '../../utils'
 
 const INITIAL_TRACKS = {
   currentTrackId: undefined,

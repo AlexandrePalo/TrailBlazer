@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
-import Divider from 'material-ui/Divider'
-import Checkbox from 'material-ui/Checkbox'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import TextField from 'material-ui/TextField'
-import AutoComplete from 'material-ui/AutoComplete'
 import RaisedButton from 'material-ui/RaisedButton'
-import FontIcon from 'material-ui/FontIcon'
-import CircularProgress from 'material-ui/CircularProgress'
 import Slider from 'material-ui/Slider'
 import InputRange from 'react-input-range'
 import './inputRange.css'
-import { SearchBar, PaperForm, AutocompleteLocation } from './'
+import { PaperForm, AutocompleteLocation } from './'
 
 class Form extends Component {
   menuItemsPOI(values) {
