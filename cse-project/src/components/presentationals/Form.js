@@ -84,7 +84,13 @@ class Form extends Component {
     } else {
       return (
         <div style={{ width: '80%' }}>
-          <PaperForm title="Settings">
+          <PaperForm
+            title="Settings"
+            btn={{
+              label: 'Back to welcome screen',
+              onClick: () => this.props.setWelcomeMode()
+            }}
+          >
             <div style={{ ...styles.inputContainer, marginTop: '-10px' }}>
               <div style={{ marginRight: '30px', display: 'flex', flex: 1 }}>
                 <AutocompleteLocation

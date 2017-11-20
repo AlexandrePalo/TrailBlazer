@@ -105,6 +105,8 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
   }
 }
 
+const cancelBackendRequest = () => ({ type: 'CANCEL_BACKEND_REQUEST' })
+
 export {
   getBeginPredictions,
   getBeginPlaceDetails,
@@ -119,5 +121,6 @@ export {
   setDistanceRange,
   resetForm,
   setBeginValidity,
-  sendForm
+  sendForm,
+  cancelBackendRequest
 }

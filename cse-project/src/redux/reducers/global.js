@@ -18,10 +18,16 @@ const globalReducer = (state = INITIAL_GLOBAL, action) => {
         ...state,
         mode: 'loading'
       }
+    case 'CANCEL_BACKEND_REQUEST':
     case 'SET_SETTINGS_MODE':
       return {
         ...state,
         mode: 'settings'
+      }
+    case 'SET_WELCOME_MODE':
+      return {
+        ...state,
+        mode: 'welcome'
       }
     default:
       return state

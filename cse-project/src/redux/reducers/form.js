@@ -31,6 +31,9 @@ const INITIAL_FORM = {
 
 const formReducer = (state = INITIAL_FORM, action) => {
   switch (action.type) {
+    case 'SET_SETTINGS_MODE':
+    case 'CANCEL_BACKEND_REQUEST':
+      return INITIAL_FORM
     case 'SET_BEGIN_TEXT':
       return {
         ...state,

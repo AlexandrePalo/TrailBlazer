@@ -10,7 +10,8 @@ import ElevationGraph from '../containers/ElevationGraph'
 import GlobalTrackInfo from '../containers/GlobalTrackInfo'
 import Welcome from '../containers/Welcome'
 import Form from '../containers/Form'
-import { LocationSetter, Loading } from './'
+import Loading from '../containers/Loading'
+import { LocationSetter } from './'
 
 class App extends Component {
   renderScene(mode) {

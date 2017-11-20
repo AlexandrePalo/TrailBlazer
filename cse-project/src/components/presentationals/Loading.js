@@ -6,7 +6,13 @@ class Loading extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <PaperForm title="Loading ...">
+        <PaperForm
+          title="Loading ..."
+          btn={{
+            label: 'Cancel',
+            onClick: () => this.props.cancelBackendRequest()
+          }}
+        >
           <div style={styles.containerCircle}>
             <CircularProgress size={80} thickness={5} />
           </div>

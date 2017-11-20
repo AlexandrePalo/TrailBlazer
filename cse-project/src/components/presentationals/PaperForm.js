@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Paper from 'material-ui/Paper'
+import FlatButton from 'material-ui/FlatButton'
 
 class PaperForm extends Component {
   render() {
@@ -8,6 +9,12 @@ class PaperForm extends Component {
         <Paper style={styles.paper} zDepth={3}>
           <div style={styles.header}>
             <span style={styles.title}>{this.props.title}</span>
+            {this.props.btn && (
+              <FlatButton
+                label={this.props.btn.label}
+                onClick={() => this.props.btn.onClick()}
+              />
+            )}
           </div>
           <div style={styles.body}>{this.props.children}</div>
         </Paper>
@@ -30,7 +37,11 @@ const styles = {
   },
   header: {
     backgroundColor: 'rgb(232, 232, 232)',
-    padding: '15px'
+    padding: '15px',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   body: {
     padding: '10px'

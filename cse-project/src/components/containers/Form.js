@@ -12,7 +12,8 @@ import {
   setDistanceRange,
   resetForm,
   setBeginValidity,
-  sendForm
+  sendForm,
+  setWelcomeMode
 } from '../../redux/actions'
 
 const mapStateToProps = state => ({
@@ -23,6 +24,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  setWelcomeMode: () => dispatch(setWelcomeMode()),
   getBeginPredictions: input => dispatch(getBeginPredictions(input)),
   getBeginPlaceDetails: placeId => dispatch(getBeginPlaceDetails(placeId)),
   setSetModeOn: () => dispatch(setSetModeOn()),
