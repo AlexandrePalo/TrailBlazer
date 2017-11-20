@@ -5,13 +5,13 @@ import fs from 'fs'
 import xml2js from 'xml2js-es6-promise'
 import JSONStream from 'JSONStream'
 
-let url = 'https://www.utagawavtt.com/forum_v3/ucp.php?mode=login'
+let login_url = 'https://www.utagawavtt.com/forum_v3/ucp.php?mode=login'
 let username = 'sport_test'
 let password = 'sport_test'
 let results_per_page = 50
 let coord = '[-436.46484,-89.93412,439.62891,89.93412]'
 let nb_of_records = 0 // 0 for max
-let parallel_requests = 20
+let parallel_requests = 30
 
 // cookie_jar is a variable that contains session cookies
 let cookie_jar = request.jar()
@@ -20,14 +20,14 @@ let cookie_jar = request.jar()
 // header data were retrieve thanks to the chromium network inspector
 getFormData(
   {
-    url: url,
+    url: login_url,
     jar: cookie_jar
   },
   username,
   password
 ).then(formData => {
   logIn({
-    url: url,
+    url: login_url,
     formData: formData,
     jar: cookie_jar
   }).then(() => {
@@ -64,10 +64,10 @@ getFormData(
       let scrapped_data = json_result['results']
 
       const loop = (index, max, incr) => {
-        if (index < max) {
+        if (index <= max) {
           let result_promises = []
           // for each i, create a promise with a request
-          for (let i = index; i < Math.min(max, index + incr); i++) {
+          for (let i = index; i <= Math.min(max, index + incr); i++) {
             result_promises.push(
               getJSONResult({
                 url:

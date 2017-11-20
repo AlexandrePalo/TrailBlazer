@@ -6,7 +6,22 @@ const getBodyPromise = options => {
   options.simple = false
   return request(options)
     .then(response => {
-      console.log('Request url:', options.url)
+      console.log('Request url:', options.uri)
+      console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+      return response.body
+    })
+    .catch(error => {
+      console.log('error:', error) // Print the error if one occurred
+    })
+}
+
+const getBodyPromiseWithPostMethod = options => {
+  options.method = 'POST'
+  options.resolveWithFullResponse = true
+  options.simple = false
+  return request(options)
+    .then(response => {
+      console.log('Request url:', options.uri)
       console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
       return response.body
     })
@@ -21,8 +36,9 @@ const logIn = options => {
   options.simple = false // to avoid status 302 (redirection) throwing an error
   return request(options)
     .then(response => {
-      console.log('Request url:', options.url)
+      console.log('Request url:', options.uri)
       console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+      return 'logged in'
     })
     .catch(error => {
       console.log('error:', error) // Print the error if one occurred
@@ -32,13 +48,13 @@ const logIn = options => {
 const getFormData = (options, username, password) => {
   return getBodyPromise(options).then(body => {
     let $ = cheerio.load(body)
-    console.log($('[name=sid]').attr('value'))
+    console.log($('[name=__RequestVerificationToken]').attr('value'))
     let formData = {
-      username: username,
-      password: password,
-      sid: $('[name=sid]').attr('value'),
-      login: 'Connexion',
-      redirect: '../forum_v3/'
+      Username: username,
+      Password: password,
+      __RequestVerificationToken: $('[name=__RequestVerificationToken]').attr(
+        'value'
+      )
     }
     return formData
   })
@@ -53,4 +69,10 @@ const getJSONResult = options => {
   })
 }
 
-export { getBodyPromise, logIn, getFormData, getJSONResult }
+export {
+  getBodyPromise,
+  getBodyPromiseWithPostMethod,
+  logIn,
+  getFormData,
+  getJSONResult
+}
