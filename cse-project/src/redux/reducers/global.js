@@ -3,10 +3,12 @@
 // interstate: loading state
 // display: display solutions on the map
 
-// Modes: settings, loading, ...
+// Modes: welcome, settings, loading, displayResults
+
+// TODO: use react navigation ...
 
 const INITIAL_GLOBAL = {
-  mode: 'settings'
+  mode: 'welcome'
 }
 
 const globalReducer = (state = INITIAL_GLOBAL, action) => {

@@ -28,6 +28,20 @@ class App extends Component {
         </div>
       )
     }
+
+    if (mode === 'displayResults') {
+      return (
+        <div>
+          <div style={styles.papersContainer1}>
+            <TrackSelector />
+            <ElevationGraph width={800} height={200} padding={40} />
+          </div>
+          <div style={styles.papersContainer2}>
+            <GlobalTrackInfo />
+          </div>
+        </div>
+      )
+    }
     /*
     <div style={styles.papersContainer1}>
       <Form />
