@@ -7,6 +7,7 @@ import sample3 from '../../example/sample3.json'
 
 class TrackSelector extends Component {
   componentDidMount() {
+    // TODO: Debug only !!
     this.props.readJSONFileTrack(sample1)
     this.props.readJSONFileTrack(sample2)
     this.props.readJSONFileTrack(sample3)
@@ -24,7 +25,15 @@ class TrackSelector extends Component {
       )
     }
     return (
-      <PaperForm title="Track selector">
+      <PaperForm
+        title="Track selector"
+        btn={{
+          label: 'New request',
+          onClick: () => this.props.setSettingsMode(),
+          raised: true,
+          primary: true
+        }}
+      >
         {this.props.tracks.map(p => (
           <TrackResult
             key={p.id}

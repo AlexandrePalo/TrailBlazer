@@ -4,7 +4,8 @@ import {
   show,
   hide,
   readJSONFileTrack,
-  setLocationBeginTrack
+  setLocationBeginTrack,
+  setSettingsMode
 } from '../../redux/actions'
 
 const mapStateToProps = state => ({
@@ -17,7 +18,8 @@ const mapDispatchToProps = dispatch => ({
   hide: id => dispatch(hide(id)),
   readJSONFileTrack: JSONFile => dispatch(readJSONFileTrack(JSONFile)),
   setLocationBeginTrack: (location, id) =>
-    dispatch(setLocationBeginTrack(location, id))
+    dispatch(setLocationBeginTrack(location, id)),
+  setSettingsMode: () => dispatch(setSettingsMode())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackSelector)

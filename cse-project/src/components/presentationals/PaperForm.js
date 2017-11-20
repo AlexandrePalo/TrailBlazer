@@ -1,20 +1,36 @@
 import React, { Component } from 'react'
 import Paper from 'material-ui/Paper'
 import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 
 class PaperForm extends Component {
+  renderBtn() {
+    if (this.props.btn) {
+      if (this.props.btn.raised) {
+        return (
+          <RaisedButton
+            label={this.props.btn.label}
+            onClick={() => this.props.btn.onClick()}
+            primary={this.props.btn.primary}
+          />
+        )
+      } else {
+        return (
+          <FlatButton
+            label={this.props.btn.label}
+            onClick={() => this.props.btn.onClick()}
+          />
+        )
+      }
+    }
+  }
   render() {
     return (
       <div style={styles.container}>
         <Paper style={styles.paper} zDepth={3}>
           <div style={styles.header}>
             <span style={styles.title}>{this.props.title}</span>
-            {this.props.btn && (
-              <FlatButton
-                label={this.props.btn.label}
-                onClick={() => this.props.btn.onClick()}
-              />
-            )}
+            {this.renderBtn.bind(this)()}
           </div>
           <div style={styles.body}>{this.props.children}</div>
         </Paper>

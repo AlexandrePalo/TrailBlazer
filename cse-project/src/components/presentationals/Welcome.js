@@ -32,7 +32,7 @@ class Welcome extends Component {
                 <span style={styles.author}>Alex MUELLER</span>
               </div>
               <div style={styles.authorSubContainer}>
-                <span style={styles.author}>Georgia Tech CSE 6222</span>
+                <span style={styles.author}>Georgia Tech CSE 6242</span>
                 <span style={styles.author}>Final Project</span>
               </div>
             </div>
