@@ -1,4 +1,5 @@
-import { setLoadingMode } from './global'
+import delay from 'delay'
+import { setLoadingMode, setDisplayResultsMode } from './global'
 import { encodeDataUrl } from '../../utils'
 
 // Will probably be localhost, on a different port for Django backend
@@ -102,6 +103,11 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
         tracksWeight
       })
     console.log(url)
+
+    // Fake response
+    delay(2000).then(() => {
+      dispatch(setDisplayResultsMode())
+    })
   }
 }
 

@@ -2,6 +2,7 @@ import { generateRandomColor, closestPointIndexInList } from '../../utils'
 
 const INITIAL_TRACKS = {
   currentTrackId: undefined,
+  currentTrackGPX: { loading: false, gpxStr: undefined, toBeOpened: false },
   closestCurrentPointIndexInCurrentTrack: undefined,
   loading: false,
   all: []
@@ -70,6 +71,20 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
             color: generateRandomColor()
           }
         ]
+      }
+
+    case 'GPX_FETCHED':
+      return {
+        ...state,
+        currentTrackGPX: { loading: true, gpxStr: undefined, toBeOpened: false }
+      }
+    case 'GPX_GENERATED':
+      return {
+        ...state,
+        currentTrackGPX: {
+          loading: false,
+          gpxStr: action.payload
+        }
       }
     default:
       return state

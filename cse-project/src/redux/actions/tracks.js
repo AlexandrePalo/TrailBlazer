@@ -1,4 +1,8 @@
 //import { json as d3Json } from 'd3-request'
+import delay from 'delay'
+import fileDownload from 'js-file-download'
+import { setLocation } from './'
+import { gpxGen } from '../../utils'
 
 const show = id => ({ type: 'SHOW', payload: id })
 
@@ -34,10 +38,42 @@ const readJSONFileTrack = JSONFile => {
   }
 }
 
+const setLocationBeginTrack = (coords, id) => {
+  return dispatch => {
+    dispatch(show(id))
+    dispatch(setLocation(coords))
+  }
+}
+
+const GPXFetched = () => ({ type: 'GPX_FETCHED' })
+
+const GPXGenerated = str => ({
+  type: 'GPX_GENERATED',
+  payload: str
+})
+
+const downloadGPX = track => {
+  return dispatch => {
+    // Loading state
+    dispatch(GPXFetched())
+
+    // Generate GPX
+    const gpxString = gpxGen(track.name, track.name, track.points)
+
+    // End of generation
+    dispatch(GPXGenerated(gpxString))
+
+    // Trigger download
+    fileDownload(gpxString, 'trailBlazerFile.gpx')
+  }
+}
+
 export {
   show,
   hide,
   setCurrentTrack,
   setCurrentClosestPointIndexInCurrentTrack,
-  readJSONFileTrack
+  readJSONFileTrack,
+  setLocationBeginTrack,
+  downloadGPX
 }
