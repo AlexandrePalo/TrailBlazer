@@ -18,6 +18,11 @@ const globalReducer = (state = INITIAL_GLOBAL, action) => {
         ...state,
         mode: 'loading'
       }
+    case 'SET_SETTINGS_MODE':
+      return {
+        ...state,
+        mode: 'settings'
+      }
     default:
       return state
   }

@@ -8,6 +8,7 @@ import MapContainer from '../containers/MapContainer'
 import TrackSelector from '../containers/TrackSelector'
 import ElevationGraph from '../containers/ElevationGraph'
 import GlobalTrackInfo from '../containers/GlobalTrackInfo'
+import Welcome from '../containers/Welcome'
 import Form from '../containers/Form'
 import { LocationSetter, Loading } from './'
 
@@ -39,6 +40,14 @@ class App extends Component {
           <div style={styles.papersContainer2}>
             <GlobalTrackInfo />
           </div>
+        </div>
+      )
+    }
+
+    if (mode === 'welcome') {
+      return (
+        <div style={styles.formContainer}>
+          <Welcome />
         </div>
       )
     }
