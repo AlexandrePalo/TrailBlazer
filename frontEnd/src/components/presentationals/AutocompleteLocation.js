@@ -55,7 +55,11 @@ class AutocompleteLocation extends Component {
             fullWidth
             dataSource={dataSource}
             onUpdateInput={v => onUpdateInput(v)}
-            onNewRequest={(k, i) => onNewRequest(k, i)}
+            onNewRequest={(k, i) => {
+              if (i !== -1) {
+                onNewRequest(k, i)
+              }
+            }}
             errorText={errorText}
           />
         </div>
