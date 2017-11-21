@@ -70,6 +70,44 @@ def build_query(trail):
 
     return query
 
+def build_near_query(point):
+    # this function builds a query object that can be passed to a find function
+    # in mongodb. this query will search for all geojson objects within 25 m of
+    # the provided point
+
+    query = {
+        'geometry' : {
+            '$near' : {
+                '$geometry' : {
+                    'type' : 'Point',
+                    'coordinates' : point
+                },
+                '$maxDistance' : 25,
+                '$minDistance' : 0
+            }
+        }
+    }
+
+    return query
+
+def distance(lon1, lat1, lon2, lat2):
+    # because longitude and latitude are points on a sphere, we must use
+    # the Haversine formula to calculate distance between points.
+    # formula: https://en.wikipedia.org/wiki/Haversine_formula
+
+    # radius of earth in km
+    radius = 6371
+
+    # difference of lat and lon, converted to radians, and divided by 2
+    latDiff = math.radians(lat2 - lat1) / 2.0
+    lonDiff = math.radians(lon2 - lon1) / 2.0
+
+    x = math.sin(latDiff) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * (math.sin(lonDiff) ** 2)
+    y = 2 * math.atan2(math.sqrt(x), math.sqrt(1-x))
+
+    return radius * y
+
+
 if __name__ == "__main__":
     # mongodb readwrite url
     url = "mongodb://readwrite:uHQn1REU6pf2hV1F@dva-shard-00-00-kemze.mongodb.net:27017,dva-shard-00-01-kemze.mongodb.net:27017,dva-shard-00-02-kemze.mongodb.net:27017/test?ssl=true&replicaSet=dva-shard-0&authSource=admin"
@@ -109,4 +147,53 @@ if __name__ == "__main__":
         # if there are OSM ways inside of the utagawa bounding box, append the
         # utagawa trail to matches
         if ways.count():
+            # add current utagawa trail to list of matches
             matches.append(trail)
+
+            # coordinates from a single utagawa trail
+            ut_coords = trail['location']['coordinates']
+
+            # collections of nodes that have already been incremented by the
+            # current utagawa trail. this prevents nodes from getting extra
+            # weight
+            weighted_c_nodes = []
+
+            # iterate through coordinates of utagawa trail
+            for utc in ut_coords:
+                u_lat = float(utc[1])
+                u_lon = float(utc[0])
+                loc = [u_lon, u_lat]
+
+                # chambery ways near coordinate in utagawa trail
+                c_ways = chambery.find(build_near_query(loc))
+
+                # iterate through chambery ways
+                for ct in c_ways:
+                    # if updated gets set to true => chambery way needs to be
+                    # updated in database
+                    updated = False
+
+                    # iterate through coordinates in current chambery trail
+                    for coord in ct['geometry']['coordinates']:
+                        # generate coordinate id this will prevent a node on a
+                        # chambery trail from getting doubly weighted by
+                        # multiple nodes on the utagawa trail
+                        coord_id = str(coord[0]) + str(coord[1])
+
+                        # chambery trail coordinate has not already been
+                        # weighted by the utagawa trail
+                        if not coord_id in weighted_c_nodes and (distance(coord[0], coord[1], u_lon, u_lat) * 1000) < 25:
+                            # way needs to be updated in databse
+                            updated = True
+                            weighted_c_nodes.append(coord_id)
+                            # increment trackWeight
+                            coord[4] += 1
+
+                    # if updated is True, one or more of the coordinates gained
+                    # weight, so the coordinates in mongodb must be updated
+                    if updated:
+                        ct_id = ct['_id']
+                        chambery.update_one({'_id' : ct['_id']}, {'$set' : {'geometry.coordinates' : ct['geometry']['coordinates']}})
+                        print "Updated:", ct_id
+
+                print "Number of weighted nodes:", len(weighted_c_nodes)
