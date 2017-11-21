@@ -14,15 +14,13 @@ const INITIAL_FORM = {
     selection: { min: 0, max: 10 }
   },
   pois: {
-    choices: ['Geocaching'],
-    types: [],
+    selected: false,
     min: 0,
     max: 100,
     value: 50
   },
   tracks: {
-    choices: ['Utagawa'],
-    types: [],
+    selected: false,
     min: 0,
     max: 100,
     value: 50
@@ -109,12 +107,12 @@ const formReducer = (state = INITIAL_FORM, action) => {
         }
       }
 
-    case 'SET_TRACKS_TYPES':
+    case 'SET_TRACKS_STATE':
       return {
         ...state,
         tracks: {
           ...state.tracks,
-          types: action.payload
+          selected: action.payload
         }
       }
     case 'SET_TRACKS_VALUE':
@@ -122,12 +120,12 @@ const formReducer = (state = INITIAL_FORM, action) => {
         ...state,
         tracks: { ...state.tracks, value: action.payload }
       }
-    case 'SET_POIS_TYPES':
+    case 'SET_POIS_STATE':
       return {
         ...state,
         pois: {
           ...state.pois,
-          types: action.payload
+          selected: action.payload
         }
       }
     case 'SET_POIS_VALUE':

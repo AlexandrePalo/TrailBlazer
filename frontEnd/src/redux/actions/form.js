@@ -68,9 +68,12 @@ const setModeCurrent = (coords, containerPoint) => ({
   }
 })
 
-const setPoisTypes = types => ({ type: 'SET_POIS_TYPES', payload: types })
+const setPoisState = checked => ({ type: 'SET_POIS_STATE', payload: checked })
 const setPoisValue = value => ({ type: 'SET_POIS_VALUE', payload: value })
-const setTracksTypes = types => ({ type: 'SET_TRACKS_TYPES', payload: types })
+const setTracksState = checked => ({
+  type: 'SET_TRACKS_STATE',
+  payload: checked
+})
 const setTracksValue = value => ({ type: 'SET_TRACKS_VALUE', payload: value })
 
 const setDistanceRange = range => ({
@@ -120,9 +123,9 @@ export {
   setSetModeFinish,
   setSetModeCancel,
   setModeCurrent,
-  setPoisTypes,
+  setPoisState,
   setPoisValue,
-  setTracksTypes,
+  setTracksState,
   setTracksValue,
   setDistanceRange,
   resetForm,

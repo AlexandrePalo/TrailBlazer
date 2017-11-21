@@ -3,34 +3,12 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import Slider from 'material-ui/Slider'
+import Checkbox from 'material-ui/Checkbox'
 import InputRange from 'react-input-range'
 import './inputRange.css'
 import { PaperForm, AutocompleteLocation } from './'
 
 class Form extends Component {
-  menuItemsPOI(values) {
-    return this.props.pois.choices.map(name => (
-      <MenuItem
-        key={name}
-        insetChildren={true}
-        checked={values && values.indexOf(name) > -1}
-        value={name}
-        primaryText={name}
-      />
-    ))
-  }
-  menuItemsTrack(values) {
-    return this.props.tracks.choices.map(name => (
-      <MenuItem
-        key={name}
-        insetChildren={true}
-        checked={values && values.indexOf(name) > -1}
-        value={name}
-        primaryText={name}
-      />
-    ))
-  }
-
   handleSubmitClick() {
     // Check validation
     // Only beginLocation is required to be changed
@@ -40,8 +18,8 @@ class Form extends Component {
       this.props.sendForm(
         this.props.beginLocation.coords,
         this.props.distance.selection,
-        this.props.pois.types.length !== 0 ? this.props.pois.value : 0,
-        this.props.tracks.types.length !== 0 ? this.props.tracks.value : 0
+        this.props.pois.selected ? this.props.pois.value : 0,
+        this.props.tracks.selected ? this.props.tracks.value : 0
       )
     }
   }
@@ -86,7 +64,14 @@ class Form extends Component {
             }}
           >
             <div style={{ ...styles.inputContainer, marginTop: '-10px' }}>
-              <div style={{ marginRight: '30px', display: 'flex', flex: 1 }}>
+              <div
+                style={{
+                  marginRight: '30px',
+                  display: 'flex',
+                  flex: 1,
+                  marginBottom: '5px'
+                }}
+              >
                 <AutocompleteLocation
                   floatingLabelText="Begin location"
                   dataSource={this.props.beginLocation.predictions.map(
@@ -143,23 +128,20 @@ class Form extends Component {
             </div>
             <div style={styles.inputContainer}>
               <div style={{ flex: 1, marginRight: '30px' }}>
-                <SelectField
-                  fullWidth
-                  multiple={true}
-                  floatingLabelText="Types of POIs"
-                  value={this.props.pois.types}
-                  onChange={(e, i, values) => this.props.setPoisTypes(values)}
-                >
-                  {this.menuItemsPOI.bind(this)(this.props.pois.types)}
-                </SelectField>
+                <Checkbox
+                  label="POIs information from Geocaching"
+                  checked={this.props.pois.selected}
+                  style={styles.checkbox}
+                  onCheck={(e, b) => this.props.setPoisState(b)}
+                  labelStyle={styles.checkboxLabel}
+                />
               </div>
               <div
                 style={{
-                  flex: 1,
-                  marginTop: '30px'
+                  flex: 1
                 }}
               >
-                {this.props.pois.types.length !== 0 && (
+                {this.props.pois.selected && (
                   <div
                     style={{
                       display: 'flex',
@@ -196,23 +178,20 @@ class Form extends Component {
             </div>
             <div style={styles.inputContainer}>
               <div style={{ flex: 1, marginRight: '30px' }}>
-                <SelectField
-                  fullWidth
-                  multiple={true}
-                  floatingLabelText="Types of tracks"
-                  value={this.props.tracks.types}
-                  onChange={(e, i, values) => this.props.setTracksTypes(values)}
-                >
-                  {this.menuItemsTrack.bind(this)(this.props.tracks.types)}
-                </SelectField>
+                <Checkbox
+                  label="Tracks information from Utagawa"
+                  checked={this.props.tracks.selected}
+                  style={styles.checkbox}
+                  labelStyle={styles.checkboxLabel}
+                  onCheck={(e, b) => this.props.setTracksState(b)}
+                />
               </div>
               <div
                 style={{
-                  flex: 1,
-                  marginTop: '30px'
+                  flex: 1
                 }}
               >
-                {this.props.tracks.types.length !== 0 && (
+                {this.props.tracks.selected && (
                   <div
                     style={{
                       display: 'flex',
@@ -290,6 +269,13 @@ const styles = {
   iconDone: {
     color: 'rgb(0, 188, 212)',
     opacity: 1
+  },
+  checkbox: {
+    marginBottom: '15px'
+  },
+  checkboxLabel: {
+    color: 'black',
+    opacity: 0.87
   }
 }
 
