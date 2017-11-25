@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import { PaperForm } from './'
+import logoTrailBlazer from '../../img/logo-trailblazer.svg'
 
 class Welcome extends Component {
   render() {
@@ -8,7 +9,10 @@ class Welcome extends Component {
       <div style={styles.maxWidthContainer}>
         <PaperForm title="Welcome">
           <div style={styles.container}>
-            <span style={styles.title}>TrailBlazer</span>
+            <div style={styles.titleContainer}>
+              <img src={logoTrailBlazer} width={200} height="auto" alt="logo" />
+              <span style={styles.title}>TrailBlazer</span>
+            </div>
             <p style={styles.description}>
               Welcome, this is TrailBlazer: a web based application to help
               bikers, hikers and runners to find the most exciting tracks to
@@ -54,10 +58,17 @@ const styles = {
     justifyContent: 'flext-start',
     padding: '15px'
   },
+  titleContainer: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
   title: {
     fontSize: '50pt',
-    color: 'black',
-    opacity: 0.87,
+    color: '#e94b35',
+    opacity: 1,
     alignSelf: 'center',
     marginTop: '20px',
     marginBottom: '20px'
