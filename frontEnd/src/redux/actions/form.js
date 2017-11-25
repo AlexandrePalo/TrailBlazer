@@ -1,4 +1,3 @@
-import delay from 'delay'
 import { setLoadingMode, setDisplayResultsMode } from './global'
 import { encodeDataUrl } from '../../utils'
 
@@ -108,9 +107,7 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
     console.log(url)
 
     // Fake response
-    delay(2000).then(() => {
-      dispatch(setDisplayResultsMode())
-    })
+    dispatch(setDisplayResultsMode())
   }
 }
 
