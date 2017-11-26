@@ -1,13 +1,11 @@
-import pymongo, sys
+import pymongo, sys, math
 
-def bounding_box(trail):
-    # this function takes in a trail and outputs a box that bounds all nodes
-    # of the trail
-    #
-    # this bounding box is used to query OSM ways that are nearby utagawa trails
+def bounds(trail):
+    # this function takes in a trail and outputs the north, south, east, and
+    # west bounds
 
     # list of coordinates in trail
-    coordinates = trail['location']['coordinates']
+    coordinates = trail['geometry']['coordinates']
 
     # boundaries of trail
     # maximum latitude
@@ -41,7 +39,20 @@ def bounding_box(trail):
         if lat > north:
             north = lat
 
-    # create box that starts and ends at point [west,north]
+    return {'north' : north, 'south' : south, 'east' : east, 'west' : west}
+
+
+def bounding_box(trail):
+    # take bounds from bounds() and builds a box that encases all of the points
+    # within the bounds
+
+    boundaries =  bounds(trail)
+
+    north = boundaries['north']
+    south = boundaries['south']
+    east = boundaries['east']
+    west = boundaries['west']
+
     box = [
         [west,north],
         [east,north],
@@ -70,7 +81,7 @@ def build_query(trail):
 
     return query
 
-def build_near_query(point):
+def build_near_query(point, max_distance=25):
     # this function builds a query object that can be passed to a find function
     # in mongodb. this query will search for all geojson objects within 25 m of
     # the provided point
@@ -82,7 +93,7 @@ def build_near_query(point):
                     'type' : 'Point',
                     'coordinates' : point
                 },
-                '$maxDistance' : 25,
+                '$maxDistance' : max_distance,
                 '$minDistance' : 0
             }
         }
@@ -133,12 +144,23 @@ if __name__ == "__main__":
     ut_count = utagawa.count()
 
     # iterable cursor that points to trails within the utagawa collection
-    ut_trails = utagawa.find()
+    # ut_trails = utagawa.find()
+
+    # list of all utagawa ids
+    utagawa_ids = utagawa.distinct('_id')
 
     # iterate through utagawa trails
-    for trail in ut_trails:
+    for u_id in utagawa_ids:
         print str(i) + "/" + str(ut_count), len(matches)
         i += 1
+        try:
+            trail = utagawa.find_one({'_id' : u_id})
+        except pymongo.errors.CursorNotFound:
+            print "ERROR: cursor not found", u_id
+
+    # # iterate through utagawa trails
+    # for trail in ut_trails:
+
 
         # search for ways/paths in OSM database that are within the bounding
         # box of the utagawa trail
@@ -165,7 +187,7 @@ if __name__ == "__main__":
                 loc = [u_lon, u_lat]
 
                 # chambery ways near coordinate in utagawa trail
-                c_ways = chambery.find(build_near_query(loc))
+                c_ways = osmWays.find(build_near_query(loc))
 
                 # iterate through chambery ways
                 for ct in c_ways:
@@ -186,6 +208,9 @@ if __name__ == "__main__":
                             # way needs to be updated in databse
                             updated = True
                             weighted_c_nodes.append(coord_id)
+
+                            # coord[4] = 0
+
                             # increment trackWeight
                             coord[4] += 1
 
@@ -193,7 +218,12 @@ if __name__ == "__main__":
                     # weight, so the coordinates in mongodb must be updated
                     if updated:
                         ct_id = ct['_id']
-                        chambery.update_one({'_id' : ct['_id']}, {'$set' : {'geometry.coordinates' : ct['geometry']['coordinates']}})
-                        print "Updated:", ct_id
+                        try:
+                            osmWays.update_one({'_id' : ct['_id']}, {'$set' : {'geometry.coordinates' : ct['geometry']['coordinates']}})
+                            print "Updated:", ct_id
+                        except pymongo.errors.CursorNotFound:
+                            print
+                            print "ERROR: could not find",ct_id
+                            print
 
                 print "Number of weighted nodes:", len(weighted_c_nodes)
