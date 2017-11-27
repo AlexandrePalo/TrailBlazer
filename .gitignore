@@ -173,3 +173,6 @@ venv.bak/
 .mypy_cache/
 
 # End of https://www.gitignore.io/api/node,python,django
+
+# Virtual env
+/virtualenv
