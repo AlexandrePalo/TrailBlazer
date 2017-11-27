@@ -78,7 +78,9 @@ consoles must be up and running the whole time you use the application.
 
 ## Second console, back end application
 
-* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/backEnd && python manage.py runserver`
+* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/backEnd/virtualenv/backEnd/bin &&
+  source activate`
+* `python manage.py runserver`
 
 [Front End documentation](frontEnd/README.md)
 
