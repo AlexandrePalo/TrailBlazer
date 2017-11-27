@@ -2,7 +2,7 @@
 
 # TrailBlazer: a web based application to help bikers, hikers and runners to find the most exciting tracks to train!
 
-# Developped by Alexandre PALO, Alex MUELLER, Guillaume BROGGI & Tianyu CHENG
+# Developped by Alexandre PALO, Alex MUELLER, Guillaume BROGGI & Tianyi ZHENG
 
 # Installation
 
