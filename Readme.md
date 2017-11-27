@@ -4,7 +4,9 @@
 
 # Developped by Alexandre PALO, Alex MUELLER, Guillaume BROGGI & Tianyu CHENG
 
-# Installation
+# DESCRIPTION
+
+# INSTALLATION
 
 ## Front end application
 
@@ -78,10 +80,53 @@ consoles must be up and running the whole time you use the application.
   source activate`
 * `cd ../../.. && python manage.py runserver`
 
+# EXECUTION
+
 ## Go to the following url within your favorite browser: http://localhost:5000
 
-[Front End documentation](frontEnd/README.md)
+## Introduction
 
-[Back End documentation](backEnd/README.md)
+For the moment, in order to simplify the preprocessing system, we have limited
+the application to a certain area of the world: an area around Chambéry in
+FRANCE.
 
-# How to use TrailBlazer
+This area is a good solution: the number of POI and Tracks gathered in this
+place is very important due to the geographic situation of this area. It's a
+famous place in FRANCE to practice mountain bike, in the French Alps.
+
+## Request tracks
+
+* On the first splash screen, click the button "LET'S GET STARTED!".
+
+* The "Settings" form let you input your preferences to find the best track for
+  you. In order to do so, the only two mandatory information are the begin
+  location and the distance to compute results.
+
+* To entire the desire begin location, two solutions are possible: you can
+  either try to enter an address in the field and select the best one using the
+  autocompletion system (it's case sensitive), or you can click on the small
+  "location" icon at the right of the field, click a point on the map and select
+  "SET" to choose this location as begin location.
+
+* Moreover, to compute best results you can include "POI" and "Tracks" from our
+  database and select a weight for them. POI are points of interest that are
+  interesting to be visited. Tracks are existing mountain bike tracks that help
+  the algorithm to decide. Both of them should be include, that's the aim of our
+  project to make the most of existing information.
+
+* When everything is set up, click the button "SUBMIT". The application is going
+  to ask your algorithm to find the best track regarding information you have
+  chosen. Waiting until the loading screen stopped.
+
+* When the algorithm has responded, you can see proposed solutions in the field
+  "Track selector". For each track, you can click on it to activate or
+  deactivate the solution. If the track is activated, it will appear on the map.
+  Moreover, you can click the target icon at the right of each track to move the
+  map to the beginning of the track. You can browse the solution with your mouse
+  over the graph or directly over the drawing on the map.
+
+* When you've selected an interesting solution, you can click the button
+  "DOWNLOAD GPX" to download a standard gpx file and use it within your gps
+  device (including your phone) and go outside to train! You can also click the
+  button "OPEN IN GOOGLE MAPS" in order to be able to add some information or
+  change some things with the Google Maps solution.
