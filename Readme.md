@@ -16,10 +16,6 @@ Be sure to have NodeJs and yarn installed (or npm).
 
 #### Packages installation
 
-##### Go to the folder of the project, and the frontEnd subfolder:
-
-* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/frontEnd`
-
 ##### Install serve package
 
 * `yarn global add serve` (or `npm install -g serve`). If needed, run this
@@ -61,7 +57,7 @@ environment to ensure that every package is here with the right version.
 
 * Make sure that `python --version`returns you `Python 2.7.X`, X is 10 or
   higher.
-* `pip install django geopy mongoengine geohash networkx`
+* `pip install django geopy mongoengine geohash networkx djangorestframework`
 
 ##### Leave the virtual environment:
 
@@ -80,7 +76,9 @@ consoles must be up and running the whole time you use the application.
 
 * `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/backEnd/virtualenv/backEnd/bin &&
   source activate`
-* `python manage.py runserver`
+* `cd ../../.. && python manage.py runserver`
+
+## Go to the following url within your favorite browser: http://localhost:5000
 
 [Front End documentation](frontEnd/README.md)
 

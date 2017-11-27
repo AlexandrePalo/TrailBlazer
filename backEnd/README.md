@@ -34,7 +34,7 @@ environment to ensure that every package is here with the right version.
 
 * Make sure that `python --version`returns you `Python 2.7.X`, X is 10 or
   higher.
-* `pip install django geopy mongoengine geohash networkx`
+* `pip install django geopy mongoengine geohash networkx djangorestframework`
 
 #### Leave the virtual environment:
 
