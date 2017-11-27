@@ -22,7 +22,7 @@ environment to ensure that every package is here with the right version.
 
 * Go to the folder of the project, and the backend subfolder:
 
-- `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/frontEnd`
+- `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/backEnd`
 
 * Create a new virtual environment:
 

@@ -175,4 +175,4 @@ venv.bak/
 # End of https://www.gitignore.io/api/node,python,django
 
 # Virtual env
-/virtualenv
+backend/virtualenv
