@@ -1,10 +1,12 @@
-# TrailBlzaer back end
+# Back end application
 
 ## Installation
 
-### Preleminary
+### Preleminaries
 
-* Be sure to have Python 2.7 installed and pip installer for Python 2.7 too.
+Be sure to have Python 2.7 installed and pip installer for Python 2.7 too. In
+this tutorial, we assume that the command `python` launches Python 2.7 and that
+`pip` installs for Python 2.7 only.
 
 ### Virtual env
 

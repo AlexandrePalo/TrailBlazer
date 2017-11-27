@@ -4,9 +4,7 @@
 
 ### Preleminaries
 
-Be sure to have NodeJs and yarn installed (or npm). In this tutorial, we assume
-that you have `yarn` installed. If this is not the case and you prefer to use
-`npm`, just replace every `yarn` command by `npm`.
+Be sure to have NodeJs and yarn installed (or npm).
 
 ### Packages installation
 
