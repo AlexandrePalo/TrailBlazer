@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { extent as d3ArrayExtent } from 'd3-array'
 import { scaleLinear as d3ScaleLinear } from 'd3-scale'
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis'
-import { select as d3Select } from 'd3-selection'
+import { select as d3Select, mouse as d3Mouse } from 'd3-selection'
 import { distanceHeversine } from '../../utils/closest'
 import './Graph.css'
 import { PaperForm } from './'
@@ -18,6 +18,8 @@ class ElevationGraph extends Component {
 
   createChart() {
     const { height, width, padding, track } = this.props
+    let that = this
+
     // Clear previous graph
     d3Select(this.node)
       .selectAll('*')
@@ -25,8 +27,6 @@ class ElevationGraph extends Component {
 
     if (track) {
       let data = track.points
-
-      console.log(data)
 
       const dataDistTemp = track.points.map((d, i) => {
         if (i >= 1) {
@@ -42,21 +42,13 @@ class ElevationGraph extends Component {
         return 0
       })
 
-      data = data.map((d, i) => [d[0], d[1], d[2], dataDist[i]])
+      data = data.map((d, i) => [d[0], d[1], d[2], dataDist[i], 1000, 2000])
 
-      console.log(data)
       const yScale = d3ScaleLinear()
         .domain(d3ArrayExtent(data, d => d[3]))
         .range([height - padding, padding])
 
       const node = this.node
-
-      let rectBefore = d3Select(node)
-        .append('rect')
-        .attr('width', 100)
-        .attr('height', height - 2 * padding)
-        .attr('x', 60)
-        .attr('y', padding)
 
       d3Select(node)
         .append('g')
@@ -64,97 +56,212 @@ class ElevationGraph extends Component {
         .attr('transform', 'translate(' + 50 + ', 0)')
         .call(d3AxisLeft().scale(yScale))
 
-      /*
-      data = data.map((d, i) => {
-        return [dataX[i], d[2]]
-      })
-
-      const selectY = d => d[1]
-      const selectX = d => d[0]
-
-      const xScale = d3ScaleLinear()
-        .domain(d3ArrayExtent(data, selectX))
-        .range([padding, width - 5])
-      const yScale = d3ScaleLinear()
-        .domain(d3ArrayExtent(data, selectY))
-        .range([height - padding, padding])
-
-      const selectScaledX = d => xScale(selectX(d))
-      const selectScaledY = d => yScale(selectY(d))
-
-      const node = this.node
-
-      let circles = d3Select(node)
-        .selectAll('circle')
-        .data(data)
-        .enter()
-        .append('circle')
-        .attr('r', 2)
-        .attr('cx', selectScaledX)
-        .attr('cy', selectScaledY)
-        .attr('fill', track.color)
-        .on('mouseover', (d, i) => {
-          this.props.setCurrentClosestPointIndexInCurrentTrack(i)
-        })
-        .on('mouseout', (d, i) => {
-          this.props.setCurrentClosestPointIndexInCurrentTrack(undefined)
-        })
+      d3Select(node)
+        .append('text')
+        .text('Distance (m)')
+        .attr('x', 85)
+        .attr('y', 12)
 
       if (this.props.currentIndex) {
-        circles.attr(
-          'fill-opacity',
-          (d, i) => (i <= this.props.currentIndex ? 1 : 0.1)
-        )
+        d3Select(node)
+          .append('text')
+          .text('POI weight: ' + data[that.props.currentIndex][4])
+          .attr('x', 220)
+          .attr('y', yScale(data[that.props.currentIndex][3]) - 10)
+        d3Select(node)
+          .append('text')
+          .text('Track weight: ' + data[that.props.currentIndex][5])
+          .attr('x', 220)
+          .attr('y', yScale(data[that.props.currentIndex][3]) + 8)
         d3Select(node)
           .append('text')
           .text(
-            Math.ceil(data[this.props.currentIndex][0]) +
-              ', ' +
-              Math.ceil(data[this.props.currentIndex][1])
+            'Distance: ' + Math.round(data[that.props.currentIndex][3]) + 'm'
           )
-          .attr('class', 'graphLabel87')
-          .attr('dx', selectScaledX(data[this.props.currentIndex]) + 10)
-          .attr('dy', selectScaledY(data[this.props.currentIndex]) + 5)
-      }
+          .attr('x', 220)
+          .attr('y', yScale(data[that.props.currentIndex][3]) + 26)
 
-      d3Select(node)
-        .append('g')
-        .attr('class', 'axis')
-        .attr('transform', 'translate(' + padding + ', 0)')
-        .call(d3AxisLeft().scale(yScale))
-      d3Select(node)
-        .append('text')
-        .text('Elevation (m)')
-        .attr('dx', 0)
-        .attr('dy', padding / 2)
-        .attr('class', 'graphLabel54')
-      d3Select(node)
-        .append('g')
-        .attr('class', 'axis')
-        .attr('transform', 'translate(0,' + (height - padding) + ')')
-        .call(d3AxisBottom().scale(xScale))
-      d3Select(node)
-        .append('text')
-        .text('Distance from origin (m)')
-        .attr('dx', width)
-        .attr('text-anchor', 'end')
-        .attr('dy', height - 3)
-        .attr('class', 'graphLabel54')
-        */
+        let rectBefore = d3Select(node)
+          .append('rect')
+          .attr('width', 150)
+          .attr(
+            'height',
+            height - padding - yScale(data[that.props.currentIndex][3])
+          )
+          .attr('x', 60)
+          .attr('y', yScale(data[that.props.currentIndex][3]))
+          .attr('fill', track.color)
+        rectBefore.on('mousemove', function(d) {
+          let coords = [
+            d3Mouse(d3Select(this).node())[0] - 60,
+            yScale.invert(d3Mouse(d3Select(this).node())[1])
+          ]
+
+          for (let i = 0; i < data.length; i++) {
+            if (
+              yScale.invert(d3Mouse(d3Select(this).node())[1]) <= data[i][3]
+            ) {
+              that.props.setCurrentClosestPointIndexInCurrentTrack(i)
+              break
+            }
+          }
+        })
+        rectBefore.on('mouseout', function(d) {
+          that.props.setCurrentClosestPointIndexInCurrentTrack(undefined)
+        })
+        let rectAfter = d3Select(node)
+          .append('rect')
+          .attr('width', 150)
+          .attr('height', height - 2 * padding)
+          .attr('x', 60)
+          .attr('y', padding)
+          .attr('fill', track.color)
+          .attr('fill-opacity', 0.1)
+        rectAfter.on('mousemove', function(d) {
+          let coords = [
+            d3Mouse(d3Select(this).node())[0] - 60,
+            yScale.invert(d3Mouse(d3Select(this).node())[1])
+          ]
+
+          for (let i = 0; i < data.length; i++) {
+            if (
+              yScale.invert(d3Mouse(d3Select(this).node())[1]) <= data[i][3]
+            ) {
+              that.props.setCurrentClosestPointIndexInCurrentTrack(i)
+              break
+            }
+          }
+        })
+        rectAfter.on('mouseout', function(d) {
+          that.props.setCurrentClosestPointIndexInCurrentTrack(undefined)
+        })
+      } else {
+        let rect = d3Select(node)
+          .append('rect')
+          .attr('width', 150)
+          .attr('height', height - 2 * padding)
+          .attr('x', 60)
+          .attr('y', padding)
+          .attr('fill', track.color)
+        rect.on('mousemove', function(d) {
+          let coords = [
+            d3Mouse(d3Select(this).node())[0] - 60,
+            yScale.invert(d3Mouse(d3Select(this).node())[1])
+          ]
+
+          for (let i = 0; i < data.length; i++) {
+            if (
+              yScale.invert(d3Mouse(d3Select(this).node())[1]) <= data[i][3]
+            ) {
+              that.props.setCurrentClosestPointIndexInCurrentTrack(i)
+              break
+            }
+          }
+        })
+
+        rect.on('mouseout', function(d) {
+          that.props.setCurrentClosestPointIndexInCurrentTrack(undefined)
+        })
+      }
     }
   }
 
   render() {
     if (this.props.track) {
-      const { height, width } = this.props
+      const { height, width, track } = this.props
+
+      let data = track.points
+
+      const dataDistTemp = track.points.map((d, i) => {
+        if (i >= 1) {
+          return distanceHeversine(d, track.points[i - 1])
+        } else {
+          return 0
+        }
+      })
+      const dataDist = dataDistTemp.map((d, i) => {
+        if (i >= 1) {
+          return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
+        }
+        return 0
+      })
+
+      data = data.map((d, i) => [d[0], d[1], d[2], dataDist[i], 1000, 2000])
+
+      // Set min, max, ave
+      let poiWeight = {
+        min: Number.MAX_SAFE_INTEGER,
+        max: Number.MIN_SAFE_INTEGER,
+        ave: 0,
+        sum: 0
+      }
+      let trackWeight = {
+        min: Number.MAX_SAFE_INTEGER,
+        max: Number.MIN_SAFE_INTEGER,
+        ave: 0,
+        sum: 0
+      }
+      const totalDistance = Math.round(data[data.length - 1][3])
+
+      data.forEach(d => {
+        if (d[4] < poiWeight.min) {
+          poiWeight.min = d[4]
+        }
+        if (d[4] > poiWeight.max) {
+          poiWeight.max = d[4]
+        }
+        poiWeight.sum = poiWeight.sum + d[4]
+        if (d[5] < trackWeight.min) {
+          trackWeight.min = d[5]
+        }
+        if (d[5] > trackWeight.max) {
+          trackWeight.max = d[5]
+        }
+        trackWeight.sum = trackWeight.sum + d[5]
+      })
+      poiWeight.ave = poiWeight.sum / data.length
+      trackWeight.ave = trackWeight.sum / data.length
+
       return (
         <PaperForm title="Graphs">
-          <svg
-            style={styles.container}
-            height={height}
-            width={width}
-            ref={node => (this.node = node)}
-          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <svg
+              style={styles.container}
+              height={height}
+              width={width}
+              ref={node => (this.node = node)}
+            />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                height: '100%',
+                marginRight: '20px'
+              }}
+            >
+              <span style={styles.titleRight}>Total distance</span>
+              <span style={styles.resultRight}>{totalDistance} m</span>
+              <span style={styles.titleRight}>POI weight</span>
+              <span style={styles.resultRight}>
+                Min: {poiWeight.min}, Max: {poiWeight.max}, Average:{' '}
+                {poiWeight.ave}
+              </span>
+              <span style={styles.titleRight}>Track weight</span>
+              <span style={styles.resultRight}>
+                Min: {trackWeight.min}, Max: {trackWeight.max}, Average:{' '}
+                {trackWeight.ave}
+              </span>
+            </div>
+          </div>
         </PaperForm>
       )
     }
@@ -163,7 +270,18 @@ class ElevationGraph extends Component {
 }
 
 const styles = {
-  container: {}
+  container: {},
+  titleRight: {
+    fontSize: '14pt',
+    color: 'black',
+    opacity: 0.87,
+    marginTop: '10px'
+  },
+  resultRight: {
+    fontSize: '12pt',
+    color: 'black',
+    opacity: 0.54
+  }
 }
 
 export { ElevationGraph }
