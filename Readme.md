@@ -1,4 +1,4 @@
-CSE 6242 Project Alexandre PALO Guillaume BROGGI Alex MUELLER Tianyi CHENG
+CSE 6242 Project Alexandre PALO Guillaume BROGGI Alex MUELLER Tianyi ZHENG
 
 [Front End documentation](frontEnd/README.md)
 

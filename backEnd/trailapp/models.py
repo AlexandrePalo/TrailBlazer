@@ -1,7 +1,6 @@
 from mongoengine import *
 from trailblazer.settings import DBNAME
 
-connect(DBNAME, host = "mongodb://readwrite:uHQn1REU6pf2hV1F@dva-shard-00-00-kemze.mongodb.net:27017,dva-shard-00-01-kemze.mongodb.net:27017,dva-shard-00-02-kemze.mongodb.net:27017/test?ssl=true&replicaSet=dva-shard-0&authSource=admin")
 #connect(DBNAME)
 
 class Restaurants(Document):
@@ -14,5 +13,18 @@ class Neighborhoods(Document):
 
 class Roads(Document):
   geometry = LineStringField()
-  properties = DictField()
+  # properties = DictField()
+  meta = {'strict': False}
+
+class Geocaches(Document):
+  geometry = PointField()
+  attributes = ListField(StringField(max_length=50))
+  type = StringField()
+  difficulty = StringField()
+  name = StringField(max_length=120)
+  meta = {'strict': False}
+
+class ChamberyRoads(Document):
+  geometry = LineStringField()
+  # tags = DictField()
   meta = {'strict': False}
