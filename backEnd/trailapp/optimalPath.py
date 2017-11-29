@@ -61,7 +61,7 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
         nc = coordlist[count-1]
         n = previous
         G.add_edge(n, k, weight = getLength(nc,c))
-        weighted[getLength(nc,c)] = getWeight(nc,c)
+        weighted[getLength(nc,c)] = getWeight(nc,c, trackWeight, poiWeight)
       count += 1
       previous = k
 
@@ -84,7 +84,7 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
         return ('No Paths Found')
       bestWeighted = 0
       bestLength = maxDis
-      # init bets node
+      # init best node
       bestNode = None
       # traverse all neighboring edges and pick next node
       for ne in neighborEdges:
@@ -161,12 +161,12 @@ def getLength(n,m):
   return distance
 
 #calculates the weighted distance between two nodes
-def getWeight(n,m):
+def getWeight(n,m, trackWeight, poiWeight):
   c1 = (n[1], n[0])
   c2 = (m[1], m[0])
   distance = vincenty(c1,c2).meters
-  distance = (n[4]/2+1)*distance + (n[3]/2+1)*distance + (m[3]/2+1)*distance+(m[4]/2+1)*distance
-  return distance
+  distance = (n[4]*trackWeight/2+1)*distance + (n[3]*trackWeight/2+1)*distance + (m[3]*poiWeight/2+1)*distance+(m[4]*poiWeight/2+1)*distance
+  return distance/4
 
 #for debug
 def printHashed(n):

@@ -86,7 +86,8 @@ class WayList(APIView):
         startLocation = {"type": "Point", "coordinates": [lon, lat]}
 
         try:
-            allroad = ChamberyRoads.objects(geometry__near=[lon,lat], geometry__max_distance=100)
+            allroad = ChamberyRoads.objects(geometry__near=[lon,lat], geometry__max_distance=maxDis)
+            # allroad = ChamberyRoads.objects(geometry__geo_within_center=[[lon,lat], maxDis])
             way = getPath(allroad, (lon,lat), poiWeight, trackWeight, minDis, maxDis)
         except OperationFailure:
             return Response(status=status.HTTP_404_NOT_FOUND) 
