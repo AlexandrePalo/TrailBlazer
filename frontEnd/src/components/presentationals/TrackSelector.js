@@ -6,13 +6,6 @@ import sample2 from '../../example/sample2.json'
 import sample3 from '../../example/sample3.json'
 
 class TrackSelector extends Component {
-  componentDidMount() {
-    // TODO: Debug only !!
-    this.props.readJSONFileTrack(sample1)
-    this.props.readJSONFileTrack(sample2)
-    this.props.readJSONFileTrack(sample3)
-  }
-
   render() {
     if (this.props.loading) {
       return (

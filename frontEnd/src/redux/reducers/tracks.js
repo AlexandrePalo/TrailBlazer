@@ -55,6 +55,22 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
       }
     case 'FETCH_TRACK':
       return { ...state, loading: true }
+    case 'RECEIVE_BACKEND_RESULT':
+      return {
+        ...state,
+        loading: false,
+        all: [
+          {
+            ...action.payload,
+            id:
+              state.all.length === 0
+                ? 1
+                : Math.max.apply(Math, state.all.map(t => t.id)) + 1,
+            displayed: false,
+            color: 'red'
+          }
+        ]
+      }
     case 'RECEIVE_TRACK':
       return {
         ...state,

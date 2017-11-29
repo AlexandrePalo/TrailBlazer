@@ -127,7 +127,7 @@ class Form extends Component {
             <div style={styles.inputContainer}>
               <div style={{ flex: 1, marginRight: '30px' }}>
                 <Checkbox
-                  label="POIs information from Geocaching"
+                  label="POI information from Geocaching"
                   checked={this.props.pois.selected}
                   style={styles.checkbox}
                   onCheck={(e, b) => this.props.setPoisState(b)}

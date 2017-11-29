@@ -16,10 +16,7 @@ class MapContainer extends Component {
     )
   }
 
-  handlePolylineMouseOut = e => {
-    // TODO: keep that one ?
-    //this.props.setCurrentTrack(undefined)
-  }
+  handlePolylineMouseOut = e => {}
 
   handleClick = e => {
     if (this.props.beginLocation.setMode) {

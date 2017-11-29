@@ -26,23 +26,7 @@ class ElevationGraph extends Component {
       .remove()
 
     if (track) {
-      let data = track.points
-
-      const dataDistTemp = track.points.map((d, i) => {
-        if (i >= 1) {
-          return distanceHeversine(d, track.points[i - 1])
-        } else {
-          return 0
-        }
-      })
-      const dataDist = dataDistTemp.map((d, i) => {
-        if (i >= 1) {
-          return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
-        }
-        return 0
-      })
-
-      data = data.map((d, i) => [d[0], d[1], d[2], dataDist[i], 1000, 2000])
+      let data = track.pointsFull
 
       const yScale = d3ScaleLinear()
         .domain(d3ArrayExtent(data, d => d[3]))
@@ -170,23 +154,7 @@ class ElevationGraph extends Component {
     if (this.props.track) {
       const { height, width, track } = this.props
 
-      let data = track.points
-
-      const dataDistTemp = track.points.map((d, i) => {
-        if (i >= 1) {
-          return distanceHeversine(d, track.points[i - 1])
-        } else {
-          return 0
-        }
-      })
-      const dataDist = dataDistTemp.map((d, i) => {
-        if (i >= 1) {
-          return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
-        }
-        return 0
-      })
-
-      data = data.map((d, i) => [d[0], d[1], d[2], dataDist[i], 1000, 2000])
+      let data = track.pointsFull
 
       // Set min, max, ave
       let poiWeight = {

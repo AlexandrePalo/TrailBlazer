@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { setLoadingMode, setDisplayResultsMode } from './global'
-import { encodeDataUrl } from '../../utils'
+import { encodeDataUrl, distanceHeversine } from '../../utils'
 
 // BackEnd Django url
 const baseUrl = 'http://localhost:8000'
@@ -88,6 +88,11 @@ const setBeginValidity = validity => ({
   payload: validity
 })
 
+const receiveBackendResult = result => ({
+  type: 'RECEIVE_BACKEND_RESULT',
+  payload: result
+})
+
 const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
   return dispatch => {
     // Global Loading
@@ -111,14 +116,46 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
     axios
       .get(url)
       .then(function(response) {
-        console.log(response)
+        let data = response.data.geometry.coordinates
+
+        // Process some information
+        const dataDistTemp = data.map((d, i) => {
+          if (i >= 1) {
+            return distanceHeversine(d, data[i - 1])
+          } else {
+            return 0
+          }
+        })
+        const dataDist = dataDistTemp.map((d, i) => {
+          if (i >= 1) {
+            return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
+          }
+          return 0
+        })
+
+        // Lat Lng Ele Dist POIw TrackW
+        data = data.map((d, i) => [d[0], d[1]])
+        const dataFull = data.map((d, i) => [
+          d[0],
+          d[1],
+          null,
+          dataDist[i],
+          1000,
+          2000
+        ])
+        dispatch(
+          receiveBackendResult({
+            name: 'Solution from algorithm',
+            points: data,
+            pointsFull: dataFull,
+            pois: []
+          })
+        )
+        dispatch(setDisplayResultsMode())
       })
       .catch(function(error) {
-        console.log(error)
+        dispatch(cancelBackendRequest())
       })
-
-    // Fake response
-    //dispatch(setDisplayResultsMode())
   }
 }
 
