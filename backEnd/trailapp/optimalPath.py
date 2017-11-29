@@ -32,6 +32,8 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
   edges = {}
 # a dict to store nodes whose edges have been contracted
   visited = {}
+# a dict to store weights for hashed points
+  weights = {}
 # start building graph using networkx. traverse the road. pick up
 # each road's list of coordinates. Add each point to the graph if 
 # it hasn't been added already. And add an edge between each point  
@@ -52,6 +54,7 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
       if not(k in d):
         d[k] = c;
         G.add_node(k)
+        weights[k] = [c[3], c[4]]
       temp = getLength(c, start)
       if temp < shortest:
         shortest = temp
@@ -149,7 +152,8 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
   for p in bestPath:
     printHashed(p)
     tp = Geohash.decode(p)
-    newResult.append([float(tp[0]),float(tp[1])])
+    weight = weights[p]
+    newResult.append([float(tp[0]),float(tp[1]),weight[0],weight[1]])
   way = ChamberyRoads(geometry = newResult)
   return way
 
