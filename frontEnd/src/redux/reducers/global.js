@@ -8,7 +8,7 @@
 // TODO: use react navigation ...
 
 const INITIAL_GLOBAL = {
-  mode: 'welcome'
+  mode: 'displayResults'
 }
 
 const globalReducer = (state = INITIAL_GLOBAL, action) => {
