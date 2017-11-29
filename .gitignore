@@ -175,3 +175,6 @@ venv.bak/
 
 # Virtual env
 backEnd/virtualenv
+
+# Geojson large file
+*.geojson
