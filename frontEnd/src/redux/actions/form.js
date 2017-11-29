@@ -117,6 +117,7 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
       .get(url)
       .then(function(response) {
         let data = response.data.geometry.coordinates
+        console.log(response)
 
         // Process some information
         const dataDistTemp = data.map((d, i) => {
@@ -134,15 +135,16 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
         })
 
         // Lat Lng Ele Dist POIw TrackW
-        data = data.map((d, i) => [d[0], d[1]])
         const dataFull = data.map((d, i) => [
           d[0],
           d[1],
           null,
           dataDist[i],
-          1000,
-          2000
+          Math.round(d[3]),
+          Math.round(d[2]),
         ])
+        data = data.map((d, i) => [d[0], d[1]])
+
         dispatch(
           receiveBackendResult({
             name: 'Solution from algorithm',

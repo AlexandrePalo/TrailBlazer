@@ -34,6 +34,9 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
   visited = {}
 # a dict to store weights for hashed points
   weights = {}
+# dict to store previous node
+  previousDict = {}
+  length = {}
 # start building graph using networkx. traverse the road. pick up
 # each road's list of coordinates. Add each point to the graph if 
 # it hasn't been added already. And add an edge between each point  
@@ -69,88 +72,79 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
       previous = k
 
 # optimal path finding
-
-  # traverse all neighbor edges, find best weighted edge 
-  for i in range(100):
-    # start from the startnode
-    currentLength = 0
-    currentWeight = 0
-    currentNode = startnode
-    # store list of nodes
-    tempPath = []
-    # keep traversing while length satisfies criteria
-    while currentLength < maxDis:
-      # get edge list for current node
-      try:
-        neighborEdges = G.edges(currentNode,True)
-      except NetworkXError:
-        return ('No Paths Found')
-      bestWeighted = 0
-      bestLength = maxDis
-      # init best node
-      bestNode = None
-      # traverse all neighboring edges and pick next node
-      for ne in neighborEdges:
-        # if it has not been visited
-        if not (((ne[0], ne[1]) in edges) or ((ne[1], ne[0]) in edges)) :
-          # if it is an optimal edge
-          temp = weighted.get(ne[2].get('weight'))
-          if temp > bestWeighted:
-            bestNode = ne[1]
-            bestWeighted = temp
-            bestLength = ne[2].get('weight')
-      if bestNode is None:
-        # register that we have visited all edges of this node
-        # then it does not make sense to select the best weighted
-        # edge to traverse, since we have already done that
-        # so we pick one of its random neighbors to visit
-        visited[currentNode] = 1
-        count = 0
-        # turn the neighbors iterator into a list for better time performance
-        # should be okay since graph is not dense
-        neighbors = list(G.neighbors(currentNode))
-        total = len(neighbors)
-        # pick a random best node
-        bestNode = neighbors[randint(0,total-1)]
-        # if this node's edges have also been all visited
-        # repeat until we find one
-        while bestNode in visited and count < total:
-          count = count + 1
-          bestNode = neighbors[randint(0,total-1)]
-        if count == total-1:
-          bestNode = None
-        else:
-          currentDecode = Geohash.decode(currentNode)
-          bestDecode = Geohash.decode(bestNode)
-          currentDecode = [float(currentDecode[0]),float(currentDecode[1])]
-          bestDecode = [float(bestDecode[0]),float(bestDecode[1])]
-          bestLength = getLength(currentDecode,bestDecode)
-      
-      if not bestNode is None:
-        if not (((currentNode, bestNode) in edges) or ((bestNode, currentNode) in edges)) :
-          # store visited edges in dict
-          edges[(currentNode, bestNode)] = 1
-          edges[(bestNode, currentNode)] = 1
-        # visit the best node
-        currentNode = bestNode
-        bestNode = None
-        currentLength = currentLength + bestLength
-        currentWeight = currentWeight + bestWeighted
-        tempPath.append(currentNode)
+  # start from the startnode
+  previousDict = {}
+  currentLength = 0
+  currentWeight = 0
+  currentNode = startnode
+  # store list of nodes
+  tempPath = []
+  # keep traversing while length satisfies criteria
+  while currentLength < maxDis:
+    # get edge list for current node
+    try:
+      neighborEdges = G.edges(currentNode,True)
+    except NetworkXError:
+      return ('No Paths Found')
+    bestWeighted = -10
+    bestLength = maxDis
+    # init best node
+    bestNode = None
+    # traverse all neighboring edges and pick best node
+    for ne in neighborEdges:
+      # if this neighbor has not been visited
+      if not (((ne[0], ne[1]) in edges) or ((ne[1], ne[0]) in edges)) :
+        # if it is an optimal edge
+        temp = weighted.get(ne[2].get('weight'))
+        if temp > bestWeighted:
+          bestNode = ne[1]
+          bestWeighted = temp
+          bestLength = ne[2].get('weight')
+    # if there is a best node, meaning there is an edge from currentnode 
+    # we have not visited before
+    if not bestNode is None:
+      # if we haven't visited the node before
+      # store visited edges in dict
+      edges[(currentNode, bestNode)] = 1
+      edges[(bestNode, currentNode)] = 1
+      # if best node has been visited, and includes a previous node
+      # add currentnode to the end of the list of nodes
+      if bestNode in previousDict:
+        previousDict[bestNode] = previousDict[bestNode] + [currentNode]
+      else:
+        previousDict[bestNode] = [currentNode]
+      currentNode = bestNode
+      # visit the best node and update the path length
+      currentLength = currentLength + bestLength
+      currentWeight = currentWeight + bestWeighted
+      tempPath.append(currentNode)
+    # do not visit this node
+    else:
+      # traverse the travelled path
+      # and pick a node who has an unvisited edge
+      if currentNode is startnode:
+        break
+      elif currentNode in previousDict:
+        temp = previousDict[currentNode][-1]
+        previousDict[currentNode] = previousDict[currentNode][:-1]
+        currentNode = temp
       else:
         break
-    paths[currentWeight] = tempPath
+  paths[currentWeight] = tempPath
+  length[currentWeight] = currentLength
+
   #get the best weighted path
   try:
     key_max = max(paths)
   except ValueError:
     return 'No Paths Found'
-  print(key_max)
+  # print(key_max)
+  # print(length[key_max])
   bestPath = paths[key_max]
   #return as a way object
   newResult = []
   for p in bestPath:
-    printHashed(p)
+    # printHashed(p)
     tp = Geohash.decode(p)
     weight = weights[p]
     newResult.append([float(tp[0]),float(tp[1]),weight[0],weight[1]])
@@ -166,11 +160,12 @@ def getLength(n,m):
 
 #calculates the weighted distance between two nodes
 def getWeight(n,m, trackWeight, poiWeight):
-  c1 = (n[1], n[0])
-  c2 = (m[1], m[0])
-  distance = vincenty(c1,c2).meters
-  distance = (n[4]*trackWeight/2+1)*distance + (n[3]*trackWeight/2+1)*distance + (m[3]*poiWeight/2+1)*distance+(m[4]*poiWeight/2+1)*distance
-  return distance/4
+  weight = (n[4]*trackWeight/2+1) + (n[3]*trackWeight/2+1) + (m[3]*poiWeight/2+1)+(m[4]*poiWeight/2+1)
+  return weight
+
+def getWeight2(n,m, trackWeight, poiWeight):
+  weight = (n[1]*trackWeight/2+1) + (n[0]*trackWeight/2+1) + (m[0]*poiWeight/2+1)+(m[1]*poiWeight/2+1)
+  return weight
 
 #for debug
 def printHashed(n):
