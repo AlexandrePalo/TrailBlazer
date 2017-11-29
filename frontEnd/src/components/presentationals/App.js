@@ -32,7 +32,7 @@ class App extends Component {
         <div>
           <div style={styles.papersContainer1}>
             <TrackSelector />
-            <ElevationGraph width={800} height={200} padding={40} />
+            <ElevationGraph width={800} height={200} padding={10} />
           </div>
           <div style={styles.papersContainer2}>
             <GlobalTrackInfo />

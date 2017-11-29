@@ -25,19 +25,46 @@ class ElevationGraph extends Component {
 
     if (track) {
       let data = track.points
-      const dataXtemp = track.points.map((d, i) => {
+
+      console.log(data)
+
+      const dataDistTemp = track.points.map((d, i) => {
         if (i >= 1) {
           return distanceHeversine(d, track.points[i - 1])
         } else {
           return 0
         }
       })
-      const dataX = dataXtemp.map((d, i) => {
+      const dataDist = dataDistTemp.map((d, i) => {
         if (i >= 1) {
-          return dataXtemp.slice(0, i + 1).reduce((a, b) => a + b)
+          return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
         }
         return 0
       })
+
+      data = data.map((d, i) => [d[0], d[1], d[2], dataDist[i]])
+
+      console.log(data)
+      const yScale = d3ScaleLinear()
+        .domain(d3ArrayExtent(data, d => d[3]))
+        .range([height - padding, padding])
+
+      const node = this.node
+
+      let rectBefore = d3Select(node)
+        .append('rect')
+        .attr('width', 100)
+        .attr('height', height - 2 * padding)
+        .attr('x', 60)
+        .attr('y', padding)
+
+      d3Select(node)
+        .append('g')
+        .attr('class', 'axis')
+        .attr('transform', 'translate(' + 50 + ', 0)')
+        .call(d3AxisLeft().scale(yScale))
+
+      /*
       data = data.map((d, i) => {
         return [dataX[i], d[2]]
       })
@@ -113,6 +140,7 @@ class ElevationGraph extends Component {
         .attr('text-anchor', 'end')
         .attr('dy', height - 3)
         .attr('class', 'graphLabel54')
+        */
     }
   }
 
