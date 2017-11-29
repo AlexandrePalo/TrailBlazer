@@ -6,8 +6,8 @@ const getBodyPromise = options => {
   options.simple = false
   return request(options)
     .then(response => {
-      console.log('Request url:', options.uri)
-      console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+      //console.log('Request url:', options.uri)
+      //console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
       return response.body
     })
     .catch(error => {
@@ -21,8 +21,8 @@ const getBodyPromiseWithPostMethod = options => {
   options.simple = false
   return request(options)
     .then(response => {
-      console.log('Request url:', options.uri)
-      console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
+      //console.log('Request url:', options.uri)
+      //console.log('...statusCode:', response && response.statusCode) // Print the response status code if a response was received
       return response.body
     })
     .catch(error => {

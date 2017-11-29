@@ -74,7 +74,8 @@ getFormData(
       __LASTFOCUS: $('[name=__LASTFOCUS]').attr('value'),
       __VIEWSTATEFIELDCOUNT: $('[name=__VIEWSTATEFIELDCOUNT]').attr('value'),
       __VIEWSTATE: $('[name=__VIEWSTATE]').attr('value'),
-      __VIEWSTATE1: $('[name=__VIEWSTATE1]').attr('value')
+      __VIEWSTATE1: $('[name=__VIEWSTATE1]').attr('value'),
+      __VIEWSTATEGENERATOR: $('[name=__VIEWSTATEGENERATOR]').attr('value')
     }
 
     const getCacheIdLoop = (index, max, incr) => {
@@ -82,7 +83,12 @@ getFormData(
         let result_promises = []
         // for each i, create a promise with a request
         for (let i = index; i <= Math.min(max, index + incr); i++) {
-          formData.__EVENTTARGET = 'ctl00$ContentBody$pgrTop$lbGoToPage_' + i
+          if (i % 10 == 1) {
+            formData.__EVENTTARGET = 'ctl00$ContentBody$pgrTop$ctl06'
+          } else {
+            formData.__EVENTTARGET = 'ctl00$ContentBody$pgrTop$lbGoToPage_' + i
+          }
+          //console.log(formData.__EVENTTARGET)
           result_promises.push(
             getBodyPromiseWithPostMethod({
               uri:
@@ -93,12 +99,25 @@ getFormData(
             }).then(body => {
               console.log('Page:', i)
               let $ = cheerio.load(body)
+              formData.__EVENTARGUMENT = $('[name=__EVENTARGUMENT]').attr(
+                'value'
+              )
+              formData.__LASTFOCUS = $('[name=__LASTFOCUS]').attr('value')
+              formData.__VIEWSTATEFIELDCOUNT = $(
+                '[name=__VIEWSTATEFIELDCOUNT]'
+              ).attr('value')
+              formData.__VIEWSTATE = $('[name=__VIEWSTATE]').attr('value')
+              formData.__VIEWSTATE1 = $('[name=__VIEWSTATE1]').attr('value')
+              formData.__VIEWSTATEGENERATOR = $(
+                '[name=__VIEWSTATEGENERATOR]'
+              ).attr('value')
               $('span.small').each((index, element) => {
                 let id = $(element)
                   .text()
                   .split('\n')[3]
                 if (id) {
                   cache_id.push(id.trim())
+                  //console.log(id.trim())
                 }
               })
             })
@@ -112,7 +131,7 @@ getFormData(
         //if (nb_of_records != 0 && scrapped_data.length > nb_of_records) {
         //  scrapped_data = scrapped_data.slice(0, nb_of_records)
 
-        //console.log(cache_id)
+        //cache_id.forEach(item => console.log(item))
 
         // https://www.bennadel.com/blog/3232-parsing-and-serializing-large-objects-using-jsonstream-in-node-js.htm
         // https://github.com/dominictarr/JSONStream#jsonstreamstringifyopen-sep-close
@@ -129,7 +148,7 @@ getFormData(
             // for each i, create a promise with a request
             for (
               let i = index;
-              i < Math.min(cache_id_list.length, index + incr);
+              i < Math.min(cache_id_list.length, index + parallel_requests);
               i++
             ) {
               result_promises.push(
@@ -271,7 +290,7 @@ getFormData(
       }
     }
     try {
-      getCacheIdLoop(2, nb_of_pages, 50)
+      getCacheIdLoop(2, nb_of_pages, 0)
     } catch (error) {
       console.log('error:', error) // Print the error if one occurred
     }
