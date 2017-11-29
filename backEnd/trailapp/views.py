@@ -1,33 +1,100 @@
+from optimalPath import *
 from models import *
-from django.http import HttpResponse
+from serializers import *
 from mongoengine import*
-from dijkstra import *
-from path import *
-from geopy.distance import vincenty
+from django.http import HttpResponse
+from django.http import Http404
+from pymongo.errors import OperationFailure
+from rest_framework import status
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
+from rest_framework_mongoengine import viewsets
 import random
 
-def index(request):
+class GeocachesViewSet(viewsets.ModelViewSet):
+    '''
+    Contains information about Geocaces, shows first three examples
+    '''
+    serializer_class = GeocachesSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get_queryset(self):
+        return Geocaches.objects.all()[:3]
 
-    # Get neighborhood from a point
-    neighb = Neighborhoods.objects(geometry__geo_intersects={"type": "Point", "coordinates": [-73.93414657, 40.82302903]})
-    #get all restaurants within neighborhoods
-    rest = Restaurants.objects(location__geo_within=neighb[0].geometry)
-    #rest is a lsit of objects. Each object contains 
-    #a name and location field. The location field is a dictionary with
-    #type and coordinate keys. Coordinates key corresponds to list of floats. i.e. [x,y]
-    i1 = random.randint(1,len(rest))
-    i2 = random.randint(1,len(rest))
-    rest1 = rest[i1]
-    rest2 = rest[i2]
-    print(rest1.name)
-    print(rest2.name)
-    r1x = rest1.location['coordinates'][1]
-    r1y = rest1.location['coordinates'][0]
-    r2x = rest2.location['coordinates'][1]
-    r2y = rest2.location['coordinates'][0]
-    distance = vincenty((r1x,r1y),(r2x,r2y)).meters
-    allroad1 = Roads.objects(geometry__near=rest1.location, geometry__max_distance=distance)
-    allroad2 = Roads.objects(geometry__near=rest2.location, geometry__max_distance=distance)
+class ChamberyRoadsViewSet(viewsets.ModelViewSet):
+    '''
+    Contains information about ways, shows first three examples
+    '''
+    serializer_class = ChamberyRoadsSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get_queryset(self):
+        return ChamberyRoads.objects.all()[:3]
 
-    return HttpResponse(getPath(allroad1,allroad2,(r1x,r1y),(r2x,r2y),distance))
+class RestaurantsViewSet(viewsets.ModelViewSet):
+    '''
+    Contains information about restaurants, shows syntax of examples
+    '''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = RestaurantsSerializer
+    def get_queryset(self):
+        neighb = Neighborhoods.objects.all()[:1]
+        return Restaurants.objects(location__geo_within=neighb[0].geometry)
+
+
+class NeighborhoodsViewSet(viewsets.ModelViewSet):
+    '''
+    Contains information about neighborhoods, shows first three examples
+    '''
+    serializer_class = NeighborhoodsSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get_queryset(self):
+        return Neighborhoods.objects.all()[:3]
+
+class RoadsViewSet(viewsets.ModelViewSet):
+    '''
+    Contains information about roads, shows an example
+    '''
+    serializer_class = RoadsSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get_queryset(self):
+        return Roads.objects.all()[:10]
+
+    @detail_route(methods=['get'])
+    def get3(self, request, *args, **kwargs):
+        serializer = self.get_serializer(Roads.objects.all()[:3], many=True)
+        return Response(serializer.data)
+
+
+
+class WayList(APIView):
+    serializer_class = ChamberyRoadsSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = ChamberyRoads.objects.all()[:10]
+    def get(self, request, *args, **kwargs):
+        try:
+            lat= float(self.kwargs['beginLat'])
+            lon = float(self.kwargs['beginLng'])
+            minDis = float(self.kwargs['minDis'])
+            maxDis = float(self.kwargs['maxDis'])
+            poiWeight = float(self.kwargs['poiWeight'])
+            trackWeight = float(self.kwargs['trackWeight'])
+        except Exception:
+            return Response({'Error':'Failed to convert args to numericals'})
+        
+        startLocation = {"type": "Point", "coordinates": [lon, lat]}
+
+        try:
+            allroad = ChamberyRoads.objects(geometry__near=[lon,lat], geometry__max_distance=maxDis)
+            # allroad = ChamberyRoads.objects(geometry__geo_within_center=[[lon,lat], maxDis])
+            way = getPath(allroad, (lon,lat), poiWeight, trackWeight, minDis, maxDis)
+        except OperationFailure:
+            return Response(status=status.HTTP_404_NOT_FOUND) 
+        else:
+            if type(way) is str:
+                return Response({'Error':way})
+            serializer = ChamberyRoadsSerializer(way)
+            return Response(serializer.data)
+
 
