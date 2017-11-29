@@ -21,15 +21,15 @@ REST_FRAMEWORK = {
     )
 }
 
-DATABASES = { 
+DATABASES = {
      'default': {
-          'ENGINE': 'django.db.backends.dummy' 
+          'ENGINE': 'django.db.backends.dummy'
      }
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -99,6 +99,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -140,6 +142,7 @@ INSTALLED_APPS = (
     'trailapp',
     'rest_framework',
     'rest_framework_mongoengine',
+    'corsheaders',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -147,6 +150,8 @@ INSTALLED_APPS = (
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

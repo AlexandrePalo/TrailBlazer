@@ -10,20 +10,20 @@ const INITIAL_FORM = {
   },
   distance: {
     min: 0,
-    max: 100,
+    max: 200,
     selection: { min: 0, max: 10 }
   },
   pois: {
     selected: false,
     min: 0,
-    max: 100,
-    value: 50
+    max: 10,
+    value: 5
   },
   tracks: {
     selected: false,
     min: 0,
-    max: 100,
-    value: 50
+    max: 10,
+    value: 5
   }
 }
 
@@ -118,7 +118,7 @@ const formReducer = (state = INITIAL_FORM, action) => {
     case 'SET_TRACKS_VALUE':
       return {
         ...state,
-        tracks: { ...state.tracks, value: action.payload }
+        tracks: { ...state.tracks, value: Math.round(action.payload) }
       }
     case 'SET_POIS_STATE':
       return {
@@ -131,7 +131,7 @@ const formReducer = (state = INITIAL_FORM, action) => {
     case 'SET_POIS_VALUE':
       return {
         ...state,
-        pois: { ...state.pois, value: action.payload }
+        pois: { ...state.pois, value: Math.round(action.payload) }
       }
     case 'SET_DISTANCE_RANGE':
       return {

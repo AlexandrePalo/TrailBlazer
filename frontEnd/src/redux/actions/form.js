@@ -1,8 +1,9 @@
+import axios from 'axios'
 import { setLoadingMode, setDisplayResultsMode } from './global'
 import { encodeDataUrl } from '../../utils'
 
-// Will probably be localhost, on a different port for Django backend
-const baseUrl = 'http://www.alexandrepalo.com' // TODO: define an url
+// BackEnd Django url
+const baseUrl = 'http://localhost:8000'
 
 const google = window.google
 const AutoCompleteGoogleService = new google.maps.places.AutocompleteService()
@@ -95,19 +96,29 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
     // Fetch a request from server
     const url =
       baseUrl +
-      '?' +
+      '/trailapp/' +
       encodeDataUrl({
         beginLat: beginCoords[0],
         beginLng: beginCoords[1],
-        distanceMin: distanceRange.min,
-        distanceMax: distanceRange.max,
+        distanceMin: distanceRange.min * 1000,
+        distanceMax: distanceRange.max * 1000,
         poisWeight,
         tracksWeight
       })
+
     console.log(url)
 
+    axios
+      .get(url)
+      .then(function(response) {
+        console.log(response)
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
+
     // Fake response
-    dispatch(setDisplayResultsMode())
+    //dispatch(setDisplayResultsMode())
   }
 }
 

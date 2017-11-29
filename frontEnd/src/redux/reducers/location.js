@@ -1,5 +1,5 @@
 const INITIAL_LOCATION = {
-  location: [49.1021919, 6.2129733] // Georgia Tech Lorraine
+  location: [45.56998, 5.917419999999993] // Chambéry
 }
 
 const locationReducer = (state = INITIAL_LOCATION, action) => {
