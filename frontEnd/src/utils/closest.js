@@ -1,3 +1,5 @@
+import { vincentySync } from 'node-geo-distance'
+
 const distance2D = (point1, point2) => {
   return Math.sqrt(
     Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2)
@@ -15,6 +17,12 @@ const distanceHeversine = (pt1, pt2) => {
     Math.cos(p1) * Math.cos(p2) * Math.sin(Dl / 2) * Math.sin(Dl / 2)
   let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
+}
+
+const distanceVincenty = (pt1, pt2) => {
+  pt1 = { latitude: pt1[0], longitude: pt1[1] }
+  pt2 = { latitude: pt2[0], longitude: pt2[1] }
+  return parseFloat(vincentySync(pt1, pt2)) * 0.9
 }
 
 const closestPointInList = (point, list) => {
@@ -43,4 +51,9 @@ const closestPointIndexInList = (point, list) => {
   return closestIndex
 }
 
-export { closestPointInList, closestPointIndexInList, distanceHeversine }
+export {
+  closestPointInList,
+  closestPointIndexInList,
+  distanceHeversine,
+  distanceVincenty
+}

@@ -10,8 +10,8 @@ const INITIAL_FORM = {
   },
   distance: {
     min: 0,
-    max: 40,
-    selection: { min: 0, max: 10 }
+    max: 20,
+    selection: { min: 0, max: 5 }
   },
   pois: {
     selected: false,

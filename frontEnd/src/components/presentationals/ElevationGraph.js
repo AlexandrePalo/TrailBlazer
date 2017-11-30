@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import roundTo from 'round-to'
 import { extent as d3ArrayExtent } from 'd3-array'
 import { scaleLinear as d3ScaleLinear } from 'd3-scale'
 import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis'
@@ -49,12 +50,12 @@ class ElevationGraph extends Component {
       if (this.props.currentIndex) {
         d3Select(node)
           .append('text')
-          .text('POI weight: ' + data[that.props.currentIndex][4])
+          .text('POI weight: ' + roundTo(data[that.props.currentIndex][4], 2))
           .attr('x', 220)
           .attr('y', yScale(data[that.props.currentIndex][3]) - 10)
         d3Select(node)
           .append('text')
-          .text('Track weight: ' + data[that.props.currentIndex][5])
+          .text('Track weight: ' + roundTo(data[that.props.currentIndex][5], 2))
           .attr('x', 220)
           .attr('y', yScale(data[that.props.currentIndex][3]) + 8)
         d3Select(node)
@@ -169,7 +170,7 @@ class ElevationGraph extends Component {
         ave: 0,
         sum: 0
       }
-      const totalDistance = Math.round(data[data.length - 1][3])
+      const totalDistance = roundTo(data[data.length - 1][3], 2)
 
       data.forEach(d => {
         if (d[4] < poiWeight.min) {
@@ -187,8 +188,13 @@ class ElevationGraph extends Component {
         }
         trackWeight.sum = trackWeight.sum + d[5]
       })
-      poiWeight.ave = Math.round(poiWeight.sum / data.length)
-      trackWeight.ave = Math.round(trackWeight.sum / data.length)
+      // Round everything to 2 places
+      poiWeight.ave = roundTo(poiWeight.sum / data.length, 2)
+      trackWeight.ave = roundTo(trackWeight.sum / data.length, 2)
+      poiWeight.min = roundTo(poiWeight.min, 2)
+      trackWeight.min = roundTo(trackWeight.min, 2)
+      poiWeight.max = roundTo(poiWeight.max, 2)
+      trackWeight.max = roundTo(trackWeight.max, 2)
 
       return (
         <PaperForm title="Graphs">
