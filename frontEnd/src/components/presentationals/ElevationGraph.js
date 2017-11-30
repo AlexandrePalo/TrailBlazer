@@ -187,8 +187,8 @@ class ElevationGraph extends Component {
         }
         trackWeight.sum = trackWeight.sum + d[5]
       })
-      poiWeight.ave = poiWeight.sum / data.length
-      trackWeight.ave = trackWeight.sum / data.length
+      poiWeight.ave = Math.round(poiWeight.sum / data.length)
+      trackWeight.ave = Math.round(trackWeight.sum / data.length)
 
       return (
         <PaperForm title="Graphs">
