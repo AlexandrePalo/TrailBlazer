@@ -171,14 +171,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# End of https://www.gitignore.io/api/node,python
-
-#MacOS
-.DS_Store
+# End of https://www.gitignore.io/api/node,python,django
 
 # Virtual env
 backEnd/virtualenv
 
 # Geojson large file
 *.geojson
-
