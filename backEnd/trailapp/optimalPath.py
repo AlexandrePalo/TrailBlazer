@@ -146,12 +146,14 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
     paths.pop(key_max, None)
     #return as a way object
     newResult = []
+    if not bestPath:
+      break
     for p in bestPath:
       printHashed(p)
       tp = Geohash.decode(p)
       weight = weights[p]
       newResult.append([float(tp[0]),float(tp[1]),weight[0],weight[1]])
-    wayList = wayList + [ChamberyRoads(geometry = newResult)]
+    wayList = wayList + [ChamberyRoads(id = i, geometry = newResult)]
 
   return wayList
 
