@@ -118,6 +118,7 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
       .get(url)
       .then(function(response) {
         let dataList = response.data
+        console.log(response)
         dataList.forEach((data, index) => {
           data = data.geometry.coordinates
           // Process some information
@@ -148,7 +149,8 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
 
           dispatch(
             receiveBackendResult({
-              name: 'Solution from algorithm',
+              name: 'Solution from algorithm n°' + (index + 1),
+              index,
               points: data,
               pointsFull: dataFull,
               pois: []

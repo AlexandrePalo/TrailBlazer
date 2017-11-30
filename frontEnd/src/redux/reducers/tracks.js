@@ -8,6 +8,18 @@ const INITIAL_TRACKS = {
   all: []
 }
 
+const colors = [
+  'red',
+  'blue',
+  'orange',
+  'green',
+  'black',
+  'grey',
+  'pink',
+  'yellow',
+  'cyan'
+]
+
 const getTrackIndexById = (state, id) => {
   state.all.forEach((t, i) => {
     if (t.id === id) {
@@ -60,6 +72,7 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
         ...state,
         loading: false,
         all: [
+          ...state.all,
           {
             ...action.payload,
             id:
@@ -67,7 +80,7 @@ const tracksReducer = (state = INITIAL_TRACKS, action) => {
                 ? 1
                 : Math.max.apply(Math, state.all.map(t => t.id)) + 1,
             displayed: false,
-            color: 'red'
+            color: colors[action.payload.index] // TODO: index err
           }
         ]
       }
