@@ -1,6 +1,7 @@
 import axios from 'axios'
+import roundTo from 'round-to'
 import { setLoadingMode, setDisplayResultsMode } from './global'
-import { encodeDataUrl, distanceHeversine } from '../../utils'
+import { encodeDataUrl, distanceHeversine, distanceVincenty } from '../../utils'
 
 // BackEnd Django url
 const baseUrl = 'http://localhost:8000'
@@ -117,12 +118,15 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
       .get(url)
       .then(function(response) {
         let data = response.data.geometry.coordinates
-        console.log(response)
 
         // Process some information
         const dataDistTemp = data.map((d, i) => {
           if (i >= 1) {
-            return distanceHeversine(d, data[i - 1])
+            console.log(
+              distanceHeversine(d, data[i - 1]),
+              distanceVincenty(d, data[i - 1])
+            )
+            return distanceVincenty(d, data[i - 1])
           } else {
             return 0
           }
@@ -140,8 +144,8 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
           d[1],
           null,
           dataDist[i],
-          Math.round(d[3]),
-          Math.round(d[2]),
+          d[3],
+          d[2]
         ])
         data = data.map((d, i) => [d[0], d[1]])
 
