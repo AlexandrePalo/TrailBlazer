@@ -117,46 +117,45 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
     axios
       .get(url)
       .then(function(response) {
-        let data = response.data.geometry.coordinates
-
-        // Process some information
-        const dataDistTemp = data.map((d, i) => {
-          if (i >= 1) {
-            console.log(
-              distanceHeversine(d, data[i - 1]),
-              distanceVincenty(d, data[i - 1])
-            )
-            return distanceVincenty(d, data[i - 1])
-          } else {
-            return 0
-          }
-        })
-        const dataDist = dataDistTemp.map((d, i) => {
-          if (i >= 1) {
-            return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
-          }
-          return 0
-        })
-
-        // Lat Lng Ele Dist POIw TrackW
-        const dataFull = data.map((d, i) => [
-          d[0],
-          d[1],
-          null,
-          dataDist[i],
-          d[3],
-          d[2]
-        ])
-        data = data.map((d, i) => [d[0], d[1]])
-
-        dispatch(
-          receiveBackendResult({
-            name: 'Solution from algorithm',
-            points: data,
-            pointsFull: dataFull,
-            pois: []
+        let dataList = response.data
+        dataList.forEach((data, index) => {
+          data = data.geometry.coordinates
+          // Process some information
+          const dataDistTemp = data.map((d, i) => {
+            if (i >= 1) {
+              return distanceVincenty(d, data[i - 1])
+            } else {
+              return 0
+            }
           })
-        )
+          const dataDist = dataDistTemp.map((d, i) => {
+            if (i >= 1) {
+              return dataDistTemp.slice(0, i + 1).reduce((a, b) => a + b)
+            }
+            return 0
+          })
+
+          // Lat Lng Ele Dist POIw TrackW
+          const dataFull = data.map((d, i) => [
+            d[0],
+            d[1],
+            null,
+            dataDist[i],
+            d[3],
+            d[2]
+          ])
+          data = data.map((d, i) => [d[0], d[1]])
+
+          dispatch(
+            receiveBackendResult({
+              name: 'Solution from algorithm n°' + index,
+              points: data,
+              pointsFull: dataFull,
+              pois: []
+            })
+          )
+        })
+
         dispatch(setDisplayResultsMode())
       })
       .catch(function(error) {

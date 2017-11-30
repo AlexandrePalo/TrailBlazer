@@ -16,7 +16,6 @@ class GlobalTrackInfo extends Component {
               label={this.props.gpx.loading ? 'Loading ...' : 'Download GPX'}
               disabled={this.props.gpx.loading}
               primary={true}
-              style={{ marginRight: '15px' }}
               labelStyle={
                 this.props.gpx.loading
                   ? {
