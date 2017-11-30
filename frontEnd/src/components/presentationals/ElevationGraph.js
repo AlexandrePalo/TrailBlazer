@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import roundTo from 'round-to'
 import { extent as d3ArrayExtent } from 'd3-array'
 import { scaleLinear as d3ScaleLinear } from 'd3-scale'
-import { axisBottom as d3AxisBottom, axisLeft as d3AxisLeft } from 'd3-axis'
+import { axisLeft as d3AxisLeft } from 'd3-axis'
 import { select as d3Select, mouse as d3Mouse } from 'd3-selection'
-import { distanceHeversine } from '../../utils/closest'
 import './Graph.css'
 import { PaperForm } from './'
 
@@ -18,7 +17,7 @@ class ElevationGraph extends Component {
   }
 
   createChart() {
-    const { height, width, padding, track } = this.props
+    const { height, padding, track } = this.props
     let that = this
 
     // Clear previous graph
@@ -77,11 +76,6 @@ class ElevationGraph extends Component {
           .attr('y', yScale(data[that.props.currentIndex][3]))
           .attr('fill', track.color)
         rectBefore.on('mousemove', function(d) {
-          let coords = [
-            d3Mouse(d3Select(this).node())[0] - 60,
-            yScale.invert(d3Mouse(d3Select(this).node())[1])
-          ]
-
           for (let i = 0; i < data.length; i++) {
             if (
               yScale.invert(d3Mouse(d3Select(this).node())[1]) <= data[i][3]
@@ -103,11 +97,6 @@ class ElevationGraph extends Component {
           .attr('fill', track.color)
           .attr('fill-opacity', 0.1)
         rectAfter.on('mousemove', function(d) {
-          let coords = [
-            d3Mouse(d3Select(this).node())[0] - 60,
-            yScale.invert(d3Mouse(d3Select(this).node())[1])
-          ]
-
           for (let i = 0; i < data.length; i++) {
             if (
               yScale.invert(d3Mouse(d3Select(this).node())[1]) <= data[i][3]
@@ -129,11 +118,6 @@ class ElevationGraph extends Component {
           .attr('y', padding)
           .attr('fill', track.color)
         rect.on('mousemove', function(d) {
-          let coords = [
-            d3Mouse(d3Select(this).node())[0] - 60,
-            yScale.invert(d3Mouse(d3Select(this).node())[1])
-          ]
-
           for (let i = 0; i < data.length; i++) {
             if (
               yScale.invert(d3Mouse(d3Select(this).node())[1]) <= data[i][3]

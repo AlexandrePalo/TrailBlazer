@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import Spinner from 'react-spinner-material'
 import { TrackResult, PaperForm } from './'
-import sample1 from '../../example/sample1.json'
-import sample2 from '../../example/sample2.json'
-import sample3 from '../../example/sample3.json'
 
 class TrackSelector extends Component {
   render() {

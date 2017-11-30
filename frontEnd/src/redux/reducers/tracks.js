@@ -20,14 +20,6 @@ const colors = [
   'cyan'
 ]
 
-const getTrackIndexById = (state, id) => {
-  state.all.forEach((t, i) => {
-    if (t.id === id) {
-      return i
-    }
-  })
-}
-
 const tracksReducer = (state = INITIAL_TRACKS, action) => {
   switch (action.type) {
     case 'SHOW':

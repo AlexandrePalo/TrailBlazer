@@ -1,7 +1,6 @@
 import axios from 'axios'
-import roundTo from 'round-to'
 import { setLoadingMode, setDisplayResultsMode } from './global'
-import { encodeDataUrl, distanceHeversine, distanceVincenty } from '../../utils'
+import { encodeDataUrl, distanceVincenty } from '../../utils'
 
 // BackEnd Django url
 const baseUrl = 'http://localhost:8000'
