@@ -94,7 +94,7 @@ class WayList(APIView):
         else:
             if type(way) is str:
                 return Response({'Error':way})
-            serializer = ChamberyRoadsSerializer(way)
+            serializer = ChamberyRoadsSerializer(way, many=True)
             return Response(serializer.data)
 
 

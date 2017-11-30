@@ -30,9 +30,7 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
   paths = {}
 # a dictonary to store all traversed edges as pair of hashed nodes
   edges = {}
-# a dict to store nodes whose edges have been contracted
-  visited = {}
-# a dict to store weights for hashed points
+# a dict to store poi/trackweights for hashed points
   weights = {}
 # dict to store previous node
   previousDict = {}
@@ -72,84 +70,90 @@ def getPath(road, start, poiWeight, trackWeight, minDis, maxDis):
       previous = k
 
 # optimal path finding
-  # start from the startnode
-  previousDict = {}
-  currentLength = 0
-  currentWeight = 0
-  currentNode = startnode
-  # store list of nodes
-  tempPath = []
-  # keep traversing while length satisfies criteria
-  while currentLength < maxDis:
-    # get edge list for current node
-    try:
-      neighborEdges = G.edges(currentNode,True)
-    except NetworkXError:
-      return ('No Paths Found')
-    bestWeighted = -10
-    bestLength = maxDis
-    # init best node
-    bestNode = None
-    # traverse all neighboring edges and pick best node
-    for ne in neighborEdges:
-      # if this neighbor has not been visited
-      if not (((ne[0], ne[1]) in edges) or ((ne[1], ne[0]) in edges)) :
-        # if it is an optimal edge
-        temp = weighted.get(ne[2].get('weight'))
-        if temp > bestWeighted:
-          bestNode = ne[1]
-          bestWeighted = temp
-          bestLength = ne[2].get('weight')
-    # if there is a best node, meaning there is an edge from currentnode 
-    # we have not visited before
-    if not bestNode is None:
-      # if we haven't visited the node before
-      # store visited edges in dict
-      edges[(currentNode, bestNode)] = 1
-      edges[(bestNode, currentNode)] = 1
-      # if best node has been visited, and includes a previous node
-      # add currentnode to the end of the list of nodes
-      if bestNode in previousDict:
-        previousDict[bestNode] = previousDict[bestNode] + [currentNode]
+  for i in range(0,3):
+    # start from the startnode
+    previousDict = {}
+    currentLength = 0
+    currentWeight = 0
+    currentNode = startnode
+    # store list of nodes
+    tempPath = []
+    # keep traversing while length satisfies criteria
+    while currentLength < maxDis:
+      # get edge list for current node
+      try:
+        neighborEdges = G.edges(currentNode,True)
+      except NetworkXError:
+        return ('No Paths Found')
+      bestWeighted = -10
+      bestLength = maxDis
+      # init best node
+      bestNode = None
+      # traverse all neighboring edges and pick best node
+      for ne in neighborEdges:
+        # if this neighbor has not been visited
+        if not (((ne[0], ne[1]) in edges) or ((ne[1], ne[0]) in edges)) :
+          # if it is an optimal edge
+          temp = weighted.get(ne[2].get('weight'))
+          if temp > bestWeighted:
+            bestNode = ne[1]
+            bestWeighted = temp
+            bestLength = ne[2].get('weight')
+      # if there is a best node, meaning there is an edge from currentnode 
+      # we have not visited before
+      if not bestNode is None:
+        # if we haven't visited the node before
+        # store visited edges in dict
+        edges[(currentNode, bestNode)] = 1
+        edges[(bestNode, currentNode)] = 1
+        # if best node has been visited, and includes a previous node
+        # add currentnode to the end of the list of nodes
+        if bestNode in previousDict:
+          previousDict[bestNode] = previousDict[bestNode] + [currentNode]
+        else:
+          previousDict[bestNode] = [currentNode]
+        currentNode = bestNode
+        # visit the best node and update the path length
+        currentLength = currentLength + bestLength
+        currentWeight = currentWeight + bestWeighted
+        tempPath.append(currentNode)
+      # do not visit this node
       else:
-        previousDict[bestNode] = [currentNode]
-      currentNode = bestNode
-      # visit the best node and update the path length
-      currentLength = currentLength + bestLength
-      currentWeight = currentWeight + bestWeighted
-      tempPath.append(currentNode)
-    # do not visit this node
-    else:
-      # traverse the travelled path
-      # and pick a node who has an unvisited edge
-      if currentNode is startnode:
-        break
-      elif currentNode in previousDict:
-        temp = previousDict[currentNode][-1]
-        previousDict[currentNode] = previousDict[currentNode][:-1]
-        currentNode = temp
-      else:
-        break
-  paths[currentWeight] = tempPath
-  length[currentWeight] = currentLength
+        # traverse the travelled path
+        # and pick a node who has an unvisited edge
+        if currentNode is startnode:
+          break
+        elif currentNode in previousDict:
+          temp = previousDict[currentNode][-1]
+          previousDict[currentNode] = previousDict[currentNode][:-1]
+          currentNode = temp
+        else:
+            break
+    paths[currentWeight] = tempPath
+    length[currentWeight] = currentLength
 
-  #get the best weighted path
-  try:
-    key_max = max(paths)
-  except ValueError:
-    return 'No Paths Found'
-  # print(key_max)
-  # print(length[key_max])
-  bestPath = paths[key_max]
-  #return as a way object
-  newResult = []
-  for p in bestPath:
-    # printHashed(p)
-    tp = Geohash.decode(p)
-    weight = weights[p]
-    newResult.append([float(tp[0]),float(tp[1]),weight[0],weight[1]])
-  way = ChamberyRoads(geometry = newResult)
-  return way
+  wayList = []
+  l = len(paths)
+  for i in range(0,l):
+    #get the best weighted path
+    try:
+      key_max = max(paths)
+    except ValueError:
+      return 'No Paths Found'
+    # print(key_max)
+    # print(length[key_max])
+    bestPath = paths[key_max]
+    paths.pop(key_max, None)
+    #return as a way object
+    newResult = []
+    for p in bestPath:
+      printHashed(p)
+      tp = Geohash.decode(p)
+      weight = weights[p]
+      newResult.append([float(tp[0]),float(tp[1]),weight[0],weight[1]])
+    wayList = wayList + [ChamberyRoads(geometry = newResult)]
+
+  return wayList
 
 #calculates the distance between two nodes
 def getLength(n,m):
