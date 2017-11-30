@@ -27,7 +27,6 @@ class GlobalTrackInfo extends Component {
               }
               onClick={() => this.handleDownloadGPXClick.bind(this)()}
             />
-            <RaisedButton label="Open in Google Maps" primary={false} />
           </div>
         </PaperForm>
       )
