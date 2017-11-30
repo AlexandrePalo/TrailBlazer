@@ -148,7 +148,7 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
 
           dispatch(
             receiveBackendResult({
-              name: 'Solution from algorithm n°' + index,
+              name: 'Solution from algorithm',
               points: data,
               pointsFull: dataFull,
               pois: []

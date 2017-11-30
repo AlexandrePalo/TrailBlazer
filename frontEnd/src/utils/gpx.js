@@ -41,8 +41,8 @@ const trkGen = (name, points) => {
     trkseg: {
       trkpt: [
         points.map(p => ({
-          '@': { lat: p[0], lng: p[1] },
-          ele: p[2]
+          '@': { lat: p[0], lng: p[1] }
+          //ele: p[2]
         }))
       ]
     }
