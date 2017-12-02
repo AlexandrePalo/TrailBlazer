@@ -14,7 +14,7 @@
 
 #### Preleminaries
 
-Be sure to have NodeJs and yarn installed (or npm).
+Be sure to have NodeJs and Yarn installed (or npm).
 
 #### Packages installation
 
@@ -87,9 +87,8 @@ consoles must be up and running the whole time you use the application.
 
 ## Introduction
 
-For the moment, in order to simplify the preprocessing system, we have limited
-the application to a certain area of the world: an area around Chambéry in
-FRANCE.
+On order to simplify the preprocessing system, we have limited the application
+to a certain area of the world: an area around Chambéry in FRANCE.
 
 This area is a good solution: the number of POI and Tracks gathered in this
 place is very important due to the geographic situation of this area. It's a
@@ -107,7 +106,10 @@ famous place in FRANCE to practice mountain bike, in the French Alps.
   either try to enter an address in the field and select the best one using the
   autocompletion system (it's case sensitive), or you can click on the small
   "location" icon at the right of the field, click a point on the map and select
-  "SET" to choose this location as begin location.
+  "SET" to choose this location as begin location. As said, the application is
+  only currently usable and viable around Chambéry, thus please use the second
+  solution and click near the city of Chambéry. The map is centered on this
+  place by default.
 
 * Moreover, to compute best results you can include "POI" and "Tracks" from our
   database and select a weight for them. POI are points of interest that are
@@ -117,7 +119,8 @@ famous place in FRANCE to practice mountain bike, in the French Alps.
 
 * When everything is set up, click the button "SUBMIT". The application is going
   to ask your algorithm to find the best track regarding information you have
-  chosen. Waiting until the loading screen stopped.
+  chosen. Waiting until the loading screen stopped. This can take some time, up
+  to 2-3 minutes for a 20 km request.
 
 * When the algorithm has responded, you can see proposed solutions in the field
   "Track selector". For each track, you can click on it to activate or
@@ -128,6 +131,12 @@ famous place in FRANCE to practice mountain bike, in the French Alps.
 
 * When you've selected an interesting solution, you can click the button
   "DOWNLOAD GPX" to download a standard gpx file and use it within your gps
-  device (including your phone) and go outside to train! You can also click the
-  button "OPEN IN GOOGLE MAPS" in order to be able to add some information or
-  change some things with the Google Maps solution.
+  device (including your phone) and go outside to train!
+
+* Be careful and indulgent, our application is only a beta version restricted to
+  a small area. At any time, if an error occurs, juste reload the page (F5) in
+  your browser. Moreover, if the backend seems to be blocked, go into the right
+  console and restart the command: CTRL+C or CMD+C to stop the server and
+  `python manage.py runserver` in the virtual environment to relaunch.
+
+* Have fun!
