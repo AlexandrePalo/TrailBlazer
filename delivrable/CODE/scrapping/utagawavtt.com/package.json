@@ -1,0 +1,25 @@
+{
+  "name": "utagawavtt_scrapping",
+  "version": "1.0.0",
+  "description": "Scrapp the utagawavtt website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node index.js --presets es2015"
+  },
+  "author": "TrailBlazer Team",
+  "license": "MIT",
+  "dependencies": {
+    "JSONStream": "^1.3.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "cheerio": "^1.0.0-rc.2",
+    "json-size": "^1.0.0",
+    "node-fetch": "^1.7.3",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "sqlite": "^2.8.0",
+    "xml2js": "^0.4.19",
+    "xml2js-es6-promise": "^1.1.1"
+  }
+}

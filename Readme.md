@@ -6,6 +6,12 @@
 
 # DESCRIPTION
 
+TrailBlazer is a project which aims to help bikers, hikers and runners to find
+the best tracks to train outside. Imagine you are new to an area, how to find
+where to practice your favorite sport? The application will make the most of
+existing sport tracks and points of interest in our database and will compute
+the best track regarding the preferences you will give.
+
 # INSTALLATION
 
 ## Front end application
@@ -137,6 +143,8 @@ famous place in FRANCE to practice mountain bike, in the French Alps.
   a small area. At any time, if an error occurs, juste reload the page (F5) in
   your browser. Moreover, if the backend seems to be blocked, go into the right
   console and restart the command: CTRL+C or CMD+C to stop the server and
-  `python manage.py runserver` in the virtual environment to relaunch.
+  `python manage.py runserver` in the virtual environment to relaunch. Note that
+  OpenStreetMap data are only around Chambéry, even if UtagawaVtt and Geocaching
+  was scrapped in whole France.
 
 * Have fun!
