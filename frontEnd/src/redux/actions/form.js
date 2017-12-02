@@ -1,4 +1,5 @@
 import axios from 'axios'
+import fileDownload from 'js-file-download'
 import { setLoadingMode, setDisplayResultsMode } from './global'
 import { encodeDataUrl, distanceVincenty } from '../../utils'
 
@@ -117,7 +118,6 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
       .get(url)
       .then(function(response) {
         let dataList = response.data
-        console.log(response)
         dataList.forEach((data, index) => {
           data = data.geometry.coordinates
           // Process some information
@@ -145,6 +145,9 @@ const sendForm = (beginCoords, distanceRange, poisWeight, tracksWeight) => {
             d[2]
           ])
           data = data.map((d, i) => [d[0], d[1]])
+
+          // DEBUG: trigger download
+          //fileDownload(JSON.stringify(data), 'solution.txt')
 
           dispatch(
             receiveBackendResult({
