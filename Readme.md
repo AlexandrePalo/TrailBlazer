@@ -83,7 +83,7 @@ consoles must be up and running the whole time you use the application.
 
 # EXECUTION
 
-## Go to the following url within your favorite browser: http://localhost:5000
+## Go to the following url within your favorite browser (please prefer Chrome or Firefox): http://localhost:5000
 
 ## Introduction
 
