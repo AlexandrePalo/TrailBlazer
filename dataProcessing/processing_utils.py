@@ -57,15 +57,20 @@ def build_geocache_geometry(coord_string):
     return feature
 
 
-def bounds(trail):
+def bounds(trail, wrapper=True):
     # this function takes in a trail and outputs the north, south, east, and
     # west bounds
 
-    # list of coordinates in trail
-    try:
-        coordinates = trail['geometry']['coordinates']
-    except KeyError:
-        coordinates = trail['location']['coordinates']
+    # find the list of coordinates in object
+    # if wrapper is true, than there is an object wrapping around the coordinates
+    if wrapper:
+        try:
+            coordinates = trail['geometry']['coordinates']
+        except KeyError:
+            coordinates = trail['location']['coordinates']
+    # if wrapper is false, then trail is simply the coordinates without a wrapper
+    else:
+        coordinates = trail
 
     # boundaries of trail
     # maximum latitude
@@ -102,11 +107,11 @@ def bounds(trail):
     return {'north' : north, 'south' : south, 'east' : east, 'west' : west}
 
 
-def bounding_box(trail, padding=0.00017):
+def bounding_box(trail, padding=0.00017, wrapper=True):
     # take bounds from bounds() and builds a box that encases all of the points
     # within the bounds
 
-    boundaries =  bounds(trail)
+    boundaries =  bounds(trail, wrapper=wrapper)
 
     north = boundaries['north'] + padding
     south = boundaries['south'] - padding
@@ -123,12 +128,12 @@ def bounding_box(trail, padding=0.00017):
 
     return box
 
-def build_query(trail):
+def build_query(trail, wrapper):
     # this function builds a query object that can be passed to a find function
     # in mongodb. this query will search for all geojson objects within the
     # bounding box supplied by bounding_box()
 
-    box = bounding_box(trail)
+    box = bounding_box(trail, wrapper=wrapper)
 
     withinQuery = {
        'geometry' : {
@@ -192,3 +197,68 @@ def distance(lon1, lat1, lon2, lat2):
     y = 2 * math.atan2(math.sqrt(x), math.sqrt(1-x))
 
     return radius * y
+
+def trail_weight(trail, geocaches, utagawa):
+
+    # number of nodes in trail
+    node_count = float(len(trail))
+
+    # build query for trail
+    query = build_query(trail, wrapper=False)
+
+    # find geocaches and utagawa trails nearby
+    geo_in_trail_range = geocaches.find(query)
+    ut_in_trail_range = utagawa.find(query)
+
+    print "Total nearby geocaches:",geo_in_trail_range.count()
+    print "Total nearby utagawa trails:",ut_in_trail_range.count()
+
+    # weight from geocache and utagawa proximity
+    geo_weight = 0
+    ut_weight = 0
+
+    # iterate through geocaches within trail range
+    for gc in geo_in_trail_range:
+        # the coordinates of the geocache location
+        geo_loc = gc['geometry']['coordinates']
+
+        # distance from geocache to trail coordinates
+        dist = [distance(geo_loc[0], geo_loc[1], c[0], c[1]) for c in trail]
+
+        # enumerate the list
+        enum_dist = [(i,d) for i,d in enumerate(dist)]
+
+        # all coordinates <= 1 km from the geocache
+        near = [x for x in enum_dist if x[1] <= 1]
+
+        # add (2 - distance to geocaches) to poi weight of coordinate
+        # if coordinate is 1 km away => weight = 1
+        # if coordinate is 0 km away => weight = 2
+        for x in near:
+            idx = x[0]
+            geo_weight += (2 - x[1])
+
+    # iterate through utagawa trails within range
+    for ut in ut_in_trail_range:
+        ut_loc = utc['location']['coordinates']
+
+        # find distance between utagawa coordinates and input trail coordinates
+        dist = [1000 * distance(float(ut_loc[0]), float(ut_loc[1]), c[0], c[1])
+                    for c in trail]
+
+        enum_dist = [(i,d) for i,d in enumerate(dist)]
+
+        near = [x for x in enum_dist if x[1] <= 25]
+
+        # add weight to all coordinates within 25 m of utagawa coordinate
+        for x in near:
+            idx = x[0]
+            ut_weight += 1
+
+    weight = (geo_weight + ut_weight) / node_count
+
+    print "Geocache Proximity Weight:",geo_weight / node_count
+    print "Utagawa Proximity Weight:",ut_weight / node_count
+    print "Total Proximity Weight:", weight
+
+    return weight
