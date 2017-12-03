@@ -1,0 +1,4 @@
+{
+  "db_url" : "mongodb://readwrite:uHQn1REU6pf2hV1F@dva-shard-00-00-kemze.mongodb.net:27017,dva-shard-00-01-kemze.mongodb.net:27017,dva-shard-00-02-kemze.mongodb.net:27017/test?ssl=true&replicaSet=dva-shard-0&authSource=admin",
+  "ors_api" : "58d904a497c67e00015b45fc914b0ce3e4df4b268b91be30b24b676b"
+}
