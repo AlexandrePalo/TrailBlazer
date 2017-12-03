@@ -1,0 +1,14 @@
+building ORS query
+requesting route
+
+STARTING LOCATION: (5.922245129047269, 45.56626089575539)
+ENDING LOCATION: (5.918611825478649, 45.56933629984877)
+
+ORS ERROR: Cannot find point 1: 5.91861182548,45.5693362998
+
+EXPERIMENT ROUTE
+Total nearby geocaches: 0
+Total nearby utagawa trails: 0
+Geocache Proximity Weight: 0.0
+Utagawa Proximity Weight: 0.0
+Total Proximity Weight: 0.0
