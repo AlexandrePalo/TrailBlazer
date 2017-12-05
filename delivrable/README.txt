@@ -51,7 +51,7 @@ environment to ensure that every package is here with the right version.
 
 ##### Go to the folder of the project, and the backend subfolder:
 
-* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/CODE/app/backEnd`
+* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/backEnd`
 
 ##### Create a new virtual environment and activate it:
 
@@ -65,8 +65,9 @@ environment to ensure that every package is here with the right version.
 
 * Make sure that `python --version`returns you `Python 2.7.X`, X is 10 or
   higher.
-* `pip install django==1.11 geopy mongoengine geohash networkx djangorestframework
-  django-rest-framework-mongoengine django-cors-headers`
+* `pip install django==1.11 geopy mongoengine geohash networkx`
+* `pip install djangorestframework django-rest-framework-mongoengine`
+* `pip install django-cors-headers`
 
 ##### Leave the virtual environment:
 
@@ -79,11 +80,11 @@ consoles must be up and running the whole time you use the application.
 
 ## First console, front end application
 
-* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/CODE/app/frontEnd && serve -s build`
+* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/frontEnd && serve -s build`
 
 ## Second console, back end application
 
-* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/CODE/app/backEnd/virtualenv/backEnd/bin &&
+* `cd PATH_TO_FOLDER_DOWNLOADED_UNZIPPED/backEnd/virtualenv/backEnd/bin &&
   source activate`
 * `cd ../../.. && python manage.py runserver`
 
