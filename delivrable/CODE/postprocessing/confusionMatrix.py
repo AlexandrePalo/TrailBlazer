@@ -36,8 +36,7 @@ def get_data(array_of_json_files):
     return track_stats
 
 
-track_stats = get_data(['badPaths.json', 'badPaths2.json',
-                        'badPaths3.json', 'badPaths4.json'])
+track_stats = get_data(['badPathsSample.json'])
 
 false_negative_counter = 0
 true_negative_counter = 0
